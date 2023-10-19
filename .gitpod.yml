@@ -1,16 +1,27 @@
 # Image of workspace. Learn more: https://www.gitpod.io/docs/configure/workspaces/workspace-image
-image: gitpod/workspace-full:latest
-
+image: gitpod/workspace-full
 # List the start up tasks. Learn more: https://www.gitpod.io/docs/configure/workspaces/tasks
 tasks:
-  - name: Install containerlab
-    init: bash -c "$(curl -sL https://get.containerlab.dev)" # runs during prebuild => https://www.gitpod.io/docs/configure/projects/prebuilds
+  - name: Install dependencies
+    command: >
+      pip install ansible &&
+      ansible-galaxy collection install arista.avd &&
+      bash -c "$(curl -sL https://get.containerlab.dev)" &&
 
-  - name: Download cEOS
-    init: curl https://www.arista.com/surl/Qyhs69V8R --output ceos.tar.xz
+      curl https://www.arista.com/surl/Qyhs69V8R --output ceos.tar.xz &&
+      docker import ceos.tar.xz ceosimage:4.29.M5 &&
 
-  - name: Import cEOS image
-    init: docker import ceos.tar.xz ceosimage:4.29.M5
+      git clone https://github.com/arista-netdevops-community/avd-cEOS-Lab &&
+
+      cd avd-cEOS-Lab/alpine_host && chmod +x build.sh && ./build.sh &&
+
+      gp sync-done ready
+
+  - name: Deploy and configure lab
+    command: >
+      gp sync-await ready &&
+      sudo containerlab deploy -t avd-cEOS-Lab/labs/evpn/avd_asym_irb/topology.yaml &&
+      ansible-playbook avd-cEOS-Lab/labs/evpn/avd_asym_irb/playbooks/fabric-deploy-config.yaml --inventory avd-cEOS-Lab/labs/evpn/avd_asym_irb/inventory.yaml
 
 # List the ports to expose. Learn more: https://www.gitpod.io/docs/configure/workspaces/ports
 # ports:
