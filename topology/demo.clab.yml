@@ -3,7 +3,7 @@ name: avdasymirb
 topology:
   kinds:
     ceos:
-      startup-config: ../../../ceos_lab_template/ceos.cfg.tpl
+      startup-config: ceos.cfg.tpl
       image: ceosimage:4.29.0.2F
       exec:
         - sleep 10
