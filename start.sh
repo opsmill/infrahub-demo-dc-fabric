@@ -13,6 +13,9 @@ docker import ceos.tar ceosimage:4.29.0.2F
 # Fetch AVD labs, build host emulator image
 git clone https://github.com/arista-netdevops-community/avd-cEOS-Lab
 
+# Clone infrahub
+git clone -b develop https://github.com/opsmill/infrahub.git
+
 cd avd-cEOS-Lab/alpine_host
 chmod +x build.sh
 ./build.sh

@@ -1,0 +1,13 @@
+{
+    "customizations": {
+      "codespaces": {
+        "repositories": {
+          "opsmill/infrahub": {
+            "permissions": {
+              "contents": "read"
+            }
+          }
+        }
+      }
+    }
+}
