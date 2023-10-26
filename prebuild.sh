@@ -22,7 +22,7 @@ chmod +x build.sh
 
 cd ../..
 
-pip install poetry toml
+pip install poetry toml invoke
 
 cd infrahub
 
