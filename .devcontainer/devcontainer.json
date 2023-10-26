@@ -1,4 +1,6 @@
 {
+    "onCreateCommand": "chmod +x prebuild.sh && ./prebuild.sh",
+    "postStartCommand": "chmod +x start.sh && ./start.sh",
     "customizations": {
       "codespaces": {
         "repositories": {
