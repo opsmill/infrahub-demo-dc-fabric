@@ -18,16 +18,16 @@ topology:
     spine2:
       kind: ceos
       mgmt_ipv4: 172.100.100.3
-    leaf11:
+    leaf1:
       kind: ceos
       mgmt_ipv4: 172.100.100.4
-    leaf12:
+    leaf2:
       kind: ceos
       mgmt_ipv4: 172.100.100.5
-    leaf21:
+    leaf3:
       kind: ceos
       mgmt_ipv4: 172.100.100.6
-    leaf22:
+    leaf4:
       kind: ceos
       mgmt_ipv4: 172.100.100.7
     client1:
