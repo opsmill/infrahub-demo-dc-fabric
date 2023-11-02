@@ -42,18 +42,14 @@ topology:
         TMODE: lacp
   
   links:
-    - endpoints: ["leaf11:eth1", "spine1:eth1"]
-    - endpoints: ["leaf12:eth1", "spine1:eth2"]
-    - endpoints: ["leaf21:eth1", "spine1:eth3"]
-    - endpoints: ["leaf22:eth1", "spine1:eth4"]
-    - endpoints: ["leaf11:eth2", "spine2:eth1"]
-    - endpoints: ["leaf12:eth2", "spine2:eth2"]
-    - endpoints: ["leaf21:eth2", "spine2:eth3"]
-    - endpoints: ["leaf22:eth2", "spine2:eth4"]
-    - endpoints: ["leaf11:eth3", "leaf12:eth3"]
-    - endpoints: ["leaf11:eth4", "leaf12:eth4"]
-    - endpoints: ["leaf21:eth3", "leaf22:eth3"]
-    - endpoints: ["leaf21:eth4", "leaf22:eth4"]
+    - endpoints: ["leaf1:eth3", "spine1:eth3"]
+    - endpoints: ["leaf2:eth3", "spine1:eth4"]
+    - endpoints: ["leaf3:eth3", "spine1:eth5"]
+    - endpoints: ["leaf4:eth3", "spine1:eth6"]
+    - endpoints: ["leaf1:eth4", "spine2:eth3"]
+    - endpoints: ["leaf2:eth4", "spine2:eth4"]
+    - endpoints: ["leaf3:eth4", "spine2:eth5"]
+    - endpoints: ["leaf4:eth4", "spine2:eth6"]
     - endpoints: ["leaf11:eth5", "client1:eth1"]
     - endpoints: ["leaf22:eth5", "client2:eth1"]
 
