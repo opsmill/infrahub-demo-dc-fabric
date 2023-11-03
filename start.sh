@@ -5,6 +5,8 @@ poetry run invoke demo.init
 
 cd ..
 
+docker login --username $HARBOR_USERNAME --password $HARBOR_PASSWORD $HARBOR_HOST
+
 # Deploy the lab!
 sudo containerlab deploy -t topology/demo.clab.yml
 
