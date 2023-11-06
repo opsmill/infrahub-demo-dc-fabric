@@ -95,6 +95,11 @@ INTERFACE_ROLES_MAPPING = {
 
 INTERFACE_OBJS: Dict[str, List[InfrahubNode]] = defaultdict(list)
 
+VLANS = (
+    ("200", "server"),
+    ("400", "management"),
+)
+
 store = NodeStore()
 
 
@@ -128,11 +133,15 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
     active_status = await client.get(kind="BuiltinStatus", name__value="active")
     internal_as = await client.get(kind="InfraAutonomousSystem", name__value="AS64496")
 
-
     group_edge_router = await client.get(kind="CoreStandardGroup", name__value="edge_router")
     group_cisco_devices = await client.get(kind="CoreStandardGroup", name__value="cisco_devices")
     group_arista_devices = await client.get(kind="CoreStandardGroup", name__value="arista_devices")
     group_transit_interfaces = await client.get(kind="CoreStandardGroup", name__value="transit_interfaces")
+
+    role_backbone = await client.get(kind="BuiltinRole", name__value="backbone")
+    role_server = await client.get(kind="BuiltinRole", name__value="server")
+    role_management = await client.get(kind="BuiltinRole", name__value="management")
+    role_loopback = await client.get(kind="BuiltinRole", name__value="loopback")
 
     # --------------------------------------------------
     # Create the Site
@@ -151,8 +160,26 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
         1: next(P2P_NETWORK_POOL).hosts(),
         2: next(P2P_NETWORK_POOL).hosts(),
         3: next(P2P_NETWORK_POOL).hosts(),
-
     }
+
+    # --------------------------------------------------
+    # Create the site specific VLAN
+    # --------------------------------------------------
+    for vlan in VLANS:
+        status_id = active_status.id
+        role = await client.get(kind="BuiltinRole", name__value=vlan[1])
+        vlan_name = f"{site_name}_{vlan[1]}"
+        obj = await client.create(
+            branch=branch,
+            kind="InfraVLAN",
+            name={"value": f"{site_name}_{vlan[1]}", "is_protected": True, "source": account_pop.id},
+            vlan_id={"value": int(vlan[0]), "is_protected": True, "owner": group_eng.id, "source": account_pop.id},
+            status={"id": status_id, "owner": group_ops.id},
+            role={"id": role.id, "source": account_pop.id, "is_protected": True, "owner": group_eng.id},
+        )
+        await obj.save()
+
+        store.set(key=vlan_name, node=obj)
 
     # --------------------------------------------------
     # Create the topology
@@ -165,12 +192,12 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
 
         for id in range(1, int(element.amount.value)+1):
 
-            pprint(element.role.value)
-
-            device_name = f"{site_name}-{element.name}{id}"
+            device_name = f"{site_name}-{element.name.value}{id}"
             status_id = active_status.id
-            role_id = client.get(kind="BuiltinRole", name__value=element.role).id
-            platform_id = client.get(kind="InfraPlatform", name__value=element.platform.name).id
+            role_id = element.role.id
+            role_name = await client.get(kind="BuiltinRole", ids=role_id) 
+            platform_id = element.platform.id
+            type = element.type.value
 
             obj = await client.create(
                 branch=branch,
@@ -178,6 +205,7 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
                 site={"id": site.id, "source": account_pop.id, "is_protected": True},
                 name={"value": device_name, "source": account_pop.id, "is_protected": True},
                 status={"id": status_id, "owner": group_ops.id},
+                type={"value": type, "source": account_pop.id},
                 role={"id": role_id, "source": account_pop.id, "is_protected": True, "owner": group_eng.id},
                 asn={"id": internal_as.id, "source": account_pop.id, "is_protected": True, "owner": group_eng.id},
                 platform={"id": platform_id, "source": account_pop.id, "is_protected": True},
@@ -190,9 +218,9 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
             # Add device to groups
             await group_add_member(client=client, group=group_edge_router, members=[obj], branch=branch)
 
-            if "Arista" in store.get(kind="InfraPlatform", key=element.platform).name:
+            if "Arista" in type:
                 await group_add_member(client=client, group=group_arista_devices, members=[obj], branch=branch)
-            elif "Cisco" in store.get(kind="InfraPlatform", key=element.platform).name:
+            elif "Cisco" in type:
                 await group_add_member(client=client, group=group_cisco_devices, members=[obj], branch=branch)
 
             # Loopback Interface
@@ -204,7 +232,7 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
                 enabled=True,
                 status={"id": active_status.id, "owner": group_ops.id},
                 role={
-                    "id": store.get(kind="BuiltinRole", key="loopback").id,
+                    "id": role_loopback.id,
                     "source": account_pop.id,
                     "is_protected": True,
                 },
@@ -231,11 +259,11 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
                 branch=branch,
                 kind="InfraInterfaceL3",
                 device={"id": obj.id, "is_protected": True},
-                name={"value": INTERFACE_MGMT_NAME[device_type], "source": account_pop.id},
+                name={"value": INTERFACE_MGMT_NAME[type], "source": account_pop.id},
                 enabled={"value": True, "owner": group_eng.id},
                 status={"id": active_status.id, "owner": group_eng.id},
                 role={
-                    "id": store.get(kind="BuiltinRole", key="management").id,
+                    "id": role_management.id,
                     "source": account_pop.id,
                     "is_protected": True,
                 },
@@ -257,11 +285,12 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
             log.info(f"- Created IP for mgmt iface on: {device_name}")
 
             # L3 Interfaces
-            if device[4] in ["spine", "leaf"]:
+            if role_name.name.value.lower() in ["spine", "leaf"]:
 
-                for intf_idx, intf_name in enumerate(INTERFACE_L3_NAMES[device_type]):
-                    intf_role = INTERFACE_ROLES_MAPPING[device[4]][intf_idx]
-                    intf_role_id = store.get(kind="BuiltinRole", key=intf_role).id
+                for intf_idx, intf_name in enumerate(INTERFACE_L3_NAMES[type]):
+                    intf_role = INTERFACE_ROLES_MAPPING[role_name.name.value.lower()][intf_idx]
+                    intf_role_obj = await client.get(kind="BuiltinRole", name__value=intf_role)
+                    intf_role_id = intf_role_obj.id
 
                     intf = await client.create(
                         branch=branch,
@@ -278,7 +307,7 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
                     store.set(key=f"{device_name}-l3-{intf_idx}", node=intf)
                     INTERFACE_OBJS[device_name].append(intf)
 
-                    # address = None
+                    address = None
                     # if intf_role == "peer":
                     #     address = f"{str(next(peer_networks[intf_idx]))}/31"
 
@@ -319,7 +348,7 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
                         elif intf_role == "peering":
                             provider_name = "Equinix"
 
-                        provider = store.get(kind="CoreOrganization", key=provider_name)
+                        provider = await client.get(kind="CoreOrganization", name__value=provider_name)
 
                         circuit = await client.create(
                             branch=branch,
@@ -329,7 +358,7 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
                             provider=provider.id,
                             status={"id": active_status.id, "owner": group_ops.id},
                             role={
-                                "id": store.get(kind="BuiltinRole", key=intf_role).id,
+                                "id": intf_role_id,
                                 "source": account_pop.id,
                                 "owner": group_eng.id,
                             },
@@ -349,6 +378,7 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
 
                         if intf_role == "transit":
                             peer_group_name = "TRANSIT_TELIA" if "telia" in provider.name.value.lower() else "TRANSIT_DEFAULT"
+                            peer_group_name_obj = await client.get(kind="InfraBGPPeerGroup", name__value=peer_group_name)
 
                             peer_ip = await client.create(
                                 branch=branch,
@@ -357,7 +387,8 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
                             )
                             await peer_ip.save()
 
-                            peer_as = store.get(kind="InfraAutonomousSystem", key=provider_name)
+                            peer_as = await client.get(kind="InfraAutonomousSystem", organization__name__value=provider_name)
+
                             bgp_session = await client.create(
                                 branch=branch,
                                 kind="InfraBGPSession",
@@ -366,10 +397,10 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
                                 local_ip=ip.id,
                                 remote_as=peer_as.id,
                                 remote_ip=peer_ip.id,
-                                peer_group=store.get(key=peer_group_name).id,
+                                peer_group=peer_group_name_obj.id,
                                 device=store.get(key=device_name).id,
                                 status=active_status.id,
-                                role=store.get(kind="BuiltinRole", key=intf_role).id,
+                                role=intf_role_id,
                             )
                             await bgp_session.save()
 
@@ -378,8 +409,7 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
                             )
 
             # L2 Interfaces
-            for intf_idx, intf_name in enumerate(INTERFACE_L2_NAMES[device_type]):
-                intf_role_id = store.get(kind="BuiltinRole", key="server").id
+            for intf_idx, intf_name in enumerate(INTERFACE_L2_NAMES[type]):
 
                 intf = await client.create(
                     branch=branch,
@@ -389,7 +419,7 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
                     speed=10000,
                     enabled=True,
                     status={"id": active_status.id, "owner": group_ops.id},
-                    role={"id": intf_role_id, "source": account_pop.id},
+                    role={"id": role_server.id, "source": account_pop.id},
                     l2_mode="Access",
                     untagged_vlan={"id": store.get(kind="InfraVLAN", key=f"{site_name}_server").id},
                 )
@@ -421,6 +451,7 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
             device2 = f"{site_name}-leaf{leaf_id}"
 
             peer_group_name = "POP_INTERNAL"
+            peer_group_name_obj = await client.get(kind="InfraBGPPeerGroup", name__value=peer_group_name)
 
             loopback1 = store.get(key=f"{device1}-loopback")
             loopback2 = store.get(key=f"{device2}-loopback")
@@ -433,10 +464,10 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
                 local_ip=loopback1.id,
                 remote_as=internal_as.id,
                 remote_ip=loopback2.id,
-                peer_group=store.get(key=peer_group_name).id,
+                peer_group=peer_group_name_obj.id,
                 device=store.get(kind="InfraDevice", key=device1).id,
                 status=active_status.id,
-                role=store.get(kind="BuiltinRole", key="backbone").id,
+                role=role_backbone.id,
             )
             await obj.save()
 
@@ -767,6 +798,7 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str):
 
     active_status = await client.get(kind="BuiltinStatus", name__value="active")
     internal_as = await client.get(kind="InfraAutonomousSystem", name__value="AS64496")
+    role_backbone = await client.get(kind="BuiltinRole", name__value="backbone")
 
     batch = await client.create_batch()
 
@@ -806,7 +838,7 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str):
                         peer_group=store.get(key=peer_group_name).id,
                         device=store.get(kind="InfraDevice", key=device1).id,
                         status=active_status.id,
-                        role=store.get(kind="BuiltinRole", key="backbone").id,
+                        role=role_backbone.id,
                     )
                     batch.add(task=obj.save, node=obj)
                     log.info(
