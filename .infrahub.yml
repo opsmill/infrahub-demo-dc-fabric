@@ -10,4 +10,4 @@ rfiles:
     description: "Template to generate clab device topology"
     query: "topology_info_query"
     repository: "self"
-    template_path: "topology/clab_topology.j2"
+    template_path: "templates/clab_topology.j2"
