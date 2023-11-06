@@ -28,10 +28,10 @@ BACKBONE_CIRCUIT_IDS = [
     "DUFF-4654456",
 ]
 
-INTERFACE_MGMT_NAME = {"7280R3": "Management0", "ASR1002-HX": "Management0", "linux": "Eth0"}
+INTERFACE_MGMT_NAME = {"eos": "Management0", "ASR1002-HX": "Management0", "linux": "Eth0"}
 
 INTERFACE_L3_NAMES = {
-    "7280R3": [
+    "eos": [
         "Ethernet1",
         "Ethernet2",
         "Ethernet3",
@@ -57,7 +57,7 @@ INTERFACE_L3_NAMES = {
     ]
 }
 INTERFACE_L2_NAMES = {
-    "7280R3": ["Ethernet11", "Ethernet12"],
+    "eos": ["Ethernet11", "Ethernet12"],
     "ASR1002-HX": ["Ethernet11", "Ethernet12"],
     "linux": ["Eth1", "Eth2"],
 }

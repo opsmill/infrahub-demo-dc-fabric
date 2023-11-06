@@ -2,3 +2,4 @@
 clab-*
 avd-cEOS-Lab
 *.clab.yml.bak
+__pycache__
