@@ -3,7 +3,7 @@ version: "3.4"
 
 services:
   message-queue:
-    image: 9r2s1098.c1.gra9.container-registry.ovh.net/external/rabbitmq:3.12-management
+    image: rabbitmq:3.12-management
     environment:
       - "RABBITMQ_DEFAULT_USER=infrahub"
       - "RABBITMQ_DEFAULT_PASS=infrahub"
@@ -14,15 +14,15 @@ services:
       retries: 3
 
   cache:
-    image: 9r2s1098.c1.gra9.container-registry.ovh.net/external/redis:7.2
+    image: redis:7.2
     healthcheck:
       test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
       interval: 5s
       timeout: 5s
       retries: 3
-  
+
   database:
-    image: 9r2s1098.c1.gra9.container-registry.ovh.net/external/neo4j:5.13-community
+    image: neo4j:5.13-community
     environment:
       - "NEO4J_AUTH=neo4j/admin"
       - "NEO4J_dbms_security_procedures_unrestricted=apoc.*"
@@ -37,11 +37,10 @@ services:
       timeout: 10s
       retries: 20
       start_period: 3s
-  
+
   infrahub-server:
-    image: 9r2s1098.c1.gra9.container-registry.ovh.net/opsmill/infrahub-py3.11:0.8.1
-    command: >
-      gunicorn --config backend/infrahub/serve/gunicorn_config.py --logger-class infrahub.serve.log.GunicornLogger infrahub.server:app
+    image: 9r2s1098.c1.gra9.container-registry.ovh.net/opsmill/infrahub-py3.11:0.8.1-init
+    command: gunicorn --config backend/infrahub/serve/gunicorn_config.py --logger-class infrahub.serve.log.GunicornLogger infrahub.server:app
     depends_on:
       database:
         condition: service_healthy
@@ -58,7 +57,7 @@ services:
       - "INFRAHUB_ALLOW_ANONYMOUS_ACCESS=true"
       - "PROMETHEUS_MULTIPROC_DIR=/prom_shared"
       - "INFRAHUB_FRONTEND_DIRECTORY=/opt/infrahub/frontend"
-      - "INFRAHUB_DB_TYPE=${INFRAHUB_DB_TYPE}"
+      - "INFRAHUB_DB_TYPE=neo4j"
     ports:
       - "8000:8000"
     volumes:
@@ -75,7 +74,7 @@ services:
     deploy:
       mode: replicated
       replicas: 2
-    image: 9r2s1098.c1.gra9.container-registry.ovh.net/opsmill/infrahub-py3.11:0.8.1
+    image: 9r2s1098.c1.gra9.container-registry.ovh.net/opsmill/infrahub-py3.11:0.8.1-init
     command: infrahub git-agent start --debug
     restart: unless-stopped
     depends_on:
@@ -87,7 +86,7 @@ services:
       - "INFRAHUB_LOG_LEVEL=DEBUG"
       - "INFRAHUB_SDK_API_TOKEN=06438eb2-8019-4776-878c-0941b1f1d1ec"
       - "INFRAHUB_SDK_TIMEOUT=20"
-      - "INFRAHUB_DB_TYPE=${INFRAHUB_DB_TYPE}"
+      - "INFRAHUB_DB_TYPE=neo4j"
     volumes:
       - "git_data:/opt/infrahub/git"
       - "git_remote_data:/remote"

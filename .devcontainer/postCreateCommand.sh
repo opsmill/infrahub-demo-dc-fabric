@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Docker Compose Infrahub
-docker-compose up -d build docker-compose.yml -p infrahub
+docker-compose -f docker-compose.yml -p infrahub up -d
 
 # Deploy the lab!
-containerlab deploy -t ../topology/demo.clab.yml
+sudo containerlab deploy -t ../topology/demo.clab.yml --reconfigure

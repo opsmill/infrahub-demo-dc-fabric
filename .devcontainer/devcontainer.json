@@ -31,6 +31,9 @@
   "runArgs": ["--volume=/var/lib/docker", "--privileged"],
   "onCreateCommand": "./.devcontainer/onCreateCommand.sh",
   "postCreateCommand": "./.devcontainer/postCreateCommand.sh",
+  "features": {
+    "docker-in-docker": "latest"
+  },
   "hostRequirements": {
     "cpus": 8,
     "memory": "16gb"
