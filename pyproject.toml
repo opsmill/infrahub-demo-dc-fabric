@@ -8,6 +8,8 @@ authors = ["OpsMill <info@opsmill.com>"]
 python = "^3.9, < 3.12"
 infrahub-sdk = "^0.2.0"
 invoke = "^2.1.2"
+nornir = "^3.4.1"
+nornir-infrahub = "^0.1.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
