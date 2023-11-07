@@ -7,11 +7,11 @@ poetry install --no-interaction --no-ansi --no-root
 ansible-galaxy collection install arista.avd
 
 # Pull Container Lab images
-docker pull ${HARBOR_HOST}/external/ceos-image:4.29.0.2F
-docker pull ${HARBOR_HOST}/external/alpine-host:v3.1.1
+docker pull "${HARBOR_HOST}"/external/ceos-image:4.29.0.2F
+docker pull "${HARBOR_HOST}"/external/alpine-host:v3.1.1
 
 # Pull Infrahub images from our Registry
-docker pull ${HARBOR_HOST}/opsmill/infrahub-py3.11:0.8.1-init-amd64
+docker pull "${HARBOR_HOST}"/opsmill/infrahub-py3.11:0.8.1-init-amd64
 
 # Pull external image directly (linux/amd64)
 docker pull neo4j:5.13-community
