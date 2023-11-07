@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Install ansible and undocumented AVD requirements
-pip install ansible netaddr paramiko deepmerge cvprac md-toc
-
 ansible-galaxy collection install arista.avd
 
 # Pull Container Lab images
