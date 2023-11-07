@@ -39,7 +39,7 @@ services:
       start_period: 3s
 
   infrahub-server:
-    image: 9r2s1098.c1.gra9.container-registry.ovh.net/opsmill/infrahub-py3.11:0.8.1-init
+    image: ${HARBOR_HOST}/opsmill/infrahub-py3.11:0.8.1-init
     command: gunicorn --config backend/infrahub/serve/gunicorn_config.py --logger-class infrahub.serve.log.GunicornLogger infrahub.server:app
     depends_on:
       database:
@@ -52,8 +52,8 @@ services:
       - "INFRAHUB_CONFIG=/source/development/infrahub.toml"
       - "INFRAHUB_PRODUCTION=false"
       - "INFRAHUB_LOG_LEVEL=INFO"
-      - "INFRAHUB_SECURITY_INITIAL_ADMIN_TOKEN=06438eb2-8019-4776-878c-0941b1f1d1ec"
-      - "INFRAHUB_SECURITY_SECRET_KEY=327f747f-efac-42be-9e73-999f08f86b92"
+      - "INFRAHUB_SECURITY_INITIAL_ADMIN_TOKEN=${INFRAHUB_SDK_API_TOKEN}"
+      - "INFRAHUB_SECURITY_SECRET_KEY=${INFRAHUB_SECURITY_SECRET_KEY}"
       - "INFRAHUB_ALLOW_ANONYMOUS_ACCESS=true"
       - "PROMETHEUS_MULTIPROC_DIR=/prom_shared"
       - "INFRAHUB_FRONTEND_DIRECTORY=/opt/infrahub/frontend"
@@ -74,7 +74,7 @@ services:
     deploy:
       mode: replicated
       replicas: 2
-    image: 9r2s1098.c1.gra9.container-registry.ovh.net/opsmill/infrahub-py3.11:0.8.1-init
+    image: ${HARBOR_HOST}/opsmill/infrahub-py3.11:0.8.1-init
     command: infrahub git-agent start --debug
     restart: unless-stopped
     depends_on:
@@ -84,7 +84,7 @@ services:
       - "INFRAHUB_ADDRESS=http://infrahub-server:8000"
       - "INFRAHUB_PRODUCTION=false"
       - "INFRAHUB_LOG_LEVEL=DEBUG"
-      - "INFRAHUB_SDK_API_TOKEN=06438eb2-8019-4776-878c-0941b1f1d1ec"
+      - "INFRAHUB_SDK_API_TOKEN=${INFRAHUB_SDK_API_TOKEN}"
       - "INFRAHUB_SDK_TIMEOUT=20"
       - "INFRAHUB_DB_TYPE=neo4j"
     volumes:
