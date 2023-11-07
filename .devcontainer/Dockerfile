@@ -36,6 +36,7 @@ USER vscode
 
 RUN pip install toml invoke ansible netaddr paramiko deepmerge cvprac md-toc
 
-RUN curl -sSL https://install.python-poetry.org | python3 - \
-    && echo "export PATH=\"$HOME/.local/bin:$PATH\"" >> $HOME/.bashrc
+RUN curl -sSL https://install.python-poetry.org | python3 - && \
+    echo "export PATH=\"$HOME/.local/bin:$PATH\"" >> $HOME/.bashrc
+
 RUN bash -c "$(curl -sL https://get.containerlab.dev)"

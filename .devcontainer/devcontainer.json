@@ -34,7 +34,8 @@
   // "postStartCommand": "./.devcontainer/postStartCommand.sh",
   "postAttachCommand": "./.devcontainer/postAttachCommand.sh",
   "features": {
-    "docker-in-docker": "latest"
+    "docker-in-docker": "latest",
+    "github-cli": "latest"
   },
   "hostRequirements": {
     "cpus": 8,
