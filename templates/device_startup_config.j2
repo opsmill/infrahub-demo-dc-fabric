@@ -1,9 +1,9 @@
 {% set ns = namespace(loopback_intf_name=none, loopback_ip=none, management_intf_name=none, management_ip=none) %}
 {% for intf in data.InfraDevice.edges[0].node.interfaces.edges %}
-{%   if intf.node.role.node.name.value == "loopback" %}
+{%   if intf.node.role.node.name.value == "Loopback" %}
 {%     set ns.loopback_intf_name = intf.node.name.value %}
 {%     set ns.loopback_ip = intf.node.ip_addresses.edges[0].node.address.value.split('/')[0] %}
-{%   elif intf.node.role.node.name.value == "management" %}
+{%   elif intf.node.role.node.name.value == "Management" %}
 {%     set ns.management_intf_name = intf.node.name.value %}
 {%     set ns.management_ip = intf.node.ip_addresses.edges[0].node.address.value.split('/')[0] %}
 {%   endif %}
@@ -18,6 +18,9 @@ transceiver qsfp default-mode 4x10G
 service routing protocols model multi-agent
 !
 hostname {{ data.InfraDevice.edges[0].node.name.value }}
+ip name-server {{ data.InfraTopology.edges[0].node.dns.value }}
+!
+ntp server {{ data.InfraTopology.edges[0].node.ntp.value }}
 !
 spanning-tree mode mstp
 !

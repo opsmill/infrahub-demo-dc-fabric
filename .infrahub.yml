@@ -6,4 +6,8 @@ rfiles:
     repository: "self"
     template_path: "templates/device_startup_config.j2"
 
-
+  - name: clab_topology
+    description: "Template to generate clab device topology"
+    query: "topology_info_query"
+    repository: "self"
+    template_path: "templates/clab_topology.j2"
