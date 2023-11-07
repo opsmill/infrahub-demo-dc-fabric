@@ -6,8 +6,7 @@ authors = ["OpsMill <info@opsmill.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9, < 3.12"
-infrahub = {path = "../infrahub", develop=true}
-infrahub-sdk = {path = "python_sdk", develop=true}
+infrahub-sdk = "^0.2.0"
 invoke = "^2.1.2"
 
 [build-system]
