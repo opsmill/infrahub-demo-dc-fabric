@@ -19,7 +19,6 @@
       ]
     }
   },
-  "remoteUser": "vscode",
   "remoteEnv": {
       "INFRAHUB_SDK_API_TOKEN": "06438eb2-8019-4776-878c-0941b1f1d1ec"
   },
