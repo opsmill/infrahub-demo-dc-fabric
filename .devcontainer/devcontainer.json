@@ -1,17 +1,44 @@
 {
-  "hostRequirements": {
-    "cpus": 4
- },
-    "onCreateCommand": "chmod +x prebuild.sh && ./prebuild.sh",
-    "customizations": {
-      "codespaces": {
-        "repositories": {
-          "opsmill/infrahub": {
-            "permissions": {
-              "contents": "read"
-            }
-          }
-        }
-      }
+  "name": "infrahub-naf-demo",
+  "build": {
+    "dockerfile": "./Dockerfile",
+    "context": "."
+  },
+  "customizations": {
+    "settings": {
+      "python.pythonPath": "/usr/bin/python3",
+      "terminal.integrated.shell.linux": "/bin/bash",
+      "python.venvPath": "/workspace/.venv",
+      "python.linting.enabled": true
+    },
+    "vscode": {
+      "extensions": [
+        "pomdtr.excalidraw-editor",
+        "wholroyd.jinja",
+        "ms-python.vscode-pylance",
+        "shardulm94.trailing-spaces",
+        "nickmillerdev.pytest-fixtures",
+        "yzhang.markdown-all-in-one",
+        "GraphQL.vscode-graphql-syntax"
+      ]
     }
+  },
+  "remoteUser": "vscode",
+  "remoteEnv": {
+      "INFRAHUB_SDK_API_TOKEN": "${INFRAHUB_SDK_API_TOKEN}"
+  },
+  "forwardPorts": [8000],
+  "runArgs": ["--volume=/var/lib/docker", "--privileged"],
+  "onCreateCommand": "./.devcontainer/onCreateCommand.sh",
+  "postCreateCommand": "./.devcontainer/postCreateCommand.sh",
+  // "postStartCommand": "./.devcontainer/postStartCommand.sh",
+  "postAttachCommand": "./.devcontainer/postAttachCommand.sh",
+  "features": {
+    "docker-in-docker": "latest",
+    "github-cli": "latest"
+  },
+  "hostRequirements": {
+    "cpus": 8,
+    "memory": "16gb"
+ }
 }
