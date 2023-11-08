@@ -1,6 +1,6 @@
 #!/bin/bash
 
-poetry config virtualenvs.create false
+poetry config virtualenvs.create true
 poetry install --no-interaction --no-ansi
 
 # Install Arista Collection

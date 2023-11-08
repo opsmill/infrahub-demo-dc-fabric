@@ -11,6 +11,15 @@
       "python.venvPath": "/workspace/.venv",
       "python.linting.enabled": true
     },
+    "codespaces": {
+      "repositories": {
+        "opsmill/infrahub": {
+          "permissions": {
+            "contents": "read"
+          }
+        }
+      }
+    },
     "vscode": {
       "extensions": [
         "pomdtr.excalidraw-editor",
