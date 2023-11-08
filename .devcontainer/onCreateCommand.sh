@@ -6,6 +6,9 @@ poetry install --no-interaction --no-ansi
 # Install Arista Collection
 ansible-galaxy collection install arista.avd
 
+# Install Opsmill Infrahub Collection (tarball until published)
+ansible-galaxy collection install ./.devcontainer/opsmill-infrahub-0.0.1.tar.gz
+
 # Pull Container Lab images
 docker pull "${HARBOR_HOST}"/external/ceos-image:4.29.0.2F
 docker pull "${HARBOR_HOST}"/external/alpine-host:v3.1.1
