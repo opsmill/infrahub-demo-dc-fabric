@@ -847,4 +847,3 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str):
 
     async for node, _ in batch.execute():
         log.debug(f"BGP Session Creation Completed")
-

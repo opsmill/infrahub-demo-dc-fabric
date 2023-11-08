@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Docker Compose Infrahub
-docker-compose -f ./.devcontainer/docker-compose.yml -p infrahub up -d
+# Load infra-schema
+docker compose -f ./.devcontainer/docker-compose.yml -p infrahub run infrahub-git infrahubctl schema load /tmp/models/infrastructure_base.yml
 
-# Deploy the lab!
-sudo -E containerlab deploy -t ./topology/demo.clab.yml --reconfigure
+# Load infra-data
+docker compose -f ./.devcontainer/docker-compose.yml -p infrahub run infrahub-git infrahubctl run /tmp/models/infrastructure_base.py
+docker compose -f ./.devcontainer/docker-compose.yml -p infrahub run infrahub-git infrahubctl run /tmp/models/infrastructure_edge.py

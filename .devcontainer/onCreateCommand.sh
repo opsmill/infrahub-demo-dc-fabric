@@ -1,6 +1,6 @@
 #!/bin/bash
 
-poetry config virtualenvs.create true
+poetry config virtualenvs.create false
 poetry install --no-interaction --no-ansi --no-root
 
 # Install Arista Collection
@@ -17,3 +17,9 @@ docker pull "${HARBOR_HOST}"/opsmill/infrahub-py3.11:0.8.1-init-amd64
 docker pull neo4j:5.13-community
 docker pull redis:7.2
 docker pull rabbitmq:3.12-management
+
+# Docker Compose Infrahub
+docker-compose -f ./.devcontainer/docker-compose.yml -p infrahub up -d
+
+# Deploy the lab!
+sudo -E containerlab deploy -t ./topology/demo.clab.yml --reconfigure
