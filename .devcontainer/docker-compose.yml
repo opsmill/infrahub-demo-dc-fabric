@@ -62,6 +62,7 @@ services:
       - "8000:8000"
     volumes:
       - "storage_data:/opt/infrahub/storage"
+      - "../models:/tmp/models"
     tty: true
     healthcheck:
       test: wget -O /dev/null http://localhost:8000/api/schema || exit 1
@@ -90,6 +91,7 @@ services:
     volumes:
       - "git_data:/opt/infrahub/git"
       - "git_remote_data:/remote"
+      - "../models:/tmp/models"
     tty: true
 
 volumes:
