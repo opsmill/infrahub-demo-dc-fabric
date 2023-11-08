@@ -1,7 +1,7 @@
 #!/bin/bash
 
 poetry config virtualenvs.create false
-poetry install --no-interaction --no-ansi --no-root
+poetry install --no-interaction --no-ansi
 
 # Install Arista Collection
 ansible-galaxy collection install arista.avd
