@@ -1,0 +1,37 @@
+query check_device_topology {
+  InfraDevice {
+    edges {
+      node {
+        name {
+          value
+        }
+        site {
+          node {
+            name {
+              value
+            }
+          }
+        }
+        role {
+          node {
+            name {
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+  InfraTopologyElement {
+    edges {
+      node {
+        name {
+          value
+        }
+        amount {
+          value
+        }
+      }
+    }
+  }
+}
