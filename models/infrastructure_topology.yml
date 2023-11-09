@@ -59,6 +59,78 @@ generics:
         kind: Attribute
         identifier: connected__endpoint
 nodes:
+  - name: Topology
+    namespace: Infra
+    description: "A Topology represent a a top level network topology pod."
+    label: "Topology"
+    default_filter: name__value
+    order_by:
+      - name__value
+    display_labels:
+      - name__value
+    attributes:
+      - name: name
+        kind: Text
+        unique: true
+      - name: description
+        kind: Text
+        optional: true
+      - name: dns
+        kind: Text
+        optional: true
+      - name: ntp
+        kind: Text
+        optional: true
+      - name: syslog
+        kind: Text
+        optional: true
+      - name: mtu
+        kind: Number
+        optional: true
+    relationships:
+      - name: element
+        peer: InfraTopologyElement
+        identifier: "topology__element"
+        optional: true
+        cardinality: many
+        kind: Component
+  - name: TopologyElement
+    namespace: Infra
+    description: "A TopologyElement represent a device within a topology pod."
+    label: "TopologyElement"
+    default_filter: name__value
+    order_by:
+      - name__value
+    display_labels:
+      - name__value
+    attributes:
+      - name: name
+        kind: Text
+        unique: true
+      - name: description
+        kind: Text
+        optional: true
+      - name: amount
+        kind: Number
+      - name: type
+        kind: Text
+    relationships:
+      - name: role
+        peer: BuiltinRole
+        optional: false
+        cardinality: one
+        kind: Attribute
+      - name: platform
+        peer: InfraPlatform
+        optional: true
+        cardinality: one
+        kind: Attribute
+      - name: topology
+        peer: InfraTopology
+        identifier: "topology__element"
+        optional: false
+        cardinality: one
+        kind: Parent
   - name: Platform
     namespace: Infra
     description: "A Platform represent the type of software running on a device."
