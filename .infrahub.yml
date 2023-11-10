@@ -18,11 +18,11 @@ artifact_definitions:
     parameters:
       device: "name__value"
     content_type: "text/plain"
-    targets: "device_startup_query_artifact"
-    transformation: "device_startup_query_artifact"
+    targets: "devices"
+    transformation: "device_startup_query"
 
   - name: "Template to generate clab device topology"
     artifact_name: "clab-topology"
     content_type: "text/plain"
-    targets: "topology_info_query_artifact"
-    transformation: "topology_info_query_artifact"
+    targets: "devices"
+    transformation: "topology_info_query"
