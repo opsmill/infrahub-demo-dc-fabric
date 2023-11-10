@@ -66,7 +66,7 @@ nodes:
     namespace: Infra
     description: "A Topology represent a a top level network topology pod."
     label: "Topology"
-    icon: "mdi:ethernet"
+    icon: "mdi:vector-point-select"
     default_filter: name__value
     order_by:
       - name__value
@@ -102,7 +102,7 @@ nodes:
     namespace: Infra
     description: "A TopologyElement represent a device within a topology pod."
     label: "TopologyElement"
-    icon: "mdi:ethernet"
+    icon: "mdi:vector-triangle"
     default_filter: name__value
     order_by:
       - name__value
