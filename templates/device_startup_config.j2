@@ -17,7 +17,7 @@ transceiver qsfp default-mode 4x10G
 !
 service routing protocols model multi-agent
 !
-hostname {{ data.InfraDevice.edges[0].node.name.value }}
+hostname {{ data.InfraDevice.edges[0].node.name.value }}-test
 ip name-server {{ data.InfraTopology.edges[0].node.dns.value }}
 !
 ntp server {{ data.InfraTopology.edges[0].node.ntp.value }}
