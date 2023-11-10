@@ -103,6 +103,7 @@ nodes:
     description: "A TopologyElement represent a device within a topology pod."
     label: "TopologyElement"
     icon: "mdi:vector-triangle"
+    menu_placement: "InfraTopology"
     default_filter: name__value
     order_by:
       - name__value
