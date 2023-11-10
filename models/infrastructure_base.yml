@@ -6,7 +6,6 @@ generics:
     namespace: Infra
     description: "Generic Network Interface."
     label: "Interface"
-    menu_placement: "InfraDevice"
     display_labels:
       - name__value
     order_by:
@@ -160,7 +159,6 @@ nodes:
     namespace: Infra
     description: "Network Layer 3 Interface"
     label: "Interface L3"
-    include_in_menu: false
     display_labels:
       - name__value
     order_by:
@@ -179,7 +177,6 @@ nodes:
     namespace: Infra
     description: "Network Layer 2 Interface"
     label: "Interface L2"
-    include_in_menu: false
     display_labels:
       - name__value
     order_by:
@@ -312,7 +309,6 @@ nodes:
     namespace: Infra
     description: "A Circuit endpoint is attached to each end of a circuit"
     label: "Circuit Endpoint"
-    include_in_menu: false
     attributes:
       - name: description
         kind: Text
@@ -359,7 +355,6 @@ nodes:
     namespace: Infra
     description: "A BGP Peer Group is used to regroup parameters that are shared across multiple peers"
     label: "BGP Peer Group"
-    menu_placement: InfraBGPSession
     default_filter: name__value
     order_by:
       - name__value
