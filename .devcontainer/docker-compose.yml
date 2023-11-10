@@ -39,7 +39,7 @@ services:
       start_period: 3s
 
   infrahub-server:
-    image: "${HARBOR_HOST}/opsmill/infrahub-py3.11:0.8.1-init"
+    image: "${HARBOR_HOST}/opsmill/infrahub-py3.11:0.8.2"
     command: gunicorn --config backend/infrahub/serve/gunicorn_config.py --logger-class infrahub.serve.log.GunicornLogger infrahub.server:app
     depends_on:
       database:
@@ -75,7 +75,7 @@ services:
     deploy:
       mode: replicated
       replicas: 2
-    image: "${HARBOR_HOST}/opsmill/infrahub-py3.11:0.8.1-init"
+    image: "${HARBOR_HOST}/opsmill/infrahub-py3.11:0.8.2"
     command: infrahub git-agent start --debug
     restart: unless-stopped
     depends_on:
