@@ -2,6 +2,8 @@
   hosts: arista
   gather_facts: no
   vars:
+    ansible_user: admin
+    ansible_password: admin
     config_url: "http://localhost:8000/api/rfile/device_startup?device={{ inventory_hostname }}"
     local_config_path: "/tmp/{{ inventory_hostname }}.conf"
 
