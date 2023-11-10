@@ -475,6 +475,25 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
                 f" Created BGP Session '{device1}' >> '{device2}': '{peer_group_name}' '{loopback1.address.value}' >> '{loopback2.address.value}'"
             )
 
+            obj = await client.create(
+                branch=branch,
+                kind="InfraBGPSession",
+                type="INTERNAL",
+                local_as=internal_as.id,
+                local_ip=loopback2.id,
+                remote_as=internal_as.id,
+                remote_ip=loopback1.id,
+                peer_group=peer_group_name_obj.id,
+                device=store.get(kind="InfraDevice", key=device2).id,
+                status=active_status.id,
+                role=role_backbone.id,
+            )
+            await obj.save()
+
+            log.info(
+                f" Created BGP Session '{device2}' >> '{device1}': '{peer_group_name}' '{loopback2.address.value}' >> '{loopback1.address.value}'"
+            )
+
     return site_name
 
 

@@ -74,7 +74,7 @@ query($device: String!) {
       }
     }
   }
-InfraTopology {
+  InfraTopology {
     edges {
       node {
         dns {
@@ -82,6 +82,26 @@ InfraTopology {
         }
         ntp {
           value
+        }
+      }
+    }
+  }
+  InfraBGPSession(type__value: "INTERNAL") {
+    edges {
+      node {
+        remote_ip {
+          node {
+            address {
+              value
+            }
+          }
+        }
+        device {
+          node {
+            name {
+              value
+            }
+          }
         }
       }
     }

@@ -14,7 +14,7 @@ topology:
       image: 9r2s1098.c1.gra9.container-registry.ovh.net/external/alpine-host:latest
 
   nodes:
-{% for device in data.device.edges %}
+{% for device in data.InfraDevice.edges %}
     {{ device.node.name.value }}:
       kind: {{ device.node.type.value }}
 {%  for intf in device.node.interfaces.edges %}
