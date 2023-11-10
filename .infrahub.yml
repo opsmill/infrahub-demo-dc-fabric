@@ -11,3 +11,18 @@ rfiles:
     query: "topology_info_query"
     repository: "self"
     template_path: "templates/clab_topology.j2"
+
+artifact_definitions:
+  - name: "Template to generate startup configuration for network devices"
+    artifact_name: "startup-config"
+    parameters:
+      device: "name__value"
+    content_type: "text/plain"
+    targets: "device_startup_query"
+    transformation: "device_startup_query"
+
+  - name: "Template to generate clab device topology"
+    artifact_name: "clab-topology"
+    content_type: "text/plain"
+    targets: "topology_info_query"
+    transformation: "topology_info_query"
