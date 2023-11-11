@@ -44,16 +44,15 @@ interface {{ intf.node.name.value }}
 {%   if not intf.node["enabled"]["value"] %}
    shutdown
 {%   endif %}
+{%     if intf.node.role.node.name.value == "backbone" %}
+   ip router isis
+{%      endif %}
 {%   if intf.node["ip_addresses"] %}
 {%     for ip in intf.node["ip_addresses"]["edges"] %}
    ip address {{ ip.node["address"]["value"] }}
    no switchport
 {%    endfor %}
 {%   endif %}
-{%     if intf.node.role.node.name.value == "backbone" %}
-   ip ospf area 1
-   ip ospf network point-to-point
-{%      endif %}
 !
 {%   endif %}
 {% endfor %}
@@ -113,12 +112,11 @@ router bgp {{ data.InfraDevice.edges[0].node.asn.node.asn.value }}
 !
 {% endif %}
 !
-router ospf 1
-   router-id {{ ns.loopback_ip }}
+router isis 1
+   net 49.0001.1010.1040.1030.00
+   address-family ipv4 unicast
+   is-type level-2
    redistribute connected
-   max-lsa 12000
-   passive-interface Loopback0
-   network 0.0.0.0/0 area 0.0.0.0
 !
 route-map BOGONS permit 10
    match ip address prefix-list BOGON-Prefixes

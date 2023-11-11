@@ -44,16 +44,16 @@ interface {{ intf.node.name.value }}
 {%   if not intf.node["enabled"]["value"] %}
    shutdown
 {%   endif %}
+{%     if intf.node.role.node.name.value == "backbone" %}
+   ip ospf area 1
+   ip ospf network point-to-point
+{%      endif %}
 {%   if intf.node["ip_addresses"] %}
 {%     for ip in intf.node["ip_addresses"]["edges"] %}
    ip address {{ ip.node["address"]["value"] }}
    no switchport
 {%    endfor %}
 {%   endif %}
-{%     if intf.node.role.node.name.value == "backbone" %}
-   ip ospf area 1
-   ip ospf network point-to-point
-{%      endif %}
 !
 {%   endif %}
 {% endfor %}
