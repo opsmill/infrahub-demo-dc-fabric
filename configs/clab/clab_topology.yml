@@ -1,29 +1,24 @@
 name: avdasymirb
 
 topology:
-  
   kinds:
     ceos:
-      startup-config: ceos.cfg.tpl
-      image: 9r2s1098.c1.gra9.container-registry.ovh.net/external/ceos_image:latest
+      image: "${HARBOR_HOST}/external/ceos-image:4.29.0.2F"
       exec:
         - sleep 10
         - FastCli -p 15 -c 'security pki key generate rsa 4096 eAPI.key'
         - FastCli -p 15 -c 'security pki certificate generate self-signed eAPI.crt key eAPI.key generate rsa 4096 validity 30000 parameters common-name eAPI'
     linux:
-      image: 9r2s1098.c1.gra9.container-registry.ovh.net/external/alpine-host:latest
-
+      image: "${HARBOR_HOST}/external/alpine-host:v3.1.1"
   nodes:
     atl-client1:
       kind: linux
       mgmt_ipv4: 172.20.20.17
-      startup-config: configs/startup/atl-client1.cfg
       env:
         TMODE: lacp
     atl-client2:
       kind: linux
       mgmt_ipv4: 172.20.20.18
-      startup-config: configs/startup/atl-client2.cfg
       env:
         TMODE: lacp
     atl-leaf1:
