@@ -1,6 +1,6 @@
-# demo-dc-fabric
+# infrahub-demo-dc-fabric
 
-![naf demo drawing](./naf-demo.excalidraw.svg)
+![infrahub-demo-dc-fabric drawing](./infrahub-demo-dc-fabric.excalidraw.svg)
 
 ## Playbook
 
@@ -20,7 +20,7 @@ mutation {
   CoreRepositoryCreate(
     data: {
       name: { value: "naf-demo" }
-      location: { value: "https://github.com/fooelisa/naf-demo.git" }
+      location: { value: "https://github.com/fooelisa/infrahub-demo-dc-fabric.git" }
       username: { value: "fooelisa" }
       password: { value: "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" }
     }
