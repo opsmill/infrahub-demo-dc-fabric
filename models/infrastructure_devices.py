@@ -16,7 +16,7 @@ NETWORKS_POOL_INTERNAL = IPv4Network("10.0.0.0/8").subnets(new_prefix=16)
 LOOPBACK_POOL = next(NETWORKS_POOL_INTERNAL).hosts()
 P2P_NETWORK_POOL = next(NETWORKS_POOL_INTERNAL).subnets(new_prefix=31)
 NETWORKS_POOL_EXTERNAL = IPv4Network("203.0.113.0/24").subnets(new_prefix=29)
-MANAGEMENT_IPS = IPv4Network("172.20.20.16/28").hosts()
+MANAGEMENT_IPS = IPv4Network("172.100.100.16/28").hosts()
 
 BACKBONE_CIRCUIT_IDS = [
     "DUFF-1543451",

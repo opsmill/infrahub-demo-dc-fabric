@@ -13,37 +13,37 @@ topology:
   nodes:
     atl-client1:
       kind: linux
-      mgmt_ipv4: 172.20.20.17
+      mgmt-ipv4: 172.100.100.17
       env:
         TMODE: lacp
     atl-client2:
       kind: linux
-      mgmt_ipv4: 172.20.20.18
+      mgmt-ipv4: 172.100.100.18
       env:
         TMODE: lacp
     atl-leaf1:
       kind: eos
-      mgmt_ipv4: 172.20.20.19
+      mgmt-ipv4: 172.100.100.19
       startup-config: configs/startup/atl-leaf1.cfg
     atl-leaf2:
       kind: eos
-      mgmt_ipv4: 172.20.20.20
+      mgmt-ipv4: 172.100.100.20
       startup-config: configs/startup/atl-leaf2.cfg
     atl-leaf3:
       kind: eos
-      mgmt_ipv4: 172.20.20.21
+      mgmt-ipv4: 172.100.100.21
       startup-config: configs/startup/atl-leaf3.cfg
     atl-leaf4:
       kind: eos
-      mgmt_ipv4: 172.20.20.22
+      mgmt-ipv4: 172.100.100.22
       startup-config: configs/startup/atl-leaf4.cfg
     atl-spine1:
       kind: eos
-      mgmt_ipv4: 172.20.20.23
+      mgmt-ipv4: 172.100.100.23
       startup-config: configs/startup/atl-spine1.cfg
     atl-spine2:
       kind: eos
-      mgmt_ipv4: 172.20.20.24
+      mgmt-ipv4: 172.100.100.24
       startup-config: configs/startup/atl-spine2.cfg
 
   links:
@@ -60,5 +60,5 @@ topology:
 
 mgmt:
   network: ceos_clab                
-  ipv4_subnet: 172.100.100.0/24       
-  ipv6_subnet: 2001:172:100:100::/80
+  ipv4-subnet: 172.100.100.0/24       
+  ipv6-subnet: 2001:172:100:100::/80

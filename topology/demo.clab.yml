@@ -12,48 +12,48 @@ topology:
     linux:
       image: "${HARBOR_HOST}/external/alpine-host:v3.1.1"
   nodes:
-    spine1:
+    atl-spine1:
       kind: ceos
-      mgmt-ipv4: 172.100.100.2
-    spine2:
+      mgmt-ipv4: 172.100.100.23
+    atl-spine2:
       kind: ceos
-      mgmt-ipv4: 172.100.100.3
-    leaf1:
+      mgmt-ipv4: 172.100.100.24
+    atl-leaf1:
       kind: ceos
-      mgmt-ipv4: 172.100.100.4
-    leaf2:
+      mgmt-ipv4: 172.100.100.19
+    atl-leaf2:
       kind: ceos
-      mgmt-ipv4: 172.100.100.5
-    leaf3:
+      mgmt-ipv4: 172.100.100.20
+    atl-leaf3:
       kind: ceos
-      mgmt-ipv4: 172.100.100.6
-    leaf4:
+      mgmt-ipv4: 172.100.100.21
+    atl-leaf4:
       kind: ceos
-      mgmt-ipv4: 172.100.100.7
-    client1:
+      mgmt-ipv4: 172.100.100.22
+    atl-client1:
       kind: linux
-      mgmt-ipv4: 172.100.100.8
+      mgmt-ipv4: 172.100.100.17
       env:
         TMODE: lacp
-    client2:
+    atl-client2:
       kind: linux
-      mgmt-ipv4: 172.100.100.9
+      mgmt-ipv4: 172.100.100.18
       env:
         TMODE: lacp
   
   links:
-    - endpoints: ["leaf1:eth3", "spine1:eth3"]
-    - endpoints: ["leaf2:eth3", "spine1:eth4"]
-    - endpoints: ["leaf3:eth3", "spine1:eth5"]
-    - endpoints: ["leaf4:eth3", "spine1:eth6"]
-    - endpoints: ["leaf1:eth4", "spine2:eth3"]
-    - endpoints: ["leaf2:eth4", "spine2:eth4"]
-    - endpoints: ["leaf3:eth4", "spine2:eth5"]
-    - endpoints: ["leaf4:eth4", "spine2:eth6"]
-    - endpoints: ["leaf1:eth5", "client1:eth1"]
-    - endpoints: ["leaf4:eth5", "client2:eth1"]
+    - endpoints: ["atl-leaf1:eth3", "atl-spine1:eth3"]
+    - endpoints: ["atl-leaf2:eth3", "atl-spine1:eth4"]
+    - endpoints: ["atl-leaf3:eth3", "atl-spine1:eth5"]
+    - endpoints: ["atl-leaf4:eth3", "atl-spine1:eth6"]
+    - endpoints: ["atl-leaf1:eth4", "atl-spine2:eth3"]
+    - endpoints: ["atl-leaf2:eth4", "atl-spine2:eth4"]
+    - endpoints: ["atl-leaf3:eth4", "atl-spine2:eth5"]
+    - endpoints: ["atl-leaf4:eth4", "atl-spine2:eth6"]
+    - endpoints: ["atl-leaf1:eth5", "atl-client1:eth1"]
+    - endpoints: ["atl-leaf4:eth5", "atl-client2:eth1"]
 
 mgmt:
   network: ceos_clab                
-  ipv4-subnet: 172.100.100.0/24       
+  ipv4-subnet: 172.100.100.0/24
   ipv6-subnet: 2001:172:100:100::/80
