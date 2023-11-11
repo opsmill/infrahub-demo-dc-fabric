@@ -9,45 +9,31 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
     query = "check_device_topology"
 
     def validate(self):
-        pass
 
-        # site_id_by_name = {}
+        device_roles = {}
+        expected_roles = {}
 
-        # backbone_links_per_site = defaultdict(lambda: defaultdict(int))
+        for device in self.data["data"]["InfraDevice"]["edges"]:
+            role = device["node"]["role"]["node"]["name"]["value"]
+            site = device["node"]["site"]["node"]["name"]["value"]
 
-        # if self.data["data"]["InfraCircuit"]["edges"]:
-        #     circuits = self.data["data"]["InfraCircuit"]["edges"]
+            if role in device_roles:
+                device_roles[site][role] += 1
+            else:
+                device_roles[site][role] = 1
 
-        #     for circuit in circuits:
-        #         circuit_node = circuit["node"]
-        #         circuit_status = circuit_node["status"]["node"]["name"]["value"]
+        for element in self.data["data"]["InfraTopologyElement"]["edges"]:
+            expected_role = element["node"]["name"]["value"]
+            expected_roles[expected_role] = element["node"]["amount"]["value"]
 
-        #         if circuit_node["endpoints"]["edges"]:
-        #             endpoints = circuit_node["endpoints"]["edges"]
-
-        #             for endpoint in endpoints:
-        #                 endpoint_node = endpoint["node"]
-        #                 site_name = endpoint_node["site"]["node"]["name"]["value"]
-
-        #                 site_node = endpoint_node["site"]["node"]
-        #                 site_id_by_name[site_name] = site_node["id"]
-        #                 backbone_links_per_site[site_name]["total"] += 1
-
-        #                 if endpoint_node["connected_endpoint"]:
-        #                     connected_endpoint_node = endpoint_node["connected_endpoint"]["node"]
-        #                     if connected_endpoint_node:
-        #                         if (connected_endpoint_node["enabled"]["value"] and circuit_status == "active"):
-        #                             backbone_links_per_site[site_name]["operational"] += 1
-
-        #     for site_name, site in backbone_links_per_site.items():
-        #         if site.get("operational", 0) / site["total"] < 0.6:
-        #             self.log_error(
-        #                 message=f"{site_name} has less than 60% of backbone circuit operational ({site.get('operational', 0)}/{site['total']})",
-        #                 object_id=site_id_by_name[site_name],
-        #                 object_type="site",
-        #             )
-
-        #     # rprint(backbone_links_per_site)
+        for site in device_roles.items():
+            for role in device_roles[site].items():
+                if device_roles[site][role] != expected_roles[role]:
+                    self.log_error(
+                        message=f"{site} does ot have expected amount of {role} ({device_roles[site][role]}/{expected_roles[role]})",
+                        object_id=role,
+                        object_type="role",
+                    )
 
 
 INFRAHUB_CHECKS = [InfrahubCheckDeviceTopology]
