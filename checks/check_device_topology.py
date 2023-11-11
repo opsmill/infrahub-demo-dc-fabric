@@ -17,6 +17,9 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
             role = device["node"]["role"]["node"]["name"]["value"]
             site = device["node"]["site"]["node"]["name"]["value"]
 
+            if site not in device_roles:
+                device_roles[site] = {}
+
             if role in device_roles:
                 device_roles[site][role] += 1
             else:
