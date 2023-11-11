@@ -34,7 +34,6 @@ mutation {
 ```
 ### 5. Show schema extensibility
 ```
-infrahubctl schema load infrastructure_base.yml
 infrahubctl schema load infrastructure_topology.yml
 ```
 ### 6. Load in topology data only
