@@ -1,13 +1,20 @@
 ---
 rfiles:
   - name: device_startup
-    description: "Template to generate startup configuration for network devices"
+    description: "Template to generate OSPF iBGP config for network devices"
     query: "device_startup_query"
     repository: "self"
     template_path: "templates/device_startup_config.j2"
+
+  - name: device_startup_isis
+    description: "Template to generate ISIS iBGP config for network devices"
+    query: "device_startup_query"
+    repository: "self"
+    template_path: "templates/device_startup_config_isis.j2"
 
   - name: clab_topology
     description: "Template to generate clab device topology"
     query: "topology_info_query"
     repository: "self"
     template_path: "templates/clab_topology.j2"
+

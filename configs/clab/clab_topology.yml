@@ -14,21 +14,42 @@ topology:
       image: 9r2s1098.c1.gra9.container-registry.ovh.net/external/alpine-host:latest
 
   nodes:
-{% for device in data.InfraDevice.edges %}
-    {{ device.node.name.value }}:
-      kind: {{ device.node.type.value }}
-{%  for intf in device.node.interfaces.edges %}
-{%    if intf.node.role.node.name.value == "management" %}
-{%      set management_ip = intf.node.ip_addresses.edges[0].node.address.value.split('/') %}
-      mgmt_ipv4: {{ management_ip[0] }}
-{%    endif %}
-{%  endfor %}
-      startup-config: configs/startup/{{ device.node.name.value }}.cfg
-{%  if device.node.type.value == "linux" %}
+    atl-client1:
+      kind: linux
+      mgmt_ipv4: 172.20.20.17
+      startup-config: configs/startup/atl-client1.cfg
       env:
         TMODE: lacp
-{%  endif %}
-{% endfor %}
+    atl-client2:
+      kind: linux
+      mgmt_ipv4: 172.20.20.18
+      startup-config: configs/startup/atl-client2.cfg
+      env:
+        TMODE: lacp
+    atl-leaf1:
+      kind: eos
+      mgmt_ipv4: 172.20.20.19
+      startup-config: configs/startup/atl-leaf1.cfg
+    atl-leaf2:
+      kind: eos
+      mgmt_ipv4: 172.20.20.20
+      startup-config: configs/startup/atl-leaf2.cfg
+    atl-leaf3:
+      kind: eos
+      mgmt_ipv4: 172.20.20.21
+      startup-config: configs/startup/atl-leaf3.cfg
+    atl-leaf4:
+      kind: eos
+      mgmt_ipv4: 172.20.20.22
+      startup-config: configs/startup/atl-leaf4.cfg
+    atl-spine1:
+      kind: eos
+      mgmt_ipv4: 172.20.20.23
+      startup-config: configs/startup/atl-spine1.cfg
+    atl-spine2:
+      kind: eos
+      mgmt_ipv4: 172.20.20.24
+      startup-config: configs/startup/atl-spine2.cfg
 
   links:
     - endpoints: ["atl-leaf1:eth3", "atl-spine1:eth3"]
