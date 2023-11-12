@@ -5,7 +5,15 @@
 ## Playbook
 
 ### 1. Log into UI
-### 2. Paste API key
+### 2. Show schema extensibility
+```
+infrahubctl schema load infrastructure_topology.yml
+```
+### 3. Load in topology data only
+```
+infrahubctl run infrastructure_topology.py
+```
+### 4. Paste API key
 ```
 mutation {
   CoreRepositoryCreate(
@@ -23,14 +31,7 @@ mutation {
   }
 }
 ```
-### 3. Show schema extensibility
-```
-infrahubctl schema load infrastructure_topology.yml
-```
-### 4. Load in topology data only
-```
-infrahubctl run infrastructure_topology.py
-```
+
 ### 5. Load in first pod of devices
 ```
 infrahubctl run infrastructure_devices.py
