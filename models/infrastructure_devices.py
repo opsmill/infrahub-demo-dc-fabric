@@ -133,7 +133,7 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
     active_status = await client.get(kind="BuiltinStatus", name__value="active")
     internal_as = await client.get(kind="InfraAutonomousSystem", name__value="AS64496")
 
-    group_edge_router = await client.get(kind="CoreStandardGroup", name__value="edge_router")
+    group_router = await client.get(kind="CoreStandardGroup", name__value="router")
     group_cisco_devices = await client.get(kind="CoreStandardGroup", name__value="cisco_devices")
     group_arista_devices = await client.get(kind="CoreStandardGroup", name__value="arista_devices")
     group_transit_interfaces = await client.get(kind="CoreStandardGroup", name__value="transit_interfaces")
@@ -216,12 +216,10 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
             log.info(f"- Created Device: {device_name}")
 
             # Add device to groups
-            await group_add_member(client=client, group=group_edge_router, members=[obj], branch=branch)
+            await group_add_member(client=client, group=group_router, members=[obj], branch=branch)
 
-            if "Arista" in type:
+            if "eos" in type:
                 await group_add_member(client=client, group=group_arista_devices, members=[obj], branch=branch)
-            elif "Cisco" in type:
-                await group_add_member(client=client, group=group_cisco_devices, members=[obj], branch=branch)
 
             # Loopback Interface
             intf = await client.create(
