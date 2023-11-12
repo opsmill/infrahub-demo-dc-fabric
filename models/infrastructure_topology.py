@@ -67,7 +67,7 @@ ACCOUNTS = (
 )
 
 GROUPS = (
-    ("edge_router", "Edge Router"),
+    ("router", "Edge Router"),
     ("cisco_devices", "Cisco Devices"),
     ("arista_devices", "Arista Devices"),
     ("transit_interfaces", "Transit Interface"),
