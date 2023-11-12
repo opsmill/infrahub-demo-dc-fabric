@@ -37,6 +37,4 @@ USER vscode
 RUN curl -sSL https://install.python-poetry.org | python3 - && \
     echo "export PATH=\"$HOME/.local/bin:$PATH\"" >> $HOME/.bashrc
 
-RUN poetry install
-
 RUN bash -c "$(curl -sL https://get.containerlab.dev)"
