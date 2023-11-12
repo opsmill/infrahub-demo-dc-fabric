@@ -28,7 +28,8 @@
         "shardulm94.trailing-spaces",
         "nickmillerdev.pytest-fixtures",
         "yzhang.markdown-all-in-one",
-        "GraphQL.vscode-graphql-syntax"
+        "GraphQL.vscode-graphql-syntax",
+        "redhat.vscode-yaml"
       ]
     }
   },
@@ -52,7 +53,7 @@
     "github-cli": "latest"
   },
   "hostRequirements": {
-    "cpus": 8,
+    "cpus": 16,
     "memory": "16gb"
  }
 }
