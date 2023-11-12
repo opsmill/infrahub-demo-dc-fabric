@@ -34,7 +34,13 @@
   },
   "remoteUser": "vscode",
   "remoteEnv": {
-      "INFRAHUB_SDK_API_TOKEN": "${INFRAHUB_SDK_API_TOKEN}"
+      "INFRAHUB_SDK_API_TOKEN": "${INFRAHUB_SDK_API_TOKEN}",
+      "INFRAHUB_DOCKER_IMAGE": "${HARBOR_HOST}/opsmill/infrahub-py3.11:0.8.2",
+      "DATABASE_DOCKER_IMAGE": "neo4j:5.13-community",
+      "CACHE_DOCKER_IMAGE": "redis:7.2",
+      "MESSAGE_QUEUE_IMAGE": "rabbitmq:3.12-management",
+      "CEOS_DOCKER_IMAGE": "${HARBOR_HOST}/external/ceos-image:4.29.0.2F",
+      "LINUX_HOST_DOCKER_IMAGE": "${HARBOR_HOST}/external/alpine-host:v3.1.1"
   },
   "forwardPorts": [8000],
   "runArgs": ["--volume=/var/lib/docker", "--privileged"],
