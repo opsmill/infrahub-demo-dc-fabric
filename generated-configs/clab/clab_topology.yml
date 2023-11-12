@@ -3,7 +3,6 @@ name: avdasymirb
 topology:
   kinds:
     ceos:
-      startup-config: ceos.cfg.tpl
       image: "${CEOS_DOCKER_IMAGE}"
       exec:
         - sleep 10
@@ -12,24 +11,6 @@ topology:
     linux:
       image: "${LINUX_HOST_DOCKER_IMAGE}"
   nodes:
-    atl-spine1:
-      kind: ceos
-      mgmt-ipv4: 172.100.100.23
-    atl-spine2:
-      kind: ceos
-      mgmt-ipv4: 172.100.100.24
-    atl-leaf1:
-      kind: ceos
-      mgmt-ipv4: 172.100.100.19
-    atl-leaf2:
-      kind: ceos
-      mgmt-ipv4: 172.100.100.20
-    atl-leaf3:
-      kind: ceos
-      mgmt-ipv4: 172.100.100.21
-    atl-leaf4:
-      kind: ceos
-      mgmt-ipv4: 172.100.100.22
     atl-client1:
       kind: linux
       mgmt-ipv4: 172.100.100.17
@@ -40,6 +21,30 @@ topology:
       mgmt-ipv4: 172.100.100.18
       env:
         TMODE: lacp
+    atl-leaf1:
+      kind: eos
+      mgmt-ipv4: 172.100.100.19
+      startup-config: configs/startup/atl-leaf1.cfg
+    atl-leaf2:
+      kind: eos
+      mgmt-ipv4: 172.100.100.20
+      startup-config: configs/startup/atl-leaf2.cfg
+    atl-leaf3:
+      kind: eos
+      mgmt-ipv4: 172.100.100.21
+      startup-config: configs/startup/atl-leaf3.cfg
+    atl-leaf4:
+      kind: eos
+      mgmt-ipv4: 172.100.100.22
+      startup-config: configs/startup/atl-leaf4.cfg
+    atl-spine1:
+      kind: eos
+      mgmt-ipv4: 172.100.100.23
+      startup-config: configs/startup/atl-spine1.cfg
+    atl-spine2:
+      kind: eos
+      mgmt-ipv4: 172.100.100.24
+      startup-config: configs/startup/atl-spine2.cfg
 
   links:
     - endpoints: ["atl-leaf1:eth3", "atl-spine1:eth3"]

@@ -6,6 +6,8 @@ generics:
     namespace: Infra
     description: "Generic Network Interface."
     label: "Interface"
+    icon: "mdi:ethernet"
+    menu_placement: "InfraDevice"
     display_labels:
       - name__value
     order_by:
@@ -50,6 +52,7 @@ generics:
   - name: Endpoint
     namespace: Infra
     description: "Generic Endpoint to connect two objects together."
+    include_in_menu: false
     label: "Endpoint"
     relationships:
       - name: connected_endpoint
@@ -63,6 +66,7 @@ nodes:
     namespace: Infra
     description: "A Topology represent a a top level network topology pod."
     label: "Topology"
+    icon: "mdi:vector-triangle"
     default_filter: name__value
     order_by:
       - name__value
@@ -98,6 +102,8 @@ nodes:
     namespace: Infra
     description: "A TopologyElement represent a device within a topology pod."
     label: "TopologyElement"
+    icon: "mdi:vector-point-select"
+    menu_placement: "InfraTopology"
     default_filter: name__value
     order_by:
       - name__value
@@ -135,6 +141,8 @@ nodes:
     namespace: Infra
     description: "A Platform represent the type of software running on a device."
     label: "Platform"
+    icon: "mdi:application-cog-outline"  # mdi:application-brackets-outline
+    menu_placement: "InfraDevice"
     default_filter: name__value
     order_by:
       - name__value
@@ -168,6 +176,7 @@ nodes:
     namespace: Infra
     description: "Generic Device object."
     label: "Device"
+    icon: "mdi:server"
     default_filter: name__value
     inherit_from:
       - "CoreArtifactTarget"
@@ -231,6 +240,7 @@ nodes:
     namespace: Infra
     description: "Network Layer 3 Interface"
     label: "Interface L3"
+    include_in_menu: false
     display_labels:
       - name__value
     order_by:
@@ -249,6 +259,7 @@ nodes:
     namespace: Infra
     description: "Network Layer 2 Interface"
     label: "Interface L2"
+    include_in_menu: false
     display_labels:
       - name__value
     order_by:
@@ -281,6 +292,7 @@ nodes:
     namespace: Infra
     description: "IP Address"
     label: "IP Address"
+    icon: "mdi:ip-outline"
     default_filter: address__value
     order_by:
       - "address__value"
@@ -302,6 +314,7 @@ nodes:
     namespace: Infra
     description: "A VLAN is isolated layer two domain"
     label: "VLAN"
+    icon: "mdi:lan-pending"   # mdi:lan
     default_filter: name__value
     order_by:
       - name__value
@@ -341,6 +354,7 @@ nodes:
     namespace: Infra
     description: "A Circuit represent a single physical link between two location"
     label: "Circuit"
+    icon: "mdi:cable-data"
     default_filter: circuit_id__value
     order_by:
       - circuit_id__value
@@ -381,6 +395,8 @@ nodes:
     namespace: Infra
     description: "A Circuit endpoint is attached to each end of a circuit"
     label: "Circuit Endpoint"
+    icon: "mdi:ethernet-cable"
+    menu_placement: "InfraCircuit"
     attributes:
       - name: description
         kind: Text
@@ -402,6 +418,8 @@ nodes:
     namespace: Infra
     description: "An Autonomous System (AS) is a set of Internet routable IP prefixes belonging to a network"
     label: "Autonomous System"
+    icon: "mdi:bank-circle-outline"
+    menu_placement: InfraBGPSession
     default_filter: name__value
     order_by: ["asn__value"]
     display_labels:
@@ -427,6 +445,8 @@ nodes:
     namespace: Infra
     description: "A BGP Peer Group is used to regroup parameters that are shared across multiple peers"
     label: "BGP Peer Group"
+    icon: "mdi:view-grid-plus-outline"
+    menu_placement: InfraBGPSession
     default_filter: name__value
     order_by:
       - name__value
@@ -461,6 +481,7 @@ nodes:
     namespace: Infra
     description: "A BGP Session represent a point to point connection between two routers"
     label: "BGP Session"
+    icon: "mdi:router"
     inherit_from:
       - "CoreArtifactTarget"
     order_by:

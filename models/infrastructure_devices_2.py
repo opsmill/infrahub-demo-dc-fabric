@@ -3,20 +3,20 @@ import uuid
 from collections import defaultdict
 from ipaddress import IPv4Network
 from typing import Dict, List
-from pprint import pprint 
+from pprint import pprint
 
 from infrahub_sdk import UUIDT, InfrahubClient, InfrahubNode, NodeStore
 
 # flake8: noqa
 # pylint: skip-file
 
-SITE_NAMES = ["atl"]
+SITE_NAMES = ["den"]
 
-NETWORKS_POOL_INTERNAL = IPv4Network("10.0.0.0/8").subnets(new_prefix=16)
+NETWORKS_POOL_INTERNAL = IPv4Network("11.0.0.0/8").subnets(new_prefix=16)
 LOOPBACK_POOL = next(NETWORKS_POOL_INTERNAL).hosts()
 P2P_NETWORK_POOL = next(NETWORKS_POOL_INTERNAL).subnets(new_prefix=31)
-NETWORKS_POOL_EXTERNAL = IPv4Network("203.0.113.0/24").subnets(new_prefix=29)
-MANAGEMENT_IPS = IPv4Network("172.100.100.16/28").hosts()
+NETWORKS_POOL_EXTERNAL = IPv4Network("203.0.114.0/24").subnets(new_prefix=29)
+MANAGEMENT_IPS = IPv4Network("172.20.21.16/28").hosts()
 
 BACKBONE_CIRCUIT_IDS = [
     "DUFF-1543451",
@@ -475,25 +475,6 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
                 f" Created BGP Session '{device1}' >> '{device2}': '{peer_group_name}' '{loopback1.address.value}' >> '{loopback2.address.value}'"
             )
 
-            obj = await client.create(
-                branch=branch,
-                kind="InfraBGPSession",
-                type="INTERNAL",
-                local_as=internal_as.id,
-                local_ip=loopback2.id,
-                remote_as=internal_as.id,
-                remote_ip=loopback1.id,
-                peer_group=peer_group_name_obj.id,
-                device=store.get(kind="InfraDevice", key=device2).id,
-                status=active_status.id,
-                role=role_backbone.id,
-            )
-            await obj.save()
-
-            log.info(
-                f" Created BGP Session '{device2}' >> '{device1}': '{peer_group_name}' '{loopback2.address.value}' >> '{loopback1.address.value}'"
-            )
-
     return site_name
 
 
@@ -826,3 +807,44 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str):
 
     async for _, response in batch.execute():
         log.debug(f"Site {response} Creation Completed")
+
+    # --------------------------------------------------
+    # CREATE Full Mesh iBGP SESSION between all the Edge devices
+    # --------------------------------------------------
+    batch = await client.create_batch()
+    for site1 in SITE_NAMES:
+        for site2 in SITE_NAMES:
+            if site1 == site2:
+                continue
+
+            for idx1 in range(1, 3):
+                for idx2 in range(1, 3):
+                    device1 = f"{site1}-leaf{idx1}"
+                    device2 = f"{site2}-leaf{idx2}"
+
+                    loopback1 = store.get(key=f"{device1}-loopback")
+                    loopback2 = store.get(key=f"{device2}-loopback")
+
+                    peer_group_name = "POP_GLOBAL"
+
+                    obj = await client.create(
+                        branch=branch,
+                        kind="InfraBGPSession",
+                        type="INTERNAL",
+                        local_as=internal_as.id,
+                        local_ip=loopback1.id,
+                        remote_as=internal_as.id,
+                        remote_ip=loopback2.id,
+                        peer_group=store.get(key=peer_group_name).id,
+                        device=store.get(kind="InfraDevice", key=device1).id,
+                        status=active_status.id,
+                        role=role_backbone.id,
+                    )
+                    batch.add(task=obj.save, node=obj)
+                    log.info(
+                        f"Creating BGP Session '{device1}' >> '{device2}': '{peer_group_name}' '{loopback1.address.value}' >> '{loopback2.address.value}'"
+                    )
+
+    async for node, _ in batch.execute():
+        log.debug(f"BGP Session Creation Completed")
+

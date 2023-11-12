@@ -3,7 +3,7 @@ version: "3.4"
 
 services:
   message-queue:
-    image: rabbitmq:3.12-management
+    image: "${MESSAGE_QUEUE_DOCKER_IMAGE:-rabbitmq:latest}"
     environment:
       - "RABBITMQ_DEFAULT_USER=infrahub"
       - "RABBITMQ_DEFAULT_PASS=infrahub"
@@ -14,7 +14,7 @@ services:
       retries: 3
 
   cache:
-    image: redis:7.2
+    image: "${CACHE_DOCKER_IMAGE:-redis:latest}"
     healthcheck:
       test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
       interval: 5s
@@ -22,7 +22,7 @@ services:
       retries: 3
 
   database:
-    image: neo4j:5.13-community
+    image: "${DATABASE_DOCKER_IMAGE:-neo4j:community}"
     environment:
       - "NEO4J_AUTH=neo4j/admin"
       - "NEO4J_dbms_security_procedures_unrestricted=apoc.*"
@@ -39,7 +39,7 @@ services:
       start_period: 3s
 
   infrahub-server:
-    image: "${HARBOR_HOST}/opsmill/infrahub-py3.11:0.8.2"
+    image: "${INFRAHUB_DOCKER_IMAGE}"
     command: gunicorn --config backend/infrahub/serve/gunicorn_config.py --logger-class infrahub.serve.log.GunicornLogger infrahub.server:app
     depends_on:
       database:
@@ -75,7 +75,7 @@ services:
     deploy:
       mode: replicated
       replicas: 2
-    image: "${HARBOR_HOST}/opsmill/infrahub-py3.11:0.8.2"
+    image: "${INFRAHUB_DOCKER_IMAGE}"
     command: infrahub git-agent start --debug
     restart: unless-stopped
     depends_on:

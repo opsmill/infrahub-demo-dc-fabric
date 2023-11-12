@@ -1,15 +1,20 @@
 [tool.poetry]
-name = "naf-demo"
+name = "infrahub-demo-dc-fabric"
 version = "0.1.0"
 description = ""
 authors = ["OpsMill <info@opsmill.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9, < 3.12"
-infrahub-sdk = "^0.2.0"
+python = "^3.10, < 3.12"
+infrahub-sdk = "^0.2.1"
 invoke = "^2.1.2"
-nornir = "^3.4.1"
-nornir-infrahub = "^0.1.0"
+nornir-infrahub = "^0.2.1"
+ansible-core = "^2.16.0"
+netaddr = "^0.9.0"
+paramiko = "^3.3.1"
+deepmerge = "^1.1.0"
+cvprac = "^1.3.1"
+md-toc = "^8.2.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
