@@ -1,7 +1,14 @@
 - name: Fetch and Push Configuration to Arista Devices
-  hosts: arista
+  hosts: ungrouped
   gather_facts: no
   vars:
+    ansible_connection: httpapi
+    ansible_network_os: eos
+    ansible_httpapi_use_ssl: true
+    ansible_httpapi_validate_certs: false
+    ansible_become: true
+    ansible_become_method: enable
+
     ansible_user: admin
     ansible_password: admin
     config_url: "http://localhost:8000/api/rfile/device_startup?device={{ inventory_hostname }}"
@@ -18,4 +25,3 @@
       arista.eos.eos_config:
         src: "{{ local_config_path }}"
         backup: yes
-      when: ansible_network_os == 'eos'
