@@ -7,11 +7,11 @@
 ### 1. Log into UI
 ### 2. Show schema extensibility
 ```
-infrahubctl schema load infrastructure_topology.yml
+infrahubctl schema load models/infrastructure_topology.yml
 ```
 ### 3. Load in topology data only
 ```
-infrahubctl run infrastructure_topology.py
+infrahubctl run models/infrastructure_topology.py
 ```
 ### 4. Paste API key
 ```
@@ -34,7 +34,7 @@ mutation {
 
 ### 5. Load in first pod of devices
 ```
-infrahubctl run infrastructure_devices.py
+infrahubctl run models/infrastructure_devices.py
 ```
 ### 6. Rfiles
 ```
@@ -48,5 +48,5 @@ infrahubctl render device_startup device=atl-spine1
   - Check should fail now
 ### 9. Load in second pod of devices
 ```
-infrahubctl run infrastructure_devices_2.py
+infrahubctl run models/infrastructure_devices_2.py
 ```
