@@ -1,0 +1,39 @@
+- name: Query Interfaces information with the query_graphql module
+  hosts: platform_eos
+  gather_facts: no
+  vars:
+    ansible_connection: httpapi
+    ansible_network_os: eos
+    ansible_httpapi_use_ssl: true
+    ansible_httpapi_validate_certs: false
+    ansible_become: true
+    ansible_become_method: enable
+
+    config_url: "http://localhost:8000/api/rfile/device_startup?device={{ inventory_hostname }}"
+    local_config_path: "/tmp/{{ inventory_hostname }}.conf"
+
+  tasks:
+    - name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
+      set_fact:
+        variables:
+          device_name: "{{ inventory_hostname }}"
+          enabled: true
+
+        query_dict:
+          InfraDevice:
+            '@filters': {name__value: '$device_name'}
+            edges:
+              node:
+                name:
+                  value: null
+                interfaces:
+                  '@filters': {enabled__value: '$enabled'}
+                  edges:
+                    node:
+                      name:
+                        value: null
+
+    - name: Query Interfaces
+      opsmill.infrahub.query_graphql:
+        query: "{{ query_dict}}"
+        graph_variables: "{{ variables }}"
