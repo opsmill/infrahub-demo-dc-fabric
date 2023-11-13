@@ -209,6 +209,7 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
                 role={"id": role_id, "source": account_pop.id, "is_protected": True, "owner": group_eng.id},
                 asn={"id": internal_as.id, "source": account_pop.id, "is_protected": True, "owner": group_eng.id},
                 platform={"id": platform_id, "source": account_pop.id, "is_protected": True},
+                topology={"id": topology.id, "source": account_pop.id, "is_protected": True}
             )
             await obj.save()
 
