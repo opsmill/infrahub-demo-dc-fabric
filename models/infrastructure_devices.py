@@ -216,8 +216,6 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
             log.info(f"- Created Device: {device_name}")
 
             # Add device to groups
-            await group_add_member(client=client, group=group_router, members=[obj], branch=branch)
-
             if "eos" in type:
                 await group_add_member(client=client, group=group_arista_devices, members=[obj], branch=branch)
 

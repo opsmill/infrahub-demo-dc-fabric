@@ -68,6 +68,7 @@ ACCOUNTS = (
 
 GROUPS = (
     ("router", "Edge Router"),
+    ("pod2_topology", "Pod2 Topology"),
     ("cisco_devices", "Cisco Devices"),
     ("arista_devices", "Arista Devices"),
     ("transit_interfaces", "Transit Interface"),
@@ -246,7 +247,13 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str):
     # Create Topology
     # ------------------------------------------
     log.info("Creating Topology")
+    group_pod2_topology = store.get(kind="CoreStandardGroup", name__value="pod2_topology")
+
     for topology in TOPOLOGY:
+
+        if "pod2" in topology[0]:
+            await group_add_member(client=client, group=group_pod2_topology, members=[obj], branch=branch)
+
         topology_obj = await client.create(
             branch=branch,
             kind="InfraTopology",
