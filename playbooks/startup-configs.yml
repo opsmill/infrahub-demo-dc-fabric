@@ -1,5 +1,5 @@
 - name: Fetch and Push Configuration to Arista Devices
-  hosts: ungrouped
+  hosts: platform_eos
   gather_facts: no
   vars:
     ansible_connection: httpapi
@@ -24,4 +24,3 @@
     - name: Push configuration to device
       arista.eos.eos_config:
         src: "{{ local_config_path }}"
-        backup: yes
