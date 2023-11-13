@@ -35,6 +35,7 @@
   },
   "remoteUser": "vscode",
   "remoteEnv": {
+      "ANSIBLE_CONFIG": "/workspaces/infrahub-demo-dc-fabric",
       "INFRAHUB_SDK_API_TOKEN": "${INFRAHUB_SDK_API_TOKEN}",
       "INFRAHUB_DOCKER_IMAGE": "9r2s1098.c1.gra9.container-registry.ovh.net/opsmill/infrahub-py3.11:0.8.2",
       "DATABASE_DOCKER_IMAGE": "neo4j:5.13-community",
