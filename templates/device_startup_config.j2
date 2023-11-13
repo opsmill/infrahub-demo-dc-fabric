@@ -35,7 +35,7 @@ management api netconf
 !
 {% for intf in data.InfraDevice.edges[0].node.interfaces.edges %}
 {%   if intf.node.name.value != ns.management_intf_name and intf.node.name.value != ns.loopback_intf_name %}
-interface {{ intf.node.name.value }} 
+interface {{ intf.node.name.value }}
 {%   if intf.node["description"]["value"] %}
    description {{ intf.node["description"]["value"] }}
 {%   else %}
@@ -65,7 +65,7 @@ interface {{ ns.management_intf_name }}
 {%   if intf.node["ip_addresses"] %}
 {%     for ip in intf.node["ip_addresses"]["edges"] %}
    ip address {{ ip.node["address"]["value"] }}
-   no switchport
+   no shutdown
 {%    endfor %}
 {%   endif %}
 {%   endif %}
@@ -78,7 +78,7 @@ interface {{ ns.loopback_intf_name }}
 {%   if intf.node["ip_addresses"] %}
 {%     for ip in intf.node["ip_addresses"]["edges"] %}
    ip address {{ ip.node["address"]["value"] }}
-   no switchport
+   no shutdown
 {%    endfor %}
 {%   endif %}
 {%   endif %}
@@ -98,16 +98,13 @@ router bgp {{ data.InfraDevice.edges[0].node.asn.node.asn.value }}
    router-id {{ ns.loopback_ip }}
 {%   for peer_group in data.InfraBGPPeerGroup.edges %}
    neighbor {{ peer_group.node.name.value }} peer group
-{%     if peer_group.node.local_as %}
-   neighbor {{ peer_group.node.name.value }} local-as {{ peer_group.node.local_as.node.asn.value }}
-{%     endif %}
 {%     if peer_group.node.remote_as and peer_group.node.remote_as.node %}
    neighbor {{ peer_group.node.name.value }} remote-as {{ peer_group.node.remote_as.node.asn.value }}
 {%     endif %}
 {%   endfor %}
 {%   for ibgp in data.InfraBGPSession.edges %}
 {% if ibgp.node.device.node.name.value == data.InfraDevice.edges[0].node.name.value %}
-   neighbor {{ ibgp.node.remote_ip.node.address.value.split('/')[0] }} peer-group POP_INTERNAL
+   neighbor {{ ibgp.node.remote_ip.node.address.value.split('/')[0] }} peer group POP_INTERNAL
 {% endif %}
 {%   endfor %}
 !
