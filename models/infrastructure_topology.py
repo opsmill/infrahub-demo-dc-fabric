@@ -247,13 +247,9 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str):
     # Create Topology
     # ------------------------------------------
     log.info("Creating Topology")
-    group_pod2_topology = store.get(kind="CoreStandardGroup", name__value="pod2_topology")
+    group_pod2_topology = store.get(kind="CoreStandardGroup", key="pod2_topology")
 
     for topology in TOPOLOGY:
-
-        if "pod2" in topology[0]:
-            await group_add_member(client=client, group=group_pod2_topology, members=[obj], branch=branch)
-
         topology_obj = await client.create(
             branch=branch,
             kind="InfraTopology",
@@ -268,6 +264,10 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str):
 
     async for node, _ in batch.execute():
         log.info(f"{node._schema.kind}  Created {node.name.value}")
+
+    for topology in TOPOLOGY:
+        if "pod2" in topology[0]:
+            await group_add_member(client=client, group=group_pod2_topology, members=[store.get(kind="InfraTopology", key=topology)], branch=branch)
 
     log.info("Creating TopologyElement")
     for element in TOPOLOGY_ELEMENT:

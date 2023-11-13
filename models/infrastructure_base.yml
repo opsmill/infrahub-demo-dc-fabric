@@ -2,70 +2,6 @@
 ---
 version: '1.0'
 generics:
-  - name: Device
-    namespace: Infra
-    description: "Generic Device object."
-    label: "Device"
-    icon: "mdi:server"
-    default_filter: name__value
-    inherit_from:
-      - "CoreArtifactTarget"
-    order_by:
-      - name__value
-    display_labels:
-      - name__value
-    attributes:
-      - name: name
-        kind: Text
-        unique: true
-      - name: description
-        kind: Text
-        optional: true
-      - name: type
-        kind: Text
-    relationships:
-      - name: site
-        peer: BuiltinLocation
-        optional: false
-        cardinality: one
-        kind: Attribute
-      - name: status
-        peer: BuiltinStatus
-        optional: false
-        cardinality: one
-        kind: Attribute
-      - name: role
-        peer: BuiltinRole
-        optional: false
-        cardinality: one
-        kind: Attribute
-      - name: interfaces
-        peer: InfraInterface
-        identifier: "device__interface"
-        optional: true
-        cardinality: many
-        kind: Component
-      - name: asn
-        peer: InfraAutonomousSystem
-        optional: true
-        cardinality: one
-        kind: Attribute
-      - name: tags
-        peer: BuiltinTag
-        optional: true
-        cardinality: many
-        kind: Attribute
-      - name: primary_address
-        peer: InfraIPAddress
-        label: Primary IP Address
-        optional: true
-        cardinality: one
-        kind: Attribute
-      - name: platform
-        peer: InfraPlatform
-        optional: true
-        cardinality: one
-        kind: Attribute
   - name: Interface
     namespace: Infra
     description: "Generic Network Interface."
@@ -161,6 +97,70 @@ nodes:
         peer: InfraDevice
         optional: true
         cardinality: many
+  - name: Device
+    namespace: Infra
+    description: "Generic Device object."
+    label: "Device"
+    icon: "mdi:server"
+    default_filter: name__value
+    inherit_from:
+      - "CoreArtifactTarget"
+    order_by:
+      - name__value
+    display_labels:
+      - name__value
+    attributes:
+      - name: name
+        kind: Text
+        unique: true
+      - name: description
+        kind: Text
+        optional: true
+      - name: type
+        kind: Text
+    relationships:
+      - name: site
+        peer: BuiltinLocation
+        optional: false
+        cardinality: one
+        kind: Attribute
+      - name: status
+        peer: BuiltinStatus
+        optional: false
+        cardinality: one
+        kind: Attribute
+      - name: role
+        peer: BuiltinRole
+        optional: false
+        cardinality: one
+        kind: Attribute
+      - name: interfaces
+        peer: InfraInterface
+        identifier: "device__interface"
+        optional: true
+        cardinality: many
+        kind: Component
+      - name: asn
+        peer: InfraAutonomousSystem
+        optional: true
+        cardinality: one
+        kind: Attribute
+      - name: tags
+        peer: BuiltinTag
+        optional: true
+        cardinality: many
+        kind: Attribute
+      - name: primary_address
+        peer: InfraIPAddress
+        label: Primary IP Address
+        optional: true
+        cardinality: one
+        kind: Attribute
+      - name: platform
+        peer: InfraPlatform
+        optional: true
+        cardinality: one
+        kind: Attribute
   - name: InterfaceL3
     namespace: Infra
     description: "Network Layer 3 Interface"
