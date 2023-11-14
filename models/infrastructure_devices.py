@@ -124,6 +124,26 @@ async def group_add_member(client: InfrahubClient, group: InfrahubNode, members:
 
     await client.execute_graphql(query=query, branch_name=branch)
 
+async def topology_add_device(client: InfrahubClient, topology: InfrahubNode, devices: List[InfrahubNode], branch: str):
+    devices_str = ["{ id: " + f'"{device.id}"' + " }" for device in devices]
+    query = """
+    mutation {
+        RelationshipAdd(
+            data: {
+                id: "%s",
+                name: "devices",
+                nodes: [ %s ]
+            }
+        ) {
+            ok
+        }
+    }
+    """ % (
+        topology.id,
+        ", ".join(devices_str),
+    )
+
+    await client.execute_graphql(query=query, branch_name=branch)
 
 async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str, site_name: str):
     group_eng = await client.get(kind="CoreAccount", name__value="Engineering Team")
@@ -208,12 +228,15 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
                 type={"value": type, "source": account_pop.id},
                 role={"id": role_id, "source": account_pop.id, "is_protected": True, "owner": group_eng.id},
                 asn={"id": internal_as.id, "source": account_pop.id, "is_protected": True, "owner": group_eng.id},
-                platform={"id": platform_id, "source": account_pop.id, "is_protected": True},
+                platform={"id": platform_id, "source": account_pop.id, "is_protected": True}
             )
             await obj.save()
 
             store.set(key=device_name, node=obj)
             log.info(f"- Created Device: {device_name}")
+
+            # add device to topology
+            await topology_add_device(client=client, topology=topology, devices=[obj], branch=branch)
 
             # Add device to groups
             if "eos" in type:

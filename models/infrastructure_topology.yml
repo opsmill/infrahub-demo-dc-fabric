@@ -42,9 +42,10 @@ nodes:
         kind: Component
       - name: devices
         peer: InfraDevice
+        identifier: "topology__device"
         optional: true
         cardinality: many
-        kind: Generic
+        kind: Component
   - name: TopologyElement
     namespace: Infra
     description: "A TopologyElement represent a device within a topology pod."
