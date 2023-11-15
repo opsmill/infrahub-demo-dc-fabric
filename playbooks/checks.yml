@@ -1,0 +1,30 @@
+---
+- name: Query Interfaces information with the query_graphql module
+  hosts: platform_eos
+  gather_facts: false
+  vars:
+    ansible_connection: httpapi
+    ansible_network_os: eos
+    ansible_httpapi_use_ssl: true
+    ansible_httpapi_validate_certs: false
+    ansible_become: true
+    ansible_become_method: enable
+    ansible_user: admin
+    ansible_password: admin
+    local_config_path: "/tmp/{{ inventory_hostname }}.conf"
+
+  tasks:
+    - name: Query Artifact
+      opsmill.infrahub.artifact_fetch:
+        artifact_name: "Startup Config for arista devices"
+        target_id: "{{ id }}"
+      register: artifact
+
+    - name: Save configs to localhost
+      ansible.builtin.copy:
+        content: "{{ artifact.text }}"
+        dest: "{{ local_config_path }}"
+
+    - name: Push configuration to device
+      arista.eos.eos_config:
+        src: "{{ local_config_path }}"
