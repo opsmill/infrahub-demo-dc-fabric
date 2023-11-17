@@ -1,0 +1,106 @@
+query($device: String!) {
+  InfraDevice(name__value: $device) {
+    edges {
+      node {
+        id
+        name {
+          value
+        }
+        asn {
+          node {
+            asn {
+              value
+            }
+          }
+        }
+        primary_address{
+          node{
+            address{
+              value
+            }
+          }
+        }
+        interfaces {
+          edges {
+            node {
+              id
+              name {
+                value
+              }
+              description {
+                value
+              }
+              enabled {
+                value
+              }
+              role {
+                node {
+                  name {
+                    value
+                  }
+                }
+              }
+              ... on InfraInterfaceL3 {
+                ip_addresses {
+                  edges {
+                    node {
+                      address {
+                        value
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+      }
+    }
+  }
+  InfraBGPSession(device__name__value: $device) {
+    edges {
+      node {
+        id
+        peer_group {
+          node {
+            name {
+              value
+            }
+          }
+        }
+        local_ip {
+          node {
+            address {
+              value
+            }
+          }
+        }
+        remote_ip {
+          node {
+            address {
+              value
+            }
+          }
+        }
+        local_as {
+          node {
+            asn {
+              value
+            }
+          }
+        }
+        remote_as {
+          node {
+            asn {
+              value
+            }
+          }
+        }
+        description {
+          value
+        }
+      }
+    }
+  }
+}

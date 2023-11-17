@@ -43,10 +43,11 @@ artifact_definitions:
     targets: "pod2_topology"
     transformation: "clab_topology"
 
-  - name: "BGP variables for Arista AVD"
-    artifact_name: "avdbgp"
+  - name: "Config variables for Arista AVD"
+    artifact_name: "avd_config"
     parameters:
       device: "name__value"
     content_type: "application/json"
     targets: "arista_devices"
-    transformation: "AristaBGP"
+    transformation: "AristaConfig"
+
