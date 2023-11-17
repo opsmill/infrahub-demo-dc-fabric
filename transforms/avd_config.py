@@ -64,7 +64,7 @@ class AristaConfig(InfrahubTransform):
             }
 
             # Extract from description
-            if avd_interface["description"].startswith("Connected to "):
+            if isinstance(avd_interface["description"], str) and avd_interface["description"].startswith("Connected to "):
                 peer_info = avd_interface["description"].replace("Connected to ", "")
                 peer_name, peer_interface = peer_info.split(" ")
                 avd_interface["peer"] = peer_name
