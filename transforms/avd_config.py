@@ -51,34 +51,72 @@ class AristaConfig(InfrahubTransform):
     @staticmethod
     def _transform_interfaces(data):
         avd_interfaces = []
+
+        interfaces = {
+            "ethernet_interfaces": []
+            "management_interfaces": []
+            "loopback_interfaces": []
+        }
+
         for interface in data:
+
             int_data = interface['node']
             interface_name = int_data['name']['value']
 
-            # Basic interface structure for AVD
-            avd_interface = {
-                'name': interface_name,
-                'description': int_data.get('description', {}).get('value', ''),
-                'shutdown': not int_data.get('enabled', {}).get('value', True),
-                'type': 'ethernet'
-            }
+            if interface_name.startswith("Ethernet"):
+                # Basic interface structure for AVD
+                avd_interface = {
+                    'name': interface_name,
+                    'description': int_data.get('description', {}).get('value', ''),
+                    'shutdown': not int_data.get('enabled', {}).get('value', True),
+                    'type': 'ethernet'
+                }
 
-            # Extract from description
-            if isinstance(avd_interface["description"], str) and avd_interface["description"].startswith("Connected to "):
-                peer_info = avd_interface["description"].replace("Connected to ", "")
-                peer_name, peer_interface = peer_info.split(" ")
-                avd_interface["peer"] = peer_name
-                avd_interface["peer_interface"] = peer_interface
+                # Extract from description
+                if isinstance(avd_interface["description"], str) and avd_interface["description"].startswith("Connected to "):
+                    peer_info = avd_interface["description"].replace("Connected to ", "")
+                    peer_name, peer_interface = peer_info.split(" ")
+                    avd_interface["peer"] = peer_name
+                    avd_interface["peer_interface"] = peer_interface
 
-            # Handling IP addresses
-            ip_addresses = [ip['node']['address']['value'] for ip in int_data.get('ip_addresses', {}).get('edges', [])]
-            avd_interface['type'] = 'routed'
-            if ip_addresses:
-                avd_interface['ip_address'] = ip_addresses[0]  # Assuming the first IP is the primary
-            #     avd_interface['type'] = 'routed'
-            # else:
-            #     avd_interface['type'] = 'switched'
-            # Add the interface to the AVD interfaces dictionary
-            avd_interfaces.append(avd_interface)
+                # Handling IP addresses
+                ip_addresses = [ip['node']['address']['value'] for ip in int_data.get('ip_addresses', {}).get('edges', [])]
+                avd_interface['type'] = 'routed'
+                if ip_addresses:
+                    avd_interface['ip_address'] = ip_addresses[0]  # Assuming the first IP is the primary
+                #     avd_interface['type'] = 'routed'
+                # else:
+                #     avd_interface['type'] = 'switched'
+                # Add the interface to the AVD interfaces dictionary
+                interfaces["ethernet_interfaces"].append(avd_interface)
+            elif interface_name.startswith("Management")
 
-        return {"ethernet_interfaces": avd_interfaces}
+                avd_interface = {
+                    'name': interface_name,
+                    'description': int_data.get('description', {}).get('value', ''),
+                    'shutdown': not int_data.get('enabled', {}).get('value', True),
+                    'type': 'oob',
+                    'vrf': 'default',
+                }
+
+                ip_addresses = [ip['node']['address']['value'] for ip in int_data.get('ip_addresses', {}).get('edges', [])]
+                if ip_addresses:
+                    avd_interface['ip_address'] = ip_addresses[0]
+
+                interfaces["management_interfaces"].append(avd_interface)
+
+            elif interface_name.startswith("Loopback")
+
+                avd_interface = {
+                    'name': interface_name,
+                    'description': int_data.get('description', {}).get('value', ''),
+                    'shutdown': not int_data.get('enabled', {}).get('value', True),
+                }
+
+                ip_addresses = [ip['node']['address']['value'] for ip in int_data.get('ip_addresses', {}).get('edges', [])]
+                if ip_addresses:
+                    avd_interface['ip_address'] = ip_addresses[0]
+
+                interfaces["loopback_interfaces"].append(avd_interface)
+
+        return avd_interfaces
