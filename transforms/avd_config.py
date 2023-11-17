@@ -65,12 +65,12 @@ class AristaConfig(InfrahubTransform):
 
             # Handling IP addresses
             ip_addresses = [ip['node']['address']['value'] for ip in int_data.get('ip_addresses', {}).get('edges', [])]
-
+            avd_interface['type'] = 'routed'
             if ip_addresses:
                 avd_interface['ip_address'] = ip_addresses[0]  # Assuming the first IP is the primary
-                avd_interface['type'] = 'routed'
-            else:
-                avd_interface['type'] = 'switched'
+            #     avd_interface['type'] = 'routed'
+            # else:
+            #     avd_interface['type'] = 'switched'
             # Add the interface to the AVD interfaces dictionary
             avd_interfaces.append(avd_interface)
 

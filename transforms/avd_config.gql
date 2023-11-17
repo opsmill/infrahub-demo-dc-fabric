@@ -23,6 +23,7 @@ query($device: String!) {
         interfaces {
           edges {
             node {
+              __typename
               id
               name {
                 value
@@ -54,7 +55,6 @@ query($device: String!) {
             }
           }
         }
-
       }
     }
   }
