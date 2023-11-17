@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json": "file:///workspaces/infrahub-demo-dc-fabric/playbooks/inventory.yml"
+    }
+}
