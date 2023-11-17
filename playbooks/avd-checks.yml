@@ -1,7 +1,11 @@
 ---
-- name: Generate Configuration using AVD
+- name: Validate device state with AVD
   hosts: role_leaf,role_spine
   gather_facts: false
+  vars:
+    use_anta: false
+  collections:
+    - arista.avd
   tasks:
     - name: Query Artifact from Infrahub
       opsmill.infrahub.artifact_fetch:
@@ -18,10 +22,6 @@
       loop_control:
         label: "{{ item.key }}"
 
-    - name: Generate configs
+    - name: Validate device state with AVD
       import_role:
-        name: arista.avd.eos_cli_config_gen
-
-    - name: Push configuration to device
-      arista.eos.eos_config:
-        src: "intended/configs/{{ inventory_hostname }}.cfg"
+        name: arista.avd.eos_validate_state
