@@ -6,15 +6,15 @@
 
 ### 1. Log into UI
 ### 2. Show schema extensibility
-```
+```shell
 infrahubctl schema load models/infrastructure_topology.yml
 ```
 ### 3. Load in topology data only
-```
+```shell
 infrahubctl run models/infrastructure_topology.py
 ```
 ### 4. Paste API key
-```
+```graphql
 mutation {
   CoreRepositoryCreate(
     data: {
@@ -33,11 +33,11 @@ mutation {
 ```
 
 ### 5. Load in first pod of devices
-```
+```shell
 infrahubctl run models/infrastructure_devices.py
 ```
 ### 6. Rfiles
-```
+```shell
 infrahubctl render device_startup device=atl-spine1
 ```
 ### 7. Show a proposed change
@@ -47,6 +47,6 @@ infrahubctl render device_startup device=atl-spine1
   - Create a PC
   - Check should fail now
 ### 9. Load in second pod of devices
-```
+```shell
 infrahubctl run models/infrastructure_devices_2.py
 ```

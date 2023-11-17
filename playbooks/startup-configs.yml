@@ -1,21 +1,13 @@
+---
 - name: Fetch and Push Configuration to Arista Devices
-  hosts: platform_eos
-  gather_facts: no
+  hosts: role_leaf,role_spine
+  gather_facts: false
   vars:
-    ansible_connection: httpapi
-    ansible_network_os: eos
-    ansible_httpapi_use_ssl: true
-    ansible_httpapi_validate_certs: false
-    ansible_become: true
-    ansible_become_method: enable
-
-    ansible_user: admin
-    ansible_password: admin
     config_url: "http://localhost:8000/api/rfile/device_startup?device={{ inventory_hostname }}"
     local_config_path: "/tmp/{{ inventory_hostname }}.conf"
 
   tasks:
-    - name: Fetch configuration from server
+    - name: Fetch configuration from Infrahub
       ansible.builtin.get_url:
         url: "{{ config_url }}"
         dest: "{{ local_config_path }}"

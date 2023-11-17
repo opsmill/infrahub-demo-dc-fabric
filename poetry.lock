@@ -2,13 +2,13 @@
 
 [[package]]
 name = "ansible-core"
-version = "2.16.0"
+version = "2.14.0"
 description = "Radically simple IT automation"
 optional = false
-python-versions = ">=3.10"
+python-versions = ">=3.9"
 files = [
-    {file = "ansible-core-2.16.0.tar.gz", hash = "sha256:b4a6c60fbc2f51e3ae68ec733c931ef957a04d7c8c92aa39242990b0f8adf149"},
-    {file = "ansible_core-2.16.0-py3-none-any.whl", hash = "sha256:6b4870ac65b708953e1509b8ccca669731a17d2beadabd8208c9f90d189058ca"},
+    {file = "ansible-core-2.14.0.tar.gz", hash = "sha256:fa48b481cb623bf79bb903f223097681a0c13e1b4ec7e78e7dd7d858d36a34b2"},
+    {file = "ansible_core-2.14.0-py3-none-any.whl", hash = "sha256:b191d397c81514bd1922e00e16f0b8ec52e0bcb19b61cc4500085f5f92470cf2"},
 ]
 
 [package.dependencies]
@@ -16,7 +16,7 @@ cryptography = "*"
 jinja2 = ">=3.0.0"
 packaging = "*"
 PyYAML = ">=5.1"
-resolvelib = ">=0.5.3,<1.1.0"
+resolvelib = ">=0.5.3,<0.9.0"
 
 [[package]]
 name = "anyio"
@@ -353,13 +353,13 @@ dev = ["check-manifest", "coverage", "pep8", "pyflakes", "pylint", "pyyaml"]
 
 [[package]]
 name = "deepdiff"
-version = "6.7.0"
+version = "6.7.1"
 description = "Deep Difference and Search of any Python object/data. Recreate objects by adding adding deltas to each other."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "deepdiff-6.7.0-py3-none-any.whl", hash = "sha256:d64dd64be5b2e3917c7cc557d69e68d008d798a5cd4981d1508707037504d50a"},
-    {file = "deepdiff-6.7.0.tar.gz", hash = "sha256:4c60fc1da4ac12aa73de98b7f303971607c6f928867fabf143cd51a434badb7d"},
+    {file = "deepdiff-6.7.1-py3-none-any.whl", hash = "sha256:58396bb7a863cbb4ed5193f548c56f18218060362311aa1dc36397b2f25108bd"},
+    {file = "deepdiff-6.7.1.tar.gz", hash = "sha256:b367e6fa6caac1c9f500adc79ada1b5b1242c50d5f716a1a4362030197847d30"},
 ]
 
 [package.dependencies]
@@ -568,6 +568,25 @@ files = [
 
 [package.dependencies]
 attrs = ">=19.2.0"
+
+[[package]]
+name = "jsonschema"
+version = "4.17.0"
+description = "An implementation of JSON Schema validation for Python"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "jsonschema-4.17.0-py3-none-any.whl", hash = "sha256:f660066c3966db7d6daeaea8a75e0b68237a48e51cf49882087757bb59916248"},
+    {file = "jsonschema-4.17.0.tar.gz", hash = "sha256:5bfcf2bca16a087ade17e02b282d34af7ccd749ef76241e7f9bd7c0cb8a9424d"},
+]
+
+[package.dependencies]
+attrs = ">=17.4.0"
+pyrsistent = ">=0.14.0,<0.17.0 || >0.17.0,<0.17.1 || >0.17.1,<0.17.2 || >0.17.2"
+
+[package.extras]
+format = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-validator", "rfc3987", "uri-template", "webcolors (>=1.11)"]
+format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-validator", "rfc3986-validator (>0.1.0)", "uri-template", "webcolors (>=1.11)"]
 
 [[package]]
 name = "markdown-it-py"
@@ -941,6 +960,47 @@ docs = ["sphinx (>=1.6.5)", "sphinx-rtd-theme"]
 tests = ["hypothesis (>=3.27.0)", "pytest (>=3.2.1,!=3.3.0)"]
 
 [[package]]
+name = "pyrsistent"
+version = "0.20.0"
+description = "Persistent/Functional/Immutable data structures"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pyrsistent-0.20.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:8c3aba3e01235221e5b229a6c05f585f344734bd1ad42a8ac51493d74722bbce"},
+    {file = "pyrsistent-0.20.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:c1beb78af5423b879edaf23c5591ff292cf7c33979734c99aa66d5914ead880f"},
+    {file = "pyrsistent-0.20.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:21cc459636983764e692b9eba7144cdd54fdec23ccdb1e8ba392a63666c60c34"},
+    {file = "pyrsistent-0.20.0-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:f5ac696f02b3fc01a710427585c855f65cd9c640e14f52abe52020722bb4906b"},
+    {file = "pyrsistent-0.20.0-cp310-cp310-win32.whl", hash = "sha256:0724c506cd8b63c69c7f883cc233aac948c1ea946ea95996ad8b1380c25e1d3f"},
+    {file = "pyrsistent-0.20.0-cp310-cp310-win_amd64.whl", hash = "sha256:8441cf9616d642c475684d6cf2520dd24812e996ba9af15e606df5f6fd9d04a7"},
+    {file = "pyrsistent-0.20.0-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:0f3b1bcaa1f0629c978b355a7c37acd58907390149b7311b5db1b37648eb6958"},
+    {file = "pyrsistent-0.20.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5cdd7ef1ea7a491ae70d826b6cc64868de09a1d5ff9ef8d574250d0940e275b8"},
+    {file = "pyrsistent-0.20.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:cae40a9e3ce178415040a0383f00e8d68b569e97f31928a3a8ad37e3fde6df6a"},
+    {file = "pyrsistent-0.20.0-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:6288b3fa6622ad8a91e6eb759cfc48ff3089e7c17fb1d4c59a919769314af224"},
+    {file = "pyrsistent-0.20.0-cp311-cp311-win32.whl", hash = "sha256:7d29c23bdf6e5438c755b941cef867ec2a4a172ceb9f50553b6ed70d50dfd656"},
+    {file = "pyrsistent-0.20.0-cp311-cp311-win_amd64.whl", hash = "sha256:59a89bccd615551391f3237e00006a26bcf98a4d18623a19909a2c48b8e986ee"},
+    {file = "pyrsistent-0.20.0-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:09848306523a3aba463c4b49493a760e7a6ca52e4826aa100ee99d8d39b7ad1e"},
+    {file = "pyrsistent-0.20.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:a14798c3005ec892bbada26485c2eea3b54109cb2533713e355c806891f63c5e"},
+    {file = "pyrsistent-0.20.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b14decb628fac50db5e02ee5a35a9c0772d20277824cfe845c8a8b717c15daa3"},
+    {file = "pyrsistent-0.20.0-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:2e2c116cc804d9b09ce9814d17df5edf1df0c624aba3b43bc1ad90411487036d"},
+    {file = "pyrsistent-0.20.0-cp312-cp312-win32.whl", hash = "sha256:e78d0c7c1e99a4a45c99143900ea0546025e41bb59ebc10182e947cf1ece9174"},
+    {file = "pyrsistent-0.20.0-cp312-cp312-win_amd64.whl", hash = "sha256:4021a7f963d88ccd15b523787d18ed5e5269ce57aa4037146a2377ff607ae87d"},
+    {file = "pyrsistent-0.20.0-cp38-cp38-macosx_10_9_universal2.whl", hash = "sha256:79ed12ba79935adaac1664fd7e0e585a22caa539dfc9b7c7c6d5ebf91fb89054"},
+    {file = "pyrsistent-0.20.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f920385a11207dc372a028b3f1e1038bb244b3ec38d448e6d8e43c6b3ba20e98"},
+    {file = "pyrsistent-0.20.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4f5c2d012671b7391803263419e31b5c7c21e7c95c8760d7fc35602353dee714"},
+    {file = "pyrsistent-0.20.0-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:ef3992833fbd686ee783590639f4b8343a57f1f75de8633749d984dc0eb16c86"},
+    {file = "pyrsistent-0.20.0-cp38-cp38-win32.whl", hash = "sha256:881bbea27bbd32d37eb24dd320a5e745a2a5b092a17f6debc1349252fac85423"},
+    {file = "pyrsistent-0.20.0-cp38-cp38-win_amd64.whl", hash = "sha256:6d270ec9dd33cdb13f4d62c95c1a5a50e6b7cdd86302b494217137f760495b9d"},
+    {file = "pyrsistent-0.20.0-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:ca52d1ceae015859d16aded12584c59eb3825f7b50c6cfd621d4231a6cc624ce"},
+    {file = "pyrsistent-0.20.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b318ca24db0f0518630e8b6f3831e9cba78f099ed5c1d65ffe3e023003043ba0"},
+    {file = "pyrsistent-0.20.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:fed2c3216a605dc9a6ea50c7e84c82906e3684c4e80d2908208f662a6cbf9022"},
+    {file = "pyrsistent-0.20.0-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:2e14c95c16211d166f59c6611533d0dacce2e25de0f76e4c140fde250997b3ca"},
+    {file = "pyrsistent-0.20.0-cp39-cp39-win32.whl", hash = "sha256:f058a615031eea4ef94ead6456f5ec2026c19fb5bd6bfe86e9665c4158cf802f"},
+    {file = "pyrsistent-0.20.0-cp39-cp39-win_amd64.whl", hash = "sha256:58b8f6366e152092194ae68fefe18b9f0b4f89227dfd86a07770c3d86097aebf"},
+    {file = "pyrsistent-0.20.0-py3-none-any.whl", hash = "sha256:c55acc4733aad6560a7f5f818466631f07efc001fd023f34a6c203f8b6df0f0b"},
+    {file = "pyrsistent-0.20.0.tar.gz", hash = "sha256:4c48f78f62ab596c679086084d0dd13254ae4f3d6c72a83ffdf5ebdef8f265a4"},
+]
+
+[[package]]
 name = "pysocks"
 version = "1.7.1"
 description = "A Python SOCKS client module. See https://github.com/Anorov/PySocks for more information."
@@ -1077,13 +1137,13 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "resolvelib"
-version = "1.0.1"
+version = "0.8.1"
 description = "Resolve abstract dependencies into concrete ones"
 optional = false
 python-versions = "*"
 files = [
-    {file = "resolvelib-1.0.1-py2.py3-none-any.whl", hash = "sha256:d2da45d1a8dfee81bdd591647783e340ef3bcb104b54c383f70d422ef5cc7dbf"},
-    {file = "resolvelib-1.0.1.tar.gz", hash = "sha256:04ce76cbd63fded2078ce224785da6ecd42b9564b1390793f64ddecbe997b309"},
+    {file = "resolvelib-0.8.1-py2.py3-none-any.whl", hash = "sha256:d9b7907f055c3b3a2cfc56c914ffd940122915826ff5fb5b1de0c99778f4de98"},
+    {file = "resolvelib-0.8.1.tar.gz", hash = "sha256:c6ea56732e9fb6fca1b2acc2ccc68a0b6b8c566d8f3e78e0443310ede61dbd37"},
 ]
 
 [package.extras]
@@ -1094,13 +1154,13 @@ test = ["commentjson", "packaging", "pytest"]
 
 [[package]]
 name = "rich"
-version = "13.6.0"
+version = "13.7.0"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
 optional = false
 python-versions = ">=3.7.0"
 files = [
-    {file = "rich-13.6.0-py3-none-any.whl", hash = "sha256:2b38e2fe9ca72c9a00170a1a2d20c63c790d0e10ef1fe35eba76e1e7b1d7d245"},
-    {file = "rich-13.6.0.tar.gz", hash = "sha256:5c14d22737e6d5084ef4771b62d5d4363165b403455a30a1c8ca39dc7b644bef"},
+    {file = "rich-13.7.0-py3-none-any.whl", hash = "sha256:6da14c108c4866ee9520bbffa71f6fe3962e193b7da68720583850cd4548e235"},
+    {file = "rich-13.7.0.tar.gz", hash = "sha256:5cb5123b5cf9ee70584244246816e9114227e0b98ad9176eede6ad54bf5403fa"},
 ]
 
 [package.dependencies]
@@ -1243,6 +1303,20 @@ files = [
 ]
 
 [[package]]
+name = "treelib"
+version = "1.7.0"
+description = "A Python implementation of tree structure."
+optional = false
+python-versions = "*"
+files = [
+    {file = "treelib-1.7.0-py3-none-any.whl", hash = "sha256:c37795eaba19f73f3e1a905ef3f4f0cab660dc7617126e8ae99391e25c755416"},
+    {file = "treelib-1.7.0.tar.gz", hash = "sha256:9bff1af416b9e642a6cd0e0431d15edf26a24b8d0c8ae68afbd3801b5e30fb61"},
+]
+
+[package.dependencies]
+six = "*"
+
+[[package]]
 name = "typer"
 version = "0.7.0"
 description = "Typer, build great CLIs. Easy to code. Based on Python type hints."
@@ -1345,22 +1419,21 @@ files = [
 
 [[package]]
 name = "urllib3"
-version = "2.0.7"
+version = "2.1.0"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "urllib3-2.0.7-py3-none-any.whl", hash = "sha256:fdb6d215c776278489906c2f8916e6e7d4f5a9b602ccbcfdf7f016fc8da0596e"},
-    {file = "urllib3-2.0.7.tar.gz", hash = "sha256:c97dfde1f7bd43a71c8d2a58e369e9b2bf692d1334ea9f9cae55add7d0dd0f84"},
+    {file = "urllib3-2.1.0-py3-none-any.whl", hash = "sha256:55901e917a5896a349ff771be919f8bd99aff50b79fe58fec595eb37bbc56bb3"},
+    {file = "urllib3-2.1.0.tar.gz", hash = "sha256:df7aa8afb0148fa78488e7899b2c59b5f4ffcfa82e6c54ccb9dd37c1d7b52d54"},
 ]
 
 [package.extras]
 brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)"]
-secure = ["certifi", "cryptography (>=1.9)", "idna (>=2.0.0)", "pyopenssl (>=17.1.0)", "urllib3-secure-extra"]
 socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
 zstd = ["zstandard (>=0.18.0)"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10, < 3.12"
-content-hash = "3f82e8856b0d0109362915bc945185e0c8d062e9f8708f292a8a5030fb342581"
+content-hash = "8c608c4da5c02129e720f9b8478767238e4ab3cee7405cef5265388f1cf9114d"

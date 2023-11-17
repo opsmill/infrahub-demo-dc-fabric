@@ -1,0 +1,27 @@
+---
+- name: Generate Configuration using AVD
+  hosts: role_leaf,role_spine
+  gather_facts: false
+  tasks:
+    - name: Query Artifact from Infrahub
+      opsmill.infrahub.artifact_fetch:
+        artifact_name: "Config variables for Arista AVD"
+        target_id: "{{ id }}"
+        api_endpoint: "http://localhost:8000"
+        token: 06438eb2-8019-4776-878c-0941b1f1d1ec
+      register: artifact
+
+    - name: Set artifacts as facts
+      set_fact:
+        {"{{ item.key }}": "{{ item.value }}"}
+      loop: "{{ artifact.json | dict2items }}"
+      loop_control:
+        label: "{{ item.key }}"
+
+    - name: Generate configs
+      import_role:
+        name: arista.avd.eos_cli_config_gen
+
+    - name: Push configuration to device
+      arista.eos.eos_config:
+        src: "intended/configs/{{ inventory_hostname }}.cfg"
