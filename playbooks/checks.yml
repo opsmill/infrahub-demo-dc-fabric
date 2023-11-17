@@ -27,26 +27,6 @@
     #     content: "{{ artifact.text }}"
     #     dest: "{{ local_config_path }}"
 
-    # - name: Push configuration to device
-    #   arista.eos.eos_config:
-    #     src: "{{ local_config_path }}"
-
     - name: Deploy configuration to device
       import_role:
         name: arista.avd.eos_validate_state
-
-
-
-# ---
-# - name: "Run Fabric states validation"
-#   hosts: ATD_FABRIC
-#   connection: local
-#   gather_facts: false
-#   collections:
-#     - arista.avd
-#   vars:
-#     use_anta: True
-#   tasks:
-#     - name: Deploy configuration to device
-#       import_role:
-#         name: arista.avd.eos_validate_state
