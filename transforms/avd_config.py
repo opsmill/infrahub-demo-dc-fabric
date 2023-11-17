@@ -53,9 +53,9 @@ class AristaConfig(InfrahubTransform):
         avd_interfaces = []
 
         interfaces = {
-            "ethernet_interfaces": []
-            "management_interfaces": []
-            "loopback_interfaces": []
+            "ethernet_interfaces": [],
+            "management_interfaces": [],
+            "loopback_interfaces": [],
         }
 
         for interface in data:
