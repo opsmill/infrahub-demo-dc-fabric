@@ -50,7 +50,6 @@ class AristaConfig(InfrahubTransform):
 
     @staticmethod
     def _transform_interfaces(data):
-        avd_interfaces = []
 
         interfaces = {
             "ethernet_interfaces": [],
@@ -119,4 +118,4 @@ class AristaConfig(InfrahubTransform):
 
                 interfaces["loopback_interfaces"].append(avd_interface)
 
-        return avd_interfaces
+        return interfaces
