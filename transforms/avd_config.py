@@ -63,6 +63,13 @@ class AristaConfig(InfrahubTransform):
                 'type': 'ethernet'
             }
 
+            # Extract from description
+            if avd_interface["description"].startswith("Connected to "):
+                peer_info = avd_interface["description"].replace("Connected to ", "")
+                peer_name, peer_interface = peer_info.split(" ")
+                avd_interface["peer"] = peer_name
+                avd_interface["peer_interface"] = peer_interface
+
             # Handling IP addresses
             ip_addresses = [ip['node']['address']['value'] for ip in int_data.get('ip_addresses', {}).get('edges', [])]
             avd_interface['type'] = 'routed'
