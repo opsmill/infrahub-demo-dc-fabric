@@ -3,3 +3,6 @@ clab-*
 avd-cEOS-Lab
 *.clab.yml.bak
 __pycache__
+playbooks/reports
+playbooks/documentation
+playbooks/intended
