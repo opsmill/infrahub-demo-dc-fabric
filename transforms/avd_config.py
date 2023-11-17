@@ -89,7 +89,7 @@ class AristaConfig(InfrahubTransform):
                 #     avd_interface['type'] = 'switched'
                 # Add the interface to the AVD interfaces dictionary
                 interfaces["ethernet_interfaces"].append(avd_interface)
-            elif interface_name.startswith("Management")
+            elif interface_name.startswith("Management"):
 
                 avd_interface = {
                     'name': interface_name,
@@ -105,7 +105,7 @@ class AristaConfig(InfrahubTransform):
 
                 interfaces["management_interfaces"].append(avd_interface)
 
-            elif interface_name.startswith("Loopback")
+            elif interface_name.startswith("Loopback"):
 
                 avd_interface = {
                     'name': interface_name,
