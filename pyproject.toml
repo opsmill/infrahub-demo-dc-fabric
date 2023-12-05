@@ -6,7 +6,7 @@ authors = ["OpsMill <info@opsmill.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10, < 3.12"
-infrahub-sdk = "^0.2.1"
+infrahub-sdk = "^0.3.0"
 # infrahub-sdk = {path = "../infrahub-bison/python_sdk", develop=true}
 invoke = "^2.1.2"
 nornir-infrahub = "^0.2.1"
