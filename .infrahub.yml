@@ -19,7 +19,7 @@ rfiles:
     template_path: "templates/clab_topology.j2"
 
 artifact_definitions:
-  - name: "Startup Config for arista devices"
+  - name: "OSPF Startup Config for arista devices"
     artifact_name: "startup-config"
     parameters:
       device: "name__value"
@@ -27,7 +27,7 @@ artifact_definitions:
     targets: "arista_devices"
     transformation: "device_startup"
 
-  - name: "Startup Config isis for arista devices"
+  - name: "ISIS Startup Config for arista devices"
     artifact_name: "startup-config-isis"
     parameters:
       device: "name__value"
@@ -43,6 +43,14 @@ artifact_definitions:
     targets: "pod2_topology"
     transformation: "clab_topology"
 
+  - name: "BGP variables for Arista AVD"
+    artifact_name: "avdbgp"
+    parameters:
+      device: "name__value"
+    content_type: "application/json"
+    targets: "arista_devices"
+    transformation: "AristaBGP"
+
   - name: "Config variables for Arista AVD"
     artifact_name: "avd_config"
     parameters:
@@ -51,3 +59,11 @@ artifact_definitions:
     targets: "arista_devices"
     transformation: "AristaConfig"
 
+python_transforms:
+  - name: AristaBGP
+    class_name: AristaBGP
+    file_path: "transforms/avd_bgp.py"
+
+  - name: AristaConfig
+    class_name: AristaConfig
+    file_path: "transforms/avd_config.py"

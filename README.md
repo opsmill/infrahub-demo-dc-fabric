@@ -105,7 +105,7 @@ export LINUX_HOST_DOCKER_IMAGE="9r2s1098.c1.gra9.container-registry.ovh.net/exte
 ```
 
 - Have Infrahub running on your computer, you can run `docker-compose up -d` or use `.devcontainer/onCreateCommand.sh`
-
+- Have the base schema loaded, you can run `docker compose run infrahub-git infrahubctl schema load /source/models/infrastructure_base.yml` or use `.devcontainer/postCreateCommand.sh`
 
 ## Installation Steps
 
@@ -119,13 +119,13 @@ export INFRAHUB_API_TOKEN=06438eb2-8019-4776-878c-0941b1f1d1ec
 ### 2. Load topology schema
 
 ```shell
-infrahubctl schema load models/infrastructure_topology.yml
+poetry run infrahubctl schema load models/infrastructure_topology.yml
 ```
 
 ### 3. Load in topology data
 
 ```shell
-infrahubctl run models/infrastructure_topology.py
+poetry run infrahubctl run models/infrastructure_topology.py
 ```
 
 ### 4. Add the repository into Infrahub (Replace GITHUB_USER and GITHUB_TOKEN)
@@ -135,9 +135,9 @@ mutation {
   CoreRepositoryCreate(
     data: {
       name: { value: "infrahub-demo-dc-fabric" }
-      location: { value: "https://github.com/GITHUB_USER/infrahub-demo-dc-fabric.git" }
-      username: { value: "GITHUB_USER" }
-      password: { value: "GITHUB_TOKEN" }
+      location: { value: "https://github.com/BeArchiTek/infrahub-demo-dc-fabric.git" }
+      username: { value: "BeArchiTek" }
+      password: { value: "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" }
     }
   ) {
     ok
@@ -150,7 +150,7 @@ mutation {
 
 ### 5. Load in first pod of devices
 ```shell
-infrahubctl run models/infrastructure_devices.py
+poetry run infrahubctl run models/infrastructure_devices.py
 ```
 
 ### 6. Rfiles
@@ -168,5 +168,5 @@ infrahubctl render device_startup device=atl-spine1
 
 ### 9. Load in second pod of devices
 ```shell
-infrahubctl run models/infrastructure_devices_2.py
+poetry run infrahubctl run models/infrastructure_devices_2.py
 ```
