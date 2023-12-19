@@ -30,7 +30,7 @@ DEVICES = (
 
 TOPOLOGY = (
     ("pod1", "8.8.8.8", "pool.ntp.org", "1.2.3.4", 1500),
-    ("pod2", "8.8.8.8", "pool.ntp.org", "1.2.3.4", 1500), 
+    ("pod2", "8.8.8.8", "pool.ntp.org", "1.2.3.4", 1500),
 )
 
 TOPOLOGY_ELEMENT = (

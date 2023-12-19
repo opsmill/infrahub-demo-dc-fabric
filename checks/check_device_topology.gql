@@ -13,11 +13,7 @@ query check_device_topology {
           }
         }
         role {
-          node {
-            name {
-              value
-            }
-          }
+          value
         }
       }
     }

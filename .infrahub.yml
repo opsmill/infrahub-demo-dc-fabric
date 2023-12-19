@@ -3,19 +3,14 @@ rfiles:
   - name: device_startup
     description: "Template to generate OSPF iBGP config for network devices"
     query: "device_startup_query"
-    repository: "self"
     template_path: "templates/device_startup_config.j2"
-
   - name: device_startup_isis
     description: "Template to generate ISIS iBGP config for network devices"
     query: "device_startup_query"
-    repository: "self"
     template_path: "templates/device_startup_config_isis.j2"
-
   - name: clab_topology
     description: "Template to generate clab device topology"
     query: "topology_info_query"
-    repository: "self"
     template_path: "templates/clab_topology.j2"
 
 artifact_definitions:
@@ -26,7 +21,6 @@ artifact_definitions:
     content_type: "text/plain"
     targets: "arista_devices"
     transformation: "device_startup"
-
   - name: "ISIS Startup Config for arista devices"
     artifact_name: "startup-config-isis"
     parameters:
@@ -34,7 +28,6 @@ artifact_definitions:
     content_type: "text/plain"
     targets: "arista_devices"
     transformation: "device_startup_isis"
-
   - name: "Clab topology"
     artifact_name: "clab-config"
     parameters:
@@ -42,7 +35,6 @@ artifact_definitions:
     content_type: "text/plain"
     targets: "pod2_topology"
     transformation: "clab_topology"
-
   - name: "BGP variables for Arista AVD"
     artifact_name: "avdbgp"
     parameters:
@@ -59,11 +51,15 @@ artifact_definitions:
     targets: "arista_devices"
     transformation: "AristaConfig"
 
+check_definitions:
+  - name: check_device_topology
+    class_name: InfrahubCheckDeviceTopology
+    file_path: "checks/check_device_topology.py"
+
 python_transforms:
   - name: AristaBGP
     class_name: AristaBGP
     file_path: "transforms/avd_bgp.py"
-
   - name: AristaConfig
     class_name: AristaConfig
     file_path: "transforms/avd_config.py"

@@ -1,6 +1,5 @@
 from collections import defaultdict
 
-from rich import print as rprint
 from infrahub.checks import InfrahubCheck
 
 
@@ -37,6 +36,3 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
                         object_id=role,
                         object_type="role",
                     )
-
-
-INFRAHUB_CHECKS = [InfrahubCheckDeviceTopology]
