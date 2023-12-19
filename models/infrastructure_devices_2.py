@@ -10,22 +10,22 @@ from infrahub_sdk import UUIDT, InfrahubClient, InfrahubNode, NodeStore
 # flake8: noqa
 # pylint: skip-file
 
-SITE_NAMES = ["den"]
+SITE_NAMES = ["den2"]
 
-NETWORKS_POOL_INTERNAL = IPv4Network("11.0.0.0/8").subnets(new_prefix=16)
+NETWORKS_POOL_INTERNAL = IPv4Network("10.128.0.0/9").subnets(new_prefix=16)
 LOOPBACK_POOL = next(NETWORKS_POOL_INTERNAL).hosts()
 P2P_NETWORK_POOL = next(NETWORKS_POOL_INTERNAL).subnets(new_prefix=31)
 NETWORKS_POOL_EXTERNAL = IPv4Network("203.0.114.0/24").subnets(new_prefix=29)
-MANAGEMENT_IPS = IPv4Network("172.20.21.16/28").hosts()
+MANAGEMENT_IPS = IPv4Network("172.100.200.16/28").hosts()
 
 BACKBONE_CIRCUIT_IDS = [
-    "DUFF-1543451",
-    "DUFF-6535773",
-    "DUFF-5826854",
-    "DUFF-8263953",
-    "DUFF-7324064",
-    "DUFF-4867430",
-    "DUFF-4654456",
+    "DUFF-1543451-2",
+    "DUFF-6535773-2",
+    "DUFF-5826854-2",
+    "DUFF-8263953-2",
+    "DUFF-7324064-2",
+    "DUFF-4867430-2",
+    "DUFF-4654456-2",
 ]
 
 INTERFACE_MGMT_NAME = {"eos": "Management0", "ASR1002-HX": "Management0", "linux": "Eth0"}
@@ -124,6 +124,26 @@ async def group_add_member(client: InfrahubClient, group: InfrahubNode, members:
 
     await client.execute_graphql(query=query, branch_name=branch)
 
+async def topology_add_device(client: InfrahubClient, topology: InfrahubNode, devices: List[InfrahubNode], branch: str):
+    devices_str = ["{ id: " + f'"{device.id}"' + " }" for device in devices]
+    query = """
+    mutation {
+        RelationshipAdd(
+            data: {
+                id: "%s",
+                name: "devices",
+                nodes: [ %s ]
+            }
+        ) {
+            ok
+        }
+    }
+    """ % (
+        topology.id,
+        ", ".join(devices_str),
+    )
+
+    await client.execute_graphql(query=query, branch_name=branch)
 
 async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str, site_name: str):
     group_eng = await client.get(kind="CoreAccount", name__value="Engineering Team")
@@ -133,7 +153,7 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
     active_status = await client.get(kind="BuiltinStatus", name__value="active")
     internal_as = await client.get(kind="InfraAutonomousSystem", name__value="AS64496")
 
-    group_edge_router = await client.get(kind="CoreStandardGroup", name__value="edge_router")
+    group_router = await client.get(kind="CoreStandardGroup", name__value="router")
     group_cisco_devices = await client.get(kind="CoreStandardGroup", name__value="cisco_devices")
     group_arista_devices = await client.get(kind="CoreStandardGroup", name__value="arista_devices")
     group_transit_interfaces = await client.get(kind="CoreStandardGroup", name__value="transit_interfaces")
@@ -208,20 +228,19 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
                 type={"value": type, "source": account_pop.id},
                 role={"id": role_id, "source": account_pop.id, "is_protected": True, "owner": group_eng.id},
                 asn={"id": internal_as.id, "source": account_pop.id, "is_protected": True, "owner": group_eng.id},
-                platform={"id": platform_id, "source": account_pop.id, "is_protected": True},
+                platform={"id": platform_id, "source": account_pop.id, "is_protected": True}
             )
             await obj.save()
 
             store.set(key=device_name, node=obj)
             log.info(f"- Created Device: {device_name}")
 
-            # Add device to groups
-            await group_add_member(client=client, group=group_edge_router, members=[obj], branch=branch)
+            # add device to topology
+            await topology_add_device(client=client, topology=topology, devices=[obj], branch=branch)
 
-            if "Arista" in type:
+            # Add device to groups
+            if "eos" in type:
                 await group_add_member(client=client, group=group_arista_devices, members=[obj], branch=branch)
-            elif "Cisco" in type:
-                await group_add_member(client=client, group=group_cisco_devices, members=[obj], branch=branch)
 
             # Loopback Interface
             intf = await client.create(
@@ -473,6 +492,25 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
 
             log.info(
                 f" Created BGP Session '{device1}' >> '{device2}': '{peer_group_name}' '{loopback1.address.value}' >> '{loopback2.address.value}'"
+            )
+
+            obj = await client.create(
+                branch=branch,
+                kind="InfraBGPSession",
+                type="INTERNAL",
+                local_as=internal_as.id,
+                local_ip=loopback2.id,
+                remote_as=internal_as.id,
+                remote_ip=loopback1.id,
+                peer_group=peer_group_name_obj.id,
+                device=store.get(kind="InfraDevice", key=device2).id,
+                status=active_status.id,
+                role=role_backbone.id,
+            )
+            await obj.save()
+
+            log.info(
+                f" Created BGP Session '{device2}' >> '{device1}': '{peer_group_name}' '{loopback2.address.value}' >> '{loopback1.address.value}'"
             )
 
     return site_name
@@ -807,44 +845,3 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str):
 
     async for _, response in batch.execute():
         log.debug(f"Site {response} Creation Completed")
-
-    # --------------------------------------------------
-    # CREATE Full Mesh iBGP SESSION between all the Edge devices
-    # --------------------------------------------------
-    batch = await client.create_batch()
-    for site1 in SITE_NAMES:
-        for site2 in SITE_NAMES:
-            if site1 == site2:
-                continue
-
-            for idx1 in range(1, 3):
-                for idx2 in range(1, 3):
-                    device1 = f"{site1}-leaf{idx1}"
-                    device2 = f"{site2}-leaf{idx2}"
-
-                    loopback1 = store.get(key=f"{device1}-loopback")
-                    loopback2 = store.get(key=f"{device2}-loopback")
-
-                    peer_group_name = "POP_GLOBAL"
-
-                    obj = await client.create(
-                        branch=branch,
-                        kind="InfraBGPSession",
-                        type="INTERNAL",
-                        local_as=internal_as.id,
-                        local_ip=loopback1.id,
-                        remote_as=internal_as.id,
-                        remote_ip=loopback2.id,
-                        peer_group=store.get(key=peer_group_name).id,
-                        device=store.get(kind="InfraDevice", key=device1).id,
-                        status=active_status.id,
-                        role=role_backbone.id,
-                    )
-                    batch.add(task=obj.save, node=obj)
-                    log.info(
-                        f"Creating BGP Session '{device1}' >> '{device2}': '{peer_group_name}' '{loopback1.address.value}' >> '{loopback2.address.value}'"
-                    )
-
-    async for node, _ in batch.execute():
-        log.debug(f"BGP Session Creation Completed")
-
