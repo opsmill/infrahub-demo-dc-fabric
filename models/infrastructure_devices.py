@@ -3,7 +3,7 @@ import uuid
 from collections import defaultdict
 from ipaddress import IPv4Network
 from typing import Dict, List
-from pprint import pprint 
+from pprint import pprint
 
 from infrahub_sdk import UUIDT, InfrahubClient, InfrahubNode, NodeStore
 
@@ -12,7 +12,7 @@ from infrahub_sdk import UUIDT, InfrahubClient, InfrahubNode, NodeStore
 
 SITE_NAMES = ["atl"]
 
-NETWORKS_POOL_INTERNAL = IPv4Network("10.0.0.0/8").subnets(new_prefix=16)
+NETWORKS_POOL_INTERNAL = IPv4Network("10.0.0.0/9").subnets(new_prefix=16)
 LOOPBACK_POOL = next(NETWORKS_POOL_INTERNAL).hosts()
 P2P_NETWORK_POOL = next(NETWORKS_POOL_INTERNAL).subnets(new_prefix=31)
 NETWORKS_POOL_EXTERNAL = IPv4Network("203.0.113.0/24").subnets(new_prefix=29)

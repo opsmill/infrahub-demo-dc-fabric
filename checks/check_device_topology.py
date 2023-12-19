@@ -1,6 +1,5 @@
 from collections import defaultdict
 
-from rich import print as rprint
 from infrahub.checks import InfrahubCheck
 
 
@@ -14,7 +13,7 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
         expected_roles = {}
 
         for device in self.data["data"]["InfraDevice"]["edges"]:
-            role = device["node"]["role"]["node"]["name"]["value"]
+            role = device["node"]["role"]["value"]
             site = device["node"]["site"]["node"]["name"]["value"]
 
             if site not in device_roles:
@@ -33,10 +32,7 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
             for role in device_roles[site].items():
                 if device_roles[site][role] != expected_roles[role]:
                     self.log_error(
-                        message=f"{site} does ot have expected amount of {role} ({device_roles[site][role]}/{expected_roles[role]})",
+                        message=f"{site} does not have expected amount of {role} ({device_roles[site][role]}/{expected_roles[role]})",
                         object_id=role,
                         object_type="role",
                     )
-
-
-INFRAHUB_CHECKS = [InfrahubCheckDeviceTopology]
