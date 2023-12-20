@@ -135,9 +135,9 @@ mutation {
   CoreRepositoryCreate(
     data: {
       name: { value: "infrahub-demo-dc-fabric" }
-      location: { value: "https://github.com/BeArchiTek/infrahub-demo-dc-fabric.git" }
-      username: { value: "BeArchiTek" }
-      password: { value: "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" }
+      location: { value: "https://github.com/GITHUB_USER/infrahub-demo-dc-fabric.git" }
+      username: { value: "GITHUB_USER" }
+      password: { value: "GITHUB_TOKEN" }
     }
   ) {
     ok
