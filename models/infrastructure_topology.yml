@@ -52,7 +52,7 @@ nodes:
     label: "TopologyElement"
     icon: "mdi:vector-point-select"
     menu_placement: "InfraTopology"
-    include_in_menu: false
+    include_in_menu: true
     default_filter: name__value
     order_by:
       - name__value
