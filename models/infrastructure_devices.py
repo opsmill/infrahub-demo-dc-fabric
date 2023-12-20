@@ -10,7 +10,7 @@ from infrahub_sdk import UUIDT, InfrahubClient, InfrahubNode, NodeStore
 # flake8: noqa
 # pylint: skip-file
 
-SITE_NAMES = ["amsterdam"]
+SITE_NAMES = ["toto"]
 
 NETWORKS_POOL_INTERNAL = IPv4Network("10.0.0.0/9").subnets(new_prefix=16)
 LOOPBACK_POOL = next(NETWORKS_POOL_INTERNAL).hosts()
@@ -221,8 +221,7 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
         for id in range(1, int(element.amount.value)+1):
 
             device_name = f"{site_name}-{element.name.value}{id}"
-            role_name = element.role
-            print(f"element.role={element.role}")
+            role_name = element.role.value
             platform_id = element.platform.id
             type = element.type.value
 
@@ -311,10 +310,10 @@ async def generate_site(client: InfrahubClient, log: logging.Logger, branch: str
             log.info(f"- Created IP for mgmt iface on: {device_name}")
 
             # L3 Interfaces
-            if role_name.value.lower() in ["spine", "leaf"]:
+            if role_name.lower() in ["spine", "leaf"]:
 
                 for intf_idx, intf_name in enumerate(INTERFACE_L3_NAMES[type]):
-                    intf_role = INTERFACE_ROLES_MAPPING[role_name.value.lower()][intf_idx]
+                    intf_role = INTERFACE_ROLES_MAPPING[role_name.lower()][intf_idx]
 
                     intf = await client.create(
                         branch=branch,

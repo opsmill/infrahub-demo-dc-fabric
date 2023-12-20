@@ -11,10 +11,6 @@ from infrahub_sdk.exceptions import GraphQLError
 # flake8: noqa
 # pylint: skip-file
 
-DEVICE_ROLES = ["spine", "leaf", "client"]
-INTF_ROLES = ["backbone", "transit", "peering", "peer", "loopback", "management", "spare"]
-VLAN_ROLES = ["server"]
-
 PLATFORMS = (
     ("Cisco IOS", "ios", "ios", "cisco_ios", "ios"),
     ("Cisco NXOS SSH", "nxos_ssh", "nxos_ssh", "cisco_nxos", "nxos"),
@@ -39,7 +35,6 @@ TOPOLOGY_ELEMENT = (
     ("client", 2, "Linux", "client", "linux"),
 )
 
-STATUSES = ["active", "provisionning", "maintenance", "drained"]
 
 TAGS = ["blue", "green", "red"]
 
@@ -220,21 +215,11 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str):
         log.info(f"- Created {node._schema.kind} - {node.name.value}")
 
     # ------------------------------------------
-    # Create Status, Role & Tags
+    # Create Tags
     # ------------------------------------------
     batch = await client.create_batch()
 
-    log.info("Creating Roles, Status & Tag")
-    for role in DEVICE_ROLES + INTF_ROLES + VLAN_ROLES:
-        obj = await client.create(branch=branch, kind="BuiltinRole", name={"value": role, "source": account_pop.id})
-        batch.add(task=obj.save, node=obj)
-        store.set(key=role, node=obj)
-
-    for status in STATUSES:
-        obj = await client.create(branch=branch, kind="BuiltinStatus", name={"value": status, "source": account_pop.id})
-        batch.add(task=obj.save, node=obj)
-        store.set(key=status, node=obj)
-
+    log.info("Creating Tag")
     for tag in TAGS:
         obj = await client.create(branch=branch, kind="BuiltinTag", name={"value": tag, "source": account_pop.id})
         batch.add(task=obj.save, node=obj)
@@ -271,15 +256,14 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str):
 
     log.info("Creating TopologyElement")
     for element in TOPOLOGY_ELEMENT:
-        role_id = store.get(kind="BuiltinRole", key=element[3]).id
         platform_id = store.get(kind="InfraPlatform", key=element[2]).id
         element_obj = await client.create(
             branch=branch,
             kind="InfraTopologyElement",
             name={"value": element[0], "source": account_pop.id},
             amount={"value": element[1], "source": account_pop.id},
-            type={"value": element[4], "source": account_pop.id}, 
-            role={"id": role_id, "source": account_pop.id, "is_protected": True, "owner": account_pop.id},
+            type={"value": element[4], "source": account_pop.id},
+            role={"value": element[3], "source": account_pop.id, "is_protected": True, "owner": account_pop.id},
             platform={"id": platform_id, "source": account_pop.id, "is_protected": True},
             topology=store.get(kind="InfraTopology", key=topology).id)
         batch.add(task=element_obj.save, node=element_obj)
