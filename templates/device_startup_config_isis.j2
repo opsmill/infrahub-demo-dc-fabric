@@ -1,3 +1,4 @@
+{% if data.InfraDevice.edges and data.InfraDevice.edges is iterable %}
 {% set ns = namespace(loopback_intf_name=none, loopback_ip=none, management_intf_name=none, management_ip=none) %}
 {% for intf in data.InfraDevice.edges[0].node.interfaces.edges %}
 {%   if intf.node.role.value == "loopback" %}
@@ -121,3 +122,6 @@ route-map BOGONS permit 10
 route-map BOGONS deny 20
 !
 end
+{% else %}
+{# Warning: No Device found with this name #}
+{% endif %}

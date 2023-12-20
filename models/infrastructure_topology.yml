@@ -69,12 +69,39 @@ nodes:
         kind: Number
       - name: type
         kind: Text
-    relationships:
       - name: role
-        peer: BuiltinRole
-        optional: false
-        cardinality: one
-        kind: Attribute
+        kind: Dropdown
+        optional: true
+        choices:
+          - name: core
+            label: Core Router
+            description: Central part of the network.
+            color: "#7f7fff"
+          - name: edge
+            label: Edge Router
+            description: "Network boundary with external networks."
+            color: "#bf7fbf"
+          - name: cpe
+            label: Customer Premise Equipment
+            description: "Devices located at the customer's premises."
+            color: "#bf7f7f"
+          - name: firewall
+            label: Firewall
+            description: "Ensures network security."
+            color: "#ffa07a"
+          - name: spine
+            label: Spine Router
+            description: "Aggregation router part of a Fabric."
+            color: "#aeeeee"
+          - name: leaf
+            label: Leaf Switch
+            description: "Top of Rack part of a Fabric."
+            color: "#e6e6fa"
+          - name: client
+            label: "Client"
+            description: "Client & Server endpoints in a Fabric."
+            color: "#c5a3ff"
+    relationships:
       - name: platform
         peer: InfraPlatform
         optional: true
