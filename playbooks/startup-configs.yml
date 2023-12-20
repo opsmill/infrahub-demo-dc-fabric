@@ -1,6 +1,6 @@
 ---
 - name: Fetch and Push Configuration to Arista Devices
-  hosts: leaf,spine
+  hosts: role_leaf,role_spine
   gather_facts: false
   vars:
     config_url: "http://localhost:8000/api/rfile/device_startup?device={{ inventory_hostname }}"

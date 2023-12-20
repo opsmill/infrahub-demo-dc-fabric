@@ -1,29 +1,31 @@
 ---
+# Inventory can be test with : ansible-inventory -i playbooks/inventory.yml  -y --list
+
 plugin: opsmill.infrahub.inventory
 api_endpoint: "http://localhost:8000"
+timeout: 30
 
-strict: true
-
-branch: "main"
+strict: false
+# branch: "main"
 
 nodes:
   InfraDevice:
     include:
       - id
       - name
-      - primary_address
       - site
       - role
+      - platform
+      - primary_address
 
 compose:
   hostname: name
-  # platform_os: platform.ansible_network_os
   ansible_host: primary_address.address | ansible.utils.ipaddr('address')
 
 keyed_groups:
+  - prefix: role
+    key: role
   - prefix: site
     key: site.name
-  - prefix: role
-    key: role.name
-  # - prefix: platform
-  #   key: platform_os
+  - prefix: platform
+    key: platform.ansible_network_os
