@@ -1,9 +1,9 @@
 {% set ns = namespace(loopback_intf_name=none, loopback_ip=none, management_intf_name=none, management_ip=none) %}
 {% for intf in data.InfraDevice.edges[0].node.interfaces.edges %}
-{%   if intf.node.role.node.name.value == "loopback" %}
+{%   if intf.node.role.value == "loopback" %}
 {%     set ns.loopback_intf_name = intf.node.name.value %}
 {%     set ns.loopback_ip = intf.node.ip_addresses.edges[0].node.address.value.split('/')[0] %}
-{%   elif intf.node.role.node.name.value == "management" %}
+{%   elif intf.node.role.value == "management" %}
 {%     set ns.management_intf_name = intf.node.name.value %}
 {%     set ns.management_ip = intf.node.ip_addresses.edges[0].node.address.value.split('/')[0] %}
 {%   endif %}
@@ -39,12 +39,12 @@ interface {{ intf.node.name.value }}
 {%   if intf.node["description"]["value"] %}
    description {{ intf.node["description"]["value"] }}
 {%   else %}
-   description role: {{ intf.node.role.node.name.value }}
+   description role: {{ intf.node.role.value }}
 {%   endif %}
 {%   if not intf.node["enabled"]["value"] %}
    shutdown
 {%   endif %}
-{%     if intf.node.role.node.name.value == "backbone" %}
+{%     if intf.node.role.value == "backbone" %}
    ip router isis
 {%      endif %}
 {%   if intf.node["ip_addresses"] %}
@@ -60,7 +60,7 @@ interface {{ intf.node.name.value }}
 interface {{ ns.management_intf_name }}
 {% for intf in data.InfraDevice.edges[0].node.interfaces.edges %}
 {%   if intf.node.name.value == ns.management_intf_name %}
-   description role: {{ intf.node.role.node.name.value }}
+   description role: {{ intf.node.role.value }}
 {%   if intf.node["ip_addresses"] %}
 {%     for ip in intf.node["ip_addresses"]["edges"] %}
    ip address {{ ip.node["address"]["value"] }}
@@ -73,7 +73,7 @@ interface {{ ns.management_intf_name }}
 interface {{ ns.loopback_intf_name }}
 {% for intf in data.InfraDevice.edges[0].node.interfaces.edges %}
 {%   if intf.node.name.value == ns.loopback_intf_name %}
-   description role: {{ intf.node.role.node.name.value }}
+   description role: {{ intf.node.role.value }}
 {%   if intf.node["ip_addresses"] %}
 {%     for ip in intf.node["ip_addresses"]["edges"] %}
    ip address {{ ip.node["address"]["value"] }}
