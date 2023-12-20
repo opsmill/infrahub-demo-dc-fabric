@@ -10,7 +10,7 @@ from infrahub_sdk import UUIDT, InfrahubClient, InfrahubNode, NodeStore
 # flake8: noqa
 # pylint: skip-file
 
-SITE_NAMES = ["toto"]
+SITE_NAMES = ["atl"]
 
 NETWORKS_POOL_INTERNAL = IPv4Network("10.0.0.0/9").subnets(new_prefix=16)
 LOOPBACK_POOL = next(NETWORKS_POOL_INTERNAL).hosts()
