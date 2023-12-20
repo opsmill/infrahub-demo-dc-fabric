@@ -27,7 +27,7 @@ query($device: String!) {
                 value
               }
               role {
-                    value
+                value
               }
               ... on InfraInterfaceL3 {
                 ip_addresses {

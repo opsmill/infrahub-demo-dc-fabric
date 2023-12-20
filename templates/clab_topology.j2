@@ -15,7 +15,7 @@ topology:
     {{ device.node.name.value }}:
       kind: {{ device.node.type.value }}
 {%  for intf in device.node.interfaces.edges %}
-{%    if intf.node.role.node.name.value == "management" %}
+{%    if intf.node.role.value == "management" %}
 {%      set management_ip = intf.node.ip_addresses.edges[0].node.address.value.split('/') %}
       mgmt-ipv4: {{ management_ip[0] }}
 {%    endif %}

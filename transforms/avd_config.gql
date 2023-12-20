@@ -1,4 +1,4 @@
-query($device: String!) {
+query avd_config ($device: String!) {
   InfraDevice(name__value: $device) {
     edges {
       node {

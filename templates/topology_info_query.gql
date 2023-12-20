@@ -10,7 +10,7 @@ query {
             node {
               id
               role {
-                    value
+                value
               }
               ... on InfraInterfaceL3 {
                 ip_addresses {
