@@ -1,115 +1,321 @@
 # yaml-language-server: $schema=https://schema.infrahub.app/develop/schema.schema.json
 ---
 version: '1.0'
-nodes:
-  - name: Topology
-    namespace: Infra
-    description: "A Topology represent a a top level network topology pod."
-    label: "Topology"
-    icon: "mdi:vector-triangle"
+generics:
+  - name: GenericElement
+    namespace: Topology
+    description: "Base model for elements"
+    label: "Generic Element"
     default_filter: name__value
-    order_by:
-      - name__value
-    display_labels:
-      - name__value
-    inherit_from:
-      - "CoreArtifactTarget"
+    display_labels: [name__value]
+    order_by: [name__value]
+    include_in_menu: false
     attributes:
       - name: name
         kind: Text
-        unique: true
+        order_weight: 3000
       - name: description
         kind: Text
+        order_weight: 2500
         optional: true
-      - name: dns
-        kind: Text
-        optional: true
-      - name: ntp
-        kind: Text
-        optional: true
-      - name: syslog
-        kind: Text
-        optional: true
-      - name: mtu
+      - name: quantity
         kind: Number
-        optional: true
-    relationships:
-      - name: element
-        peer: InfraTopologyElement
-        identifier: "topology__element"
-        optional: true
-        cardinality: many
-        kind: Component
-      - name: devices
-        peer: InfraDevice
-        identifier: "topology__device"
-        optional: true
-        cardinality: many
-        kind: Component
-  - name: TopologyElement
-    namespace: Infra
-    description: "A TopologyElement represent a device within a topology pod."
-    label: "TopologyElement"
-    icon: "mdi:vector-point-select"
-    menu_placement: "InfraTopology"
-    include_in_menu: true
-    default_filter: name__value
-    order_by:
-      - name__value
-    display_labels:
-      - name__value
-    attributes:
-      - name: name
-        kind: Text
-        unique: true
-      - name: description
-        kind: Text
-        optional: true
-      - name: amount
-        kind: Number
-      - name: type
-        kind: Text
+        order_weight: 2000
       - name: role
+        kind: Dropdown
+        choices:
+          - name: spine
+            color: "#ffb3ba" # Light Red
+          - name: leaf
+            color: "#ffdfba" # Light Orange
+          - name: pe_router
+            color: "#baffc9" # Light Green
+          - name: p_router
+            color: "#bae1ff" # Light Blue
+          - name: route_reflector
+            color: "#ffbaba" # Pink
+          - name: cpe
+            color: "#f2bae1" # Light Purple
+          - name: firewall
+            color: "#c5a3ff" # Pastel Purple
+    relationships:
+      - name: connections
+        peer: TopologyGenericConnection
+        optional: true
+        cardinality: many
+        kind: Attribute
+      - name: topology
+        peer: TopologyTopology
+        cardinality: one
+        kind: Parent
+
+  - name: GenericConnection
+    namespace: Topology
+    description: "Base model for connections"
+    label: "Generic Connection"
+    default_filter: name__value
+    display_labels: [name__value]
+    order_by: [name__value]
+    include_in_menu: false
+    attributes:
+      - name: name
+        kind: Text
+        order_weight: 3000
+      - name: description
+        kind: Text
+        order_weight: 2500
+        optional: true
+      - name: quantity
+        kind: Number
+        order_weight: 2000
+      - name: connection_type
         kind: Dropdown
         optional: true
         choices:
-          - name: core
-            label: Core Router
-            description: Central part of the network.
-            color: "#7f7fff"
-          - name: edge
-            label: Edge Router
-            description: "Network boundary with external networks."
-            color: "#bf7fbf"
-          - name: cpe
-            label: Customer Premise Equipment
-            description: "Devices located at the customer's premises."
-            color: "#bf7f7f"
-          - name: firewall
-            label: Firewall
-            description: "Ensures network security."
-            color: "#ffa07a"
-          - name: spine
-            label: Spine Router
-            description: "Aggregation router part of a Fabric."
-            color: "#aeeeee"
-          - name: leaf
-            label: Leaf Switch
-            description: "Top of Rack part of a Fabric."
-            color: "#e6e6fa"
-          - name: client
-            label: "Client"
-            description: "Client & Server endpoints in a Fabric."
-            color: "#c5a3ff"
+          - name: connection_type1
+            label: Type1
+            description: "Type 1 conenction."
+            color: "#7fbf7f"
+
+  - name: NetworkStrategy
+    namespace: Topology
+    description: "Generic model for network strategies (underlays and overlays)."
+    label: "Network Strategy"
+    default_filter: name__value
+    display_labels: [name__value]
+    order_by: [name__value]
+    include_in_menu: false
+    menu_placement: "TopologyTopology"
+    attributes:
+      - name: name
+        kind: Text
+        order_weight: 3000
+      - name: description
+        kind: Text
+        order_weight: 2500
+        optional: true
     relationships:
+      - name: topology
+        peer: TopologyTopology
+        optional: true
+        cardinality: one
+        kind: Parent
+
+nodes:
+  - name: Topology
+    namespace: Topology
+    description: "A Topology represents the entire network pod."
+    label: "Topology"
+    icon: "mdi:vector-triangle"
+    default_filter: name__value
+    display_labels: [name__value]
+    order_by: [name__value]
+    inherit_from:
+      - CoreArtifactTarget
+    attributes:
+      - name: name
+        kind: Text
+        unique: true
+      - name: description
+        kind: Text
+        optional: true
+    relationships:
+      - name: elements
+        peer: TopologyGenericElement
+        optional: true
+        cardinality: many
+        kind: Component
+      - name: strategy
+        peer: TopologyNetworkStrategy
+        optional: true
+        cardinality: one
+        kind: Component
+      - name: locations
+        peer: BuiltinLocation # Should be GenericLocation follow inheritnce
+        optional: true
+        cardinality: many
+        kind: Attribute
+
+  # --------------------  Strategies  --------------------
+  - name: MPLSStrategy
+    namespace: Topology
+    description: "Specific strategy attributes for MPLS."
+    label: "MPLS Strategy"
+    inherit_from:
+      - TopologyNetworkStrategy
+    menu_placement: "TopologyTopology"
+    default_filter: name__value
+    order_by: [name__value]
+    attributes:
+      - name: underlay
+        kind: Dropdown
+        choices:
+          - name: ospf
+            label: OSPF
+          - name: isis
+            label: ISIS
+          - name: bgp
+            label: BGP
+      - name: overlay
+        kind: Dropdown
+        choices:
+          - name: ldp
+            label: LDP
+          - name: rsvp
+            label: RSVP
+          - name: segment_routing
+            label: "Segment Routing"
+
+  - name: EVPNStrategy
+    namespace: Topology
+    description: "Specific strategy attributes for EVPN."
+    label: "EVPN Strategy"
+    inherit_from:
+      - TopologyNetworkStrategy
+    menu_placement: "TopologyTopology"
+    default_filter: name__value
+    order_by: [name__value]
+    attributes:
+      - name: underlay
+        kind: Dropdown
+        choices:
+          - name: ebgp
+            label: EBGP
+          - name: ospf
+            label: OSPF
+          - name: isis
+            label: ISIS
+      - name: overlay
+        kind: Dropdown
+        choices:
+          - name: ebgp
+            label: EBGP
+          - name: ibgp
+            label: IBGP
+
+  # --------------------  Elements  --------------------
+  - name: PhysicalElement
+    namespace: Topology
+    description: "Physical aspect of topology elements."
+    label: "Physical Topology Element"
+    menu_placement: "TopologyTopology"
+    default_filter: name__value
+    order_by: [name__value]
+    inherit_from:
+      - TopologyGenericElement
+    attributes:
+      - name: mtu
+        kind: Number
+      - name: mlag_support
+        kind: Boolean
+        label: "MLAG Support"
+        default_value: false
+      # Should be a Relationship to DeviceType
+      - name: device_type
+        kind: Text
+    relationships:
+      # could be remove after Device Type Relationship
       - name: platform
         peer: InfraPlatform
         optional: true
         cardinality: one
         kind: Attribute
-      - name: topology
-        peer: InfraTopology
-        identifier: "topology__element"
-        optional: false
-        cardinality: one
-        kind: Parent
+
+  - name: LogicalElement
+    namespace: Topology
+    description: "Logical aspect of topology elements."
+    label: "Logical Topology Element"
+    menu_placement: "TopologyTopology"
+    default_filter: name__value
+    order_by: [name__value]
+    inherit_from:
+      - TopologyGenericElement
+    attributes:
+      - name: overlay_type
+        kind: Text
+      - name: segment_id
+        kind: Text
+
+  # --------------------  Connections  --------------------
+  - name: PhysicalConnection
+    namespace: Topology
+    description: "Physical aspect of topology connections."
+    label: "Physical Topology Connection"
+    menu_placement: "TopologyTopology"
+    default_filter: name__value
+    order_by: [name__value]
+    inherit_from:
+      - TopologyGenericConnection
+    attributes:
+      - name: bandwidth
+        kind: Number
+
+  - name: LogicalConnection
+    namespace: Topology
+    description: "Logical aspect of topology connections."
+    label: "Logical Topology Connection"
+    menu_placement: "TopologyTopology"
+    default_filter: name__value
+    order_by: [name__value]
+    inherit_from:
+      - TopologyGenericConnection
+    attributes:
+      - name: virtual_connection_type
+        kind: Text
+      - name: encapsulation_type
+        kind: Text
+
+  # --------------------  DHCP  --------------------
+  - name: DHCPOption
+    namespace: IPAM
+    description: "Represents a configurable option within a DHCP server."
+    label: "DHCP Option"
+    default_filter: name__value
+    display_labels: [name__value]
+    order_by: [name__value]
+    attributes:
+      - name: name
+        kind: Text
+      - name: description
+        kind: Text
+        optional: true
+      - name: option_code
+        kind: Number
+      - name: content
+        kind: Text
+
+  - name: DHCPServer
+    namespace: IPAM
+    description: "Represents a DHCP server in the network."
+    label: "DHCP Server"
+    default_filter: name__value
+    display_labels: [name__value]
+    order_by: [name__value]
+    attributes:
+      - name: name
+        kind: Text
+      - name: description
+        kind: Text
+        optional: true
+      - name: lease_time
+        kind: Text
+      - name: status
+        kind: Dropdown
+        choices:
+          - name: active
+            label: Active
+          - name: inactive
+            label: Inactive
+          - name: fault
+            label: Fault
+    relationships:
+      - name: dhcp_options
+        peer: IPAMDHCPOption
+        optional: true
+        cardinality: many
+        kind: Component
+      - name: ip_addresses
+        peer: InfraIPAddress
+        optional: true
+        cardinality: many
+        kind: Component

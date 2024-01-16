@@ -90,22 +90,6 @@ VLANS = (
     ("400", "management"),
 )
 
-DROPDOWN_MUTATION = """
-     mutation DeviceDropDownAdd {
-     SchemaDropdownAdd(
-         data: {
-         kind: "InfraDevice"
-         attribute: "role"
-         dropdown: "client"
-         color: "#c5a3ff"
-         description: "Server & Client endpoints."
-         }
-     ) {
-         ok
-     }
-     }
- """
-
 store = NodeStore()
 
 
@@ -833,13 +817,22 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str):
     # ------------------------------------------
     log.info("Creating Site & Device")
 
+    log.info("Adding a new Device Role (client) via the SDK")
     try:
-        await client.execute_graphql(query=DROPDOWN_MUTATION)
-    except Exception:
-        pass
+        # await client.execute_graphql(query=DROPDOWN_MUTATION)
+        await client.schema.add_dropdown_option(
+            kind="InfraDevice",
+            attribute="role",
+            option="client",
+            color="#c5a3ff",
+            description="Server & Client endpoints."
+        )
+    except Exception as e:
+        print(e)
     batch = await client.create_batch()
 
     for site_name in SITE_NAMES:
+        log.info(f"Generating {site_name}")
         batch.add(task=generate_site, site_name=site_name, client=client, branch=branch, log=log)
 
     async for _, response in batch.execute():
