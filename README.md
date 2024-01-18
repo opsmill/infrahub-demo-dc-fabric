@@ -111,21 +111,34 @@ export LINUX_HOST_DOCKER_IMAGE="9r2s1098.c1.gra9.container-registry.ovh.net/exte
 
 ### 1. Export Infrahub env variable needed for infrahubctl
 
-```shell
+```sh
 export INFRAHUB_ADDRESS="http://localhost:8000"
 export INFRAHUB_API_TOKEN=06438eb2-8019-4776-878c-0941b1f1d1ec
 ```
 
-### 2. Load topology schema
+### 2. Load Base and Topology schema
 
-```shell
-poetry run infrahubctl schema load models/infrastructure_topology.yml
+```sh
+poetry run infrahubctl schema load models
+```
+### 3. Create Data
+
+#### 3.a. Create the basics data (Account, organization, ASN, Tags)
+
+```sh
+poetry run infrahubctl run models/create_basic.py
 ```
 
-### 3. Load in topology data
+#### 3.b. Create the locations (Locations, VLANs, Prefixes)
 
-```shell
-poetry run infrahubctl run models/infrastructure_topology.py
+```sh
+poetry run infrahubctl run models/create_location.py
+```
+
+#### 3.c. Create the topology (Topoogy, Topology Elements, Device Type, BGP Peer Groups)
+
+```sh
+poetry run infrahubctl run models/create_topology.py
 ```
 
 ### 4. Add the repository into Infrahub (Replace GITHUB_USER and GITHUB_TOKEN)
@@ -148,10 +161,12 @@ mutation {
 }
 ```
 
-### 5. Load in first pod of devices
-```shell
-poetry run infrahubctl run models/infrastructure_devices.py
+### 5. Generate the topology devices, cables and iBGP sessions
+
+```sh
+poetry run infrahubctl run models/generate_devices_from_topology.py
 ```
+
 
 ### 6. Rfiles
 ```shell
@@ -165,8 +180,3 @@ infrahubctl render device_startup device=atl-spine1
   - Delete a device via the UI
   - Create a PC
   - Check should fail now
-
-### 9. Load in second pod of devices
-```shell
-poetry run infrahubctl run models/infrastructure_devices_2.py
-```

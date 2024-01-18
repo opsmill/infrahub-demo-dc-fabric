@@ -1,11 +1,11 @@
 import logging
 
-from typing import Dict, Optional
-
 from infrahub_sdk import InfrahubClient, NodeStore
-from infrahub_sdk.batch import InfrahubBatch
-from infrahub_sdk.exceptions import GraphQLError
-from infrahub_sdk.timestamp import Timestamp
+
+from utils import upsert_object
+
+# flake8: noqa
+# pylint: skip-file
 
 ACCOUNTS = (
     # name, pasword, type, role
@@ -66,50 +66,14 @@ GROUPS = (
 
 store = NodeStore()
 
-async def upsert_object(
-        client: InfrahubClient,
-        log: logging.Logger,
-        branch: str,
-        object_name: str,
-        kind_name: str,
-        data: Dict,
-        batch: Optional[InfrahubBatch] = None,
-        upsert: Optional[bool] = True,
-        allow_update: Optional[bool] = True,
-        allow_failure: Optional[bool] = True,
-    ) -> None:
-    try:
-        obj = await client.create(
-            branch=branch,
-            kind=kind_name,
-            data=data,
-        )
-        async def save_object():
-            if upsert:
-                await obj.create(at=Timestamp(), allow_update=allow_update)
-            else:
-                await obj.save()
-
-        if not batch:
-            await save_object()
-            log.info(f"- Created {obj._schema.kind} - {obj.name.value}")
-        else:
-            batch.add(task=save_object, node=obj)
-        store.set(key=object_name, node=obj)
-    except GraphQLError:
-        log.debug(f"- Creation failed for {obj._schema.kind} - {obj.name.value}")
-        if allow_failure:
-            obj = await client.get(kind=kind_name, name__value=object_name)
-            store.set(key=object_name, node=obj)
-            log.debug(f"- Retrieved {obj._schema.kind} - {obj.name.value}")
-
 
 async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
+    # Create Batch for Accounts, Platforms, and Standards Groups
+    log.info("Creating User Accounts, Platforms, and Standard Groups")
+    batch = await client.create_batch()
     # ------------------------------------------
     # Create User Accounts
     # ------------------------------------------
-    log.info("Creating User Accounts")
-    batch = await client.create_batch()
     for account in ACCOUNTS:
         data = {
             "name": account[0],
@@ -124,60 +88,13 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
             object_name=account[0],
             kind_name="CoreAccount",
             data=data,
+            store=store,
             batch=batch
             )
-    async for node, _ in batch.execute():
-        log.info(f"- Created {node._schema.kind} - {node.name.value}")
-
-    # ------------------------------------------
-    # Create Organization & Autonomous System
-    # ------------------------------------------
-    log.info("Creating Organizations & Autonomous Systems")
-    account = store.get("pop-builder")
-    account2 = store.get("Chloe O'Brian")
-    batch = await client.create_batch()
-    for org in ORGANIZATIONS:
-        # Organization
-        data_org={
-            "name": {"value": org[0], "is_protected": True},
-        }
-        await upsert_object(
-            client=client,
-            log=log,
-            branch=branch,
-            object_name=org[0],
-            kind_name="CoreOrganization",
-            data=data_org,
-            batch=batch
-            )
-    async for node, _ in batch.execute():
-        log.info(f"- Created {node._schema.kind} - {node.name.value}")
-    batch = await client.create_batch()
-    for org in ORGANIZATIONS:
-        # Autonomous System
-        if len(org) == 2 and isinstance(org[1], int):
-            data_asn={
-                "name": {"value": f"AS{org[1]}", "source": account.id, "owner": account2.id},
-                "asn": {"value": org[1], "source": account.id, "owner": account2.id},
-                "organization": {"id": store.get(kind="CoreOrganization", key=org[0]).id, "source": account.id},
-            }
-            await upsert_object(
-                client=client,
-                log=log,
-                branch=branch,
-                object_name=f"AS{org[1]}",
-                kind_name="InfraAutonomousSystem",
-                data=data_asn,
-                batch=batch
-                )
-    async for node, _ in batch.execute():
-        log.info(f"- Created {node._schema.kind} - {node.name.value}")
 
     # ------------------------------------------
     # Create Platform
     # ------------------------------------------
-    log.info("Creating Platforms")
-    batch = await client.create_batch()
     for platform in PLATFORMS:
        data={
            "name": platform[0],
@@ -193,16 +110,13 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
             object_name=platform[0],
             kind_name="InfraPlatform",
             data=data,
+            store=store,
             batch=batch
             )
-    async for node, _ in batch.execute():
-        log.info(f"- Created {node._schema.kind} - {node.name.value}")
 
     # ------------------------------------------
     # Create Standard Demo Groups
     # ------------------------------------------
-    log.info("Creating Standard Groups")
-    batch = await client.create_batch()
     for group in GROUPS:
        data={
            "name": group[0],
@@ -215,8 +129,58 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
             object_name=group[0],
             kind_name="CoreStandardGroup",
             data=data,
+            store=store,
             batch=batch
             )
+
+    async for node, _ in batch.execute():
+        log.info(f"- Created {node._schema.kind} - {node.name.value}")
+
+    # ------------------------------------------
+    # Create Organization & Autonomous System
+    # ------------------------------------------
+    log.info("Creating Organizations, and Autonomous Systems")
+    account = store.get("pop-builder", kind="CoreAccount")
+    account2 = store.get("Chloe O'Brian", kind="CoreAccount")
+    # Organization
+    batch = await client.create_batch()
+    for org in ORGANIZATIONS:
+        data_org={
+            "name": {"value": org[0], "is_protected": True},
+        }
+        await upsert_object(
+            client=client,
+            log=log,
+            branch=branch,
+            object_name=org[0],
+            kind_name="CoreOrganization",
+            data=data_org,
+            store=store,
+            batch=batch
+            )
+    async for node, _ in batch.execute():
+        log.info(f"- Created {node._schema.kind} - {node.name.value}")
+
+    # Autonomous System
+    batch = await client.create_batch()
+    for org in ORGANIZATIONS:
+
+        if len(org) == 2 and isinstance(org[1], int):
+            data_asn={
+                "name": {"value": f"AS{org[1]}", "source": account.id, "owner": account2.id},
+                "asn": {"value": org[1], "source": account.id, "owner": account2.id},
+                "organization": {"id": store.get(kind="CoreOrganization", key=org[0]).id, "source": account.id},
+            }
+            await upsert_object(
+                client=client,
+                log=log,
+                branch=branch,
+                object_name=f"AS{org[1]}",
+                kind_name="InfraAutonomousSystem",
+                data=data_asn,
+                store=store,
+            batch=batch
+                )
     async for node, _ in batch.execute():
         log.info(f"- Created {node._schema.kind} - {node.name.value}")
 
@@ -237,6 +201,7 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
             object_name=tag,
             kind_name="BuiltinTag",
             data=data,
+            store=store,
             batch=batch
             )
     async for node, _ in batch.execute():

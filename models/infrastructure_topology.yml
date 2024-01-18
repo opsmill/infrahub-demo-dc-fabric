@@ -13,69 +13,19 @@ generics:
     attributes:
       - name: name
         kind: Text
-        order_weight: 3000
+        order_weight: 1000
       - name: description
         kind: Text
-        order_weight: 2500
+        order_weight: 1100
         optional: true
       - name: quantity
         kind: Number
-        order_weight: 2000
-      - name: role
-        kind: Dropdown
-        choices:
-          - name: spine
-            color: "#ffb3ba" # Light Red
-          - name: leaf
-            color: "#ffdfba" # Light Orange
-          - name: pe_router
-            color: "#baffc9" # Light Green
-          - name: p_router
-            color: "#bae1ff" # Light Blue
-          - name: route_reflector
-            color: "#ffbaba" # Pink
-          - name: cpe
-            color: "#f2bae1" # Light Purple
-          - name: firewall
-            color: "#c5a3ff" # Pastel Purple
+        order_weight: 1200
     relationships:
-      - name: connections
-        peer: TopologyGenericConnection
-        optional: true
-        cardinality: many
-        kind: Attribute
       - name: topology
         peer: TopologyTopology
         cardinality: one
         kind: Parent
-
-  - name: GenericConnection
-    namespace: Topology
-    description: "Base model for connections"
-    label: "Generic Connection"
-    default_filter: name__value
-    display_labels: [name__value]
-    order_by: [name__value]
-    include_in_menu: false
-    attributes:
-      - name: name
-        kind: Text
-        order_weight: 3000
-      - name: description
-        kind: Text
-        order_weight: 2500
-        optional: true
-      - name: quantity
-        kind: Number
-        order_weight: 2000
-      - name: connection_type
-        kind: Dropdown
-        optional: true
-        choices:
-          - name: connection_type1
-            label: Type1
-            description: "Type 1 conenction."
-            color: "#7fbf7f"
 
   - name: NetworkStrategy
     namespace: Topology
@@ -89,10 +39,10 @@ generics:
     attributes:
       - name: name
         kind: Text
-        order_weight: 3000
+        order_weight: 1000
       - name: description
         kind: Text
-        order_weight: 2500
+        order_weight: 1100
         optional: true
     relationships:
       - name: topology
@@ -102,6 +52,58 @@ generics:
         kind: Parent
 
 nodes:
+  - name: DeviceType
+    namespace: Template
+    description: "A model of device"
+    label: "Device Type"
+    icon: "mdi:poll"
+    menu_placement: "InfraDevice"
+    display_labels:
+      - name__value
+    order_by:
+      - name__value
+    attributes:
+      - name: name
+        kind: Text
+        unique: true
+        order_weight: 1000
+      - name: description
+        kind: Text
+        optional: true
+        order_weight: 1100
+      - name: part_number
+        label: Part Number
+        optional: true
+        kind: Text
+        order_weight: 1200
+      - name: height
+        label: "Height (U)"
+        optional: true
+        kind: Number
+        order_weight: 1400
+      - name: full_depth
+        label: "Full Depth"
+        default_value: true
+        kind: Boolean
+        order_weight: 1500
+      - name: weight
+        label: "Weight (kg)"
+        optional: true
+        kind: Number
+        order_weight: 1600
+    relationships:
+      - name: platform
+        peer: InfraPlatform
+        cardinality: one
+        kind: Attribute
+        order_weight: 1300
+      - name: tags
+        peer: BuiltinTag
+        optional: true
+        cardinality: many
+        kind: Attribute
+        order_weight: 2000
+
   - name: Topology
     namespace: Topology
     description: "A Topology represents the entire network pod."
@@ -116,9 +118,11 @@ nodes:
       - name: name
         kind: Text
         unique: true
+        order_weight: 1000
       - name: description
         kind: Text
         optional: true
+        order_weight: 1100
     relationships:
       - name: elements
         peer: TopologyGenericElement
@@ -131,7 +135,7 @@ nodes:
         cardinality: one
         kind: Component
       - name: locations
-        peer: BuiltinLocation # Should be GenericLocation follow inheritnce
+        peer: BuiltinLocation # Should be GenericLocation to use new inheritnce
         optional: true
         cardinality: many
         kind: Attribute
@@ -206,83 +210,125 @@ nodes:
     attributes:
       - name: mtu
         kind: Number
+        default_value: 1500
+        order_weight: 3000
       - name: mlag_support
         kind: Boolean
         label: "MLAG Support"
         default_value: false
-      # Should be a Relationship to DeviceType
-      - name: device_type
-        kind: Text
+        order_weight: 2500
+      - name: device_role
+        label: Role
+        kind: Dropdown
+        choices:
+          - name: spine
+            color: "#ffb3ba" # Light Red
+          - name: leaf
+            color: "#ffdfba" # Light Orange
+          - name: pe_router
+            color: "#baffc9" # Light Green
+          - name: p_router
+            color: "#bae1ff" # Light Blue
+          - name: route_reflector
+            color: "#ffbaba" # Pink
+          - name: cpe
+            color: "#f2bae1" # Light Purple
+          - name: firewall
+            color: "#c5a3ff" # Pastel Purple
+        order_weight: 1300
     relationships:
-      # could be remove after Device Type Relationship
-      - name: platform
-        peer: InfraPlatform
+      - name: device_type
+        label: Type
+        peer: TemplateDeviceType
         optional: true
         cardinality: one
         kind: Attribute
+        order_weight: 1400
 
-  - name: LogicalElement
-    namespace: Topology
-    description: "Logical aspect of topology elements."
-    label: "Logical Topology Element"
-    menu_placement: "TopologyTopology"
-    default_filter: name__value
-    order_by: [name__value]
-    inherit_from:
-      - TopologyGenericElement
+  # --------------------  Prefix  --------------------
+  - name: Prefix
+    namespace: Infra
+    description: "IPv4 or IPv6 network (with mask)"
+    icon: "mdi:ip-network"
+    label: "Prefix"
+    default_filter: prefix__value
+    order_by:
+      - prefix__value
+    display_labels:
+      - prefix__value
     attributes:
-      - name: overlay_type
+      - name: prefix
+        kind: IPNetwork
+        order_weight: 1000
+      - name: description
         kind: Text
-      - name: segment_id
-        kind: Text
-
-  # --------------------  Connections  --------------------
-  - name: PhysicalConnection
-    namespace: Topology
-    description: "Physical aspect of topology connections."
-    label: "Physical Topology Connection"
-    menu_placement: "TopologyTopology"
-    default_filter: name__value
-    order_by: [name__value]
-    inherit_from:
-      - TopologyGenericConnection
-    attributes:
-      - name: bandwidth
-        kind: Number
-
-  - name: LogicalConnection
-    namespace: Topology
-    description: "Logical aspect of topology connections."
-    label: "Logical Topology Connection"
-    menu_placement: "TopologyTopology"
-    default_filter: name__value
-    order_by: [name__value]
-    inherit_from:
-      - TopologyGenericConnection
-    attributes:
-      - name: virtual_connection_type
-        kind: Text
-      - name: encapsulation_type
-        kind: Text
+        optional: true
+        order_weight: 1100
+      - name: status
+        kind: Dropdown
+        choices:
+          - name: active
+            label: Active
+          - name: deprecated
+            label: Deprecated
+          - name: reserved
+            label: Reserved
+    relationships:
+      - name: organization
+        peer: CoreOrganization
+        optional: true
+        cardinality: one
+        kind: Attribute
+        order_weight: 1200
+      - name: location
+        peer: BuiltinLocation
+        optional: true
+        cardinality: one
+        kind: Attribute
+        order_weight: 1300
+      - name: gateway
+        label: L3 Gateway
+        peer: InfraInterfaceL3
+        optional: true
+        cardinality: one
+        kind: Attribute
+        order_weight: 1500
+      - name: vlan
+        peer: InfraVLAN
+        optional: true
+        cardinality: one
+        kind: Attribute
+        order_weight: 1500
+      - name: ip_addresses
+        peer: InfraIPAddress
+        # identifier: "prefix__address"
+        cardinality: many
+        kind: Component
+        order_weight: 1600
 
   # --------------------  DHCP  --------------------
   - name: DHCPOption
     namespace: IPAM
     description: "Represents a configurable option within a DHCP server."
     label: "DHCP Option"
+    menu_placement: "IPAMDHCPServer"
     default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
     attributes:
       - name: name
         kind: Text
+        order_weight: 1000
       - name: description
         kind: Text
         optional: true
+        order_weight: 1100
       - name: option_code
         kind: Number
+        order_weight: 2000
       - name: content
         kind: Text
+        order_weight: 2100
 
   - name: DHCPServer
     namespace: IPAM
@@ -294,11 +340,14 @@ nodes:
     attributes:
       - name: name
         kind: Text
+        order_weight: 1000
       - name: description
         kind: Text
         optional: true
+        order_weight: 1100
       - name: lease_time
         kind: Text
+        order_weight: 2100
       - name: status
         kind: Dropdown
         choices:
@@ -308,6 +357,7 @@ nodes:
             label: Inactive
           - name: fault
             label: Fault
+        order_weight: 2000
     relationships:
       - name: dhcp_options
         peer: IPAMDHCPOption

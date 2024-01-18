@@ -1,14 +1,10 @@
-import copy
 import logging
-import uuid
-from collections import defaultdict
-from ipaddress import IPv4Network
-from typing import Dict, List, Optional
 
-from infrahub_sdk import UUIDT, InfrahubClient, InfrahubNode, NodeStore
-from infrahub_sdk.batch import InfrahubBatch
-from infrahub_sdk.exceptions import GraphQLError
-from infrahub_sdk.timestamp import Timestamp
+from typing import  List
+
+from infrahub_sdk import InfrahubClient, NodeStore
+
+from utils import group_add_member, populate_local_store, upsert_object
 
 # flake8: noqa
 # pylint: skip-file
@@ -18,92 +14,34 @@ BGP_PEER_GROUPS = (
     ("POP_INTERNAL", "IMPORT_INTRA_POP", "EXPORT_INTRA_POP", "Duff", "Duff"),
     ("POP_GLOBAL", "IMPORT_POP_GLOBAL", "EXPORT_POP_GLOBLA", "Duff", None),
     ("UPSTREAM_DEFAULT", "IMPORT_UPSTREAM", "EXPORT_PUBLIC_PREFIX", "Duff", None),
-    ("UPSTREAM_TELIA", "IMPORT_UPSTREAM", "EXPORT_PUBLIC_PREFIX", "Duff", "Arelion"),
+    ("UPSTREAM_ARELION", "IMPORT_UPSTREAM", "EXPORT_PUBLIC_PREFIX", "Duff", "Arelion"),
     ("IX_DEFAULT", "IMPORT_IX", "EXPORT_PUBLIC_PREFIX", "Duff", None),
 )
 
 TOPOLOGY = (
-    # name, -- REST IS UNUSED
-    ("pod1", "8.8.8.8", "pool.ntp.org", "1.2.3.4", 1500),
-    ("pod2", "8.8.8.8", "pool.ntp.org", "1.2.3.4", 1500),
+    # name, description
+    ("pod1", "Small Fabric"),
+    ("pod2", "Big Fabric"),
+    ("pod3", "MPLS"),
 )
 
 TOPOLOGY_ELEMENT = (
-    # Name, Quantity, Device Role, Platform, Device Type, Topology
-    ( "spine-pod1", 2, "spine", "Arista EOS", "ASR1002-HX", "pod1"),
-    ( "leaf-pod1", 2, "leaf", "Arista EOS", "ASR1002-HX", "pod1"),
-    # ("spine", 2, "Arista EOS", "spine", "eos"),
-    # ("leaf", 4, "Arista EOS", "leaf", "eos"),
-    # ("client", 2, "Linux", "client", "linux"),
+    # Name, Quantity, Device Role, Device Type, Topology
+    ( "spine-pod1", 2, "spine", "CCS-720DP-48S-2F", "pod1"),
+    ( "leaf-pod1", 2, "leaf", "CCS-720DP-48S-2F", "pod1"),
+    ( "spine-pod2", 2, "spine", "CCS-720DP-48S-2F", "pod2"),
+    ( "leaf-pod2", 6, "leaf", "NCS-5501-SE", "pod2"),
+)
+
+DEVICE_TYPES = (
+    # name, part_number, height (U), full_depth, platform
+    ("MX204", "MX204-HWBASE-AC-FS", 1, False, "Juniper JunOS"),
+    ("CCS-720DP-48S-2F", None, 1, False, "Arista EOS"),
+    ("NCS-5501-SE", None, 1, False, "Cisco IOS-XR"),
+    ("ASR1002-HX", None, 2, True, "Cisco IOS-XR"),
 )
 
 store = NodeStore()
-
-async def upsert_object(
-        client: InfrahubClient,
-        log: logging.Logger,
-        branch: str,
-        object_name: str,
-        kind_name: str,
-        data: Dict,
-        batch: Optional[InfrahubBatch] = None,
-        upsert: Optional[bool] = True,
-        allow_update: Optional[bool] = True,
-        allow_failure: Optional[bool] = True,
-    ) -> None:
-    try:
-        obj = await client.create(
-            branch=branch,
-            kind=kind_name,
-            data=data,
-        )
-        async def save_object():
-            if upsert:
-                await obj.create(at=Timestamp(), allow_update=allow_update)
-            else:
-                await obj.save()
-
-        if not batch:
-            await save_object()
-            log.info(f"- Created {obj._schema.kind} - {obj.name.value}")
-        else:
-            batch.add(task=save_object, node=obj)
-        store.set(key=object_name, node=obj)
-    except GraphQLError:
-        log.debug(f"- Creation failed for {obj._schema.kind} - {obj.name.value}")
-        if allow_failure:
-            obj = await client.get(kind=kind_name, name__value=object_name)
-            store.set(key=object_name, node=obj)
-            log.debug(f"- Retrieved {obj._schema.kind} - {obj.name.value}")
-
-async def group_add_member(client: InfrahubClient, group: InfrahubNode, members: List[InfrahubNode], branch: str):
-    members_str = ["{ id: " + f'"{member.id}"' + " }" for member in members]
-    query = """
-    mutation {
-        RelationshipAdd(
-            data: {
-                id: "%s",
-                name: "members",
-                nodes: [ %s ]
-            }
-        ) {
-            ok
-        }
-    }
-    """ % (
-        group.id,
-        ", ".join(members_str),
-    )
-
-    await client.execute_graphql(query=query, branch_name=branch)
-
-
-def populate_local_store(objects: List[InfrahubNode], key_type= str):
-
-    for obj in objects:
-        key = getattr(obj, key_type)
-        if key:
-            store.set(key=key.value, node=obj)
 
 # ---------------------------------------------------------------
 # Use the `infrahubctl run` command line to execute this script
@@ -112,19 +50,49 @@ def populate_local_store(objects: List[InfrahubNode], key_type= str):
 #
 # ---------------------------------------------------------------
 async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
+    log.info("Retrieving objects from Infrahub")
     try:
         accounts=await client.all("CoreAccount")
-        populate_local_store(objects=accounts, key_type="name")
+        populate_local_store(objects=accounts, key_type="name", store=store)
+
         organizations=await client.all("CoreOrganization")
-        populate_local_store(objects=organizations, key_type="name")
+        populate_local_store(objects=organizations, key_type="name", store=store)
+
         autonomous_systems=await client.all("InfraAutonomousSystem")
-        populate_local_store(objects=autonomous_systems, key_type="name")
+        populate_local_store(objects=autonomous_systems, key_type="name", store=store)
+
         platforms=await client.all("InfraPlatform")
-        populate_local_store(objects=platforms, key_type="name")
+        populate_local_store(objects=platforms, key_type="name", store=store)
+
+        device_types=await client.all("TemplateDeviceType")
+        populate_local_store(objects=device_types, key_type="name", store=store)
 
     except Exception as e:
-        print(f"Fail to populate due to {e}")
+        log.error(f"Fail to populate due to {e}")
         exit(1)
+
+    # ------------------------------------------
+    # Create Standard Device Type
+    # ------------------------------------------
+    log.info("Creating Standard Device Type")
+    for device_type in DEVICE_TYPES:
+       platform_id = store.get(kind="InfraPlatform", key=device_type[4]).id
+       data={
+           "name": device_type[0],
+           "part_number": device_type[1],
+           "height": device_type[2],
+           "full_depth": device_type[3],
+           "platform": platform_id,
+        }
+       await upsert_object(
+            client=client,
+            log=log,
+            branch=branch,
+            object_name=device_type[0],
+            kind_name="TemplateDeviceType",
+            data=data,
+            store=store
+            )
 
     # ------------------------------------------
     # Create BGP Peer Groups
@@ -156,6 +124,7 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
             object_name=peer_group[0],
             kind_name="InfraBGPPeerGroup",
             data=data,
+            store=store,
             batch=batch,
             )
 
@@ -180,6 +149,7 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
             object_name=group_name,
             kind_name="CoreStandardGroup",
             data=data,
+            store=store,
             batch=batch
             )
     async for node, _ in batch.execute():
@@ -191,10 +161,7 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
     for topology in TOPOLOGY:
         data = {
             "name": {"value": topology[0], "source": account.id},
-            # "dns": {"value": topology[1], "source": account.id},
-            # "ntp": {"value": topology[2], "source": account.id},
-            # "syslog": {"value": topology[3], "source": account.id},
-            # "mtu": {"value": topology[4], "source": account.id}
+            "description": {"value": topology[1], "source": account.id},
         }
         await upsert_object(
             client=client,
@@ -203,6 +170,7 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
             object_name=topology[0],
             kind_name="TopologyTopology",
             data=data,
+            store=store,
             batch=batch
             )
     async for node, _ in batch.execute():
@@ -225,14 +193,13 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
     batch = await client.create_batch()
     account = store.get(key="pop-builder", kind="CoreAccount")
     for element in TOPOLOGY_ELEMENT:
-        platform_id = store.get(kind="InfraPlatform", key=element[3]).id
-        topology_id = store.get(kind="TopologyTopology", key=element[5]).id
+        device_type_id = store.get(kind="TemplateDeviceType", key=element[3]).id
+        topology_id = store.get(kind="TopologyTopology", key=element[4]).id
         data = {
             "name":{"value": element[0], "source": account.id},
             "quantity": {"value": element[1], "source": account.id},
-            "role": {"value": element[2], "source": account.id, "is_protected": True, "owner": account.id},
-            "device_type": {"value": element[4], "source": account.id},
-            "platform": {"id": platform_id, "source": account.id, "is_protected": True},
+            "device_role": {"value": element[2], "source": account.id, "is_protected": True, "owner": account.id},
+            "device_type": device_type_id,
             "topology": topology_id,
             "mtu": 1500,
         }
@@ -242,7 +209,9 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
             branch=branch,
             object_name=element[0],
             kind_name="TopologyPhysicalElement",
-            data=data
+            data=data,
+            store=store
             )
+
     async for node, _ in batch.execute():
         log.info(f"- Created {node._schema.kind} - {node.name.value}")
