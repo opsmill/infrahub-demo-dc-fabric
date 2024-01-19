@@ -1,0 +1,24 @@
+---
+version: "1.0"
+infrahub_tests:
+  - resource: "RFile"
+    resource_name: "device_startup"
+    tests:
+      - name: "baseline_spine"
+        expect: PASS
+        spec:
+          kind: "rfile-unit-render"
+          directory: device_startup/baseline_spine
+
+      - name: "baseline_leaf"
+        expect: PASS
+        spec:
+          kind: "rfile-unit-render"
+          directory: device_startup/baseline_leaf
+
+
+      # - name: "missing_interfaces"
+      #   expect: FAIL
+      #   spec:
+      #     kind: "rfile-unit-render"
+      #     directory: device_startup/missing_interfaces

@@ -1,4 +1,4 @@
-from infrahub.transforms import InfrahubTransform
+from infrahub_sdk.transforms import InfrahubTransform
 
 
 class AristaConfig(InfrahubTransform):
@@ -24,12 +24,12 @@ class AristaConfig(InfrahubTransform):
         }
 
         # Extracting the AS and router_id
-        for edge in data['InfraDevice']['edges']:
-            avd_bgp_config['router_bgp']['router_id'] = edge['node']['primary_address']['node']['address']['value'][:-3]
+        # for edge in data['InfraDevice']['edges']:
+        #     avd_bgp_config['router_bgp']['router_id'] = edge['node']['primary_address']['node']['address']['value'][:-3]
 
         # Assuming all sessions have the same local_as
-        local_as = data['InfraBGPSession']['edges'][0]['node']['local_as']['node']['asn']['value']
-        avd_bgp_config['router_bgp']['as'] = local_as
+        # local_as = data['InfraBGPSession']['edges'][0]['node']['local_as']['node']['asn']['value']
+        # avd_bgp_config['router_bgp']['as'] = local_as
 
         # Parse the peer_groups
         for edge in data['InfraBGPSession']['edges']:

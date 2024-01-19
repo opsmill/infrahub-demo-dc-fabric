@@ -1,0 +1,103 @@
+!
+no aaa root
+!
+username admin privilege 15 role network-admin secret sha512 $6$q4ez.aZgB/G/eeWW$ukvRobb5RtYmUlCcY0atxhwPmA6FPoRjR3AxYFJqNFoCRgJjrohKGrBsbY12n1uRZeCer1L8oejx5aPlrf.op0
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+hostname atl-pod1-spine1
+spanning-tree mode mstp
+!
+management api http-commands
+   no shutdown
+!
+management api gnmi
+   transport grpc default
+!
+management api netconf
+   transport ssh default
+!
+interface Ethernet1
+   description Leaf: ethernet1.atl-pod1-spine1 to ethernet9.atl-pod1-leaf1
+!
+interface Ethernet10
+   description Peer: ethernet10.atl-pod1-spine1
+!
+interface Ethernet11
+   description Transit: ethernet11.atl-pod1-spine1
+   ip address 203.0.113.0/31
+   no switchport
+!
+interface Ethernet12
+   description Transit: ethernet12.atl-pod1-spine1
+   ip address 203.0.113.10/31
+   no switchport
+!
+interface Ethernet2
+   description Leaf: ethernet2.atl-pod1-spine1 to ethernet9.atl-pod1-leaf2
+!
+interface Ethernet3
+   description Leaf: ethernet3.atl-pod1-spine1
+!
+interface Ethernet4
+   description Leaf: ethernet4.atl-pod1-spine1
+!
+interface Ethernet5
+   description Leaf: ethernet5.atl-pod1-spine1
+!
+interface Ethernet6
+   description Leaf: ethernet6.atl-pod1-spine1
+!
+interface Ethernet7
+   description Spare: ethernet7.atl-pod1-spine1
+!
+interface Ethernet8
+   description Spare: ethernet8.atl-pod1-spine1
+!
+interface Ethernet9
+   description Peer: ethernet9.atl-pod1-spine1
+!
+!
+interface Management1
+   description role: management
+   ip address 172.16.0.3/24
+   no shutdown
+!
+interface loopback 1
+   description role: loopback
+   ip address 10.0.255.3/32
+   no shutdown
+!
+ip prefix-list BOGON-Prefixes seq 10 permit 172.16.0.0/12 le 24
+ip prefix-list BOGON-Prefixes seq 20 permit 192.168.0.0/16 le 24
+ip prefix-list BOGON-Prefixes seq 10 permit 172.16.0.0/12 le 24
+ip prefix-list BOGON-Prefixes seq 20 permit 192.168.0.0/16 le 24
+!
+ip routing
+!
+ip route 0.0.0.0/0 172.20.20.1
+!
+router bgp 64496
+   router-id 10.0.255.3
+   neighbor IX_DEFAULT peer group
+   neighbor POP_GLOBAL peer group
+   neighbor POP_INTERNAL peer group
+   neighbor UPSTREAM_ARELION peer group
+   neighbor UPSTREAM_DEFAULT peer group
+!
+!
+router ospf 1
+   router-id 10.0.255.3
+   redistribute connected
+   max-lsa 12000
+   passive-interface Loopback0
+   network 0.0.0.0/0 area 0.0.0.0
+!
+route-map BOGONS permit 10
+   match ip address prefix-list BOGON-Prefixes
+!
+route-map BOGONS deny 20
+!
+end

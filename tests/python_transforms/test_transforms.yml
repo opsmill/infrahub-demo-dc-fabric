@@ -1,0 +1,11 @@
+---
+version: "1.0"
+infrahub_tests:
+  - resource: PythonTransform
+    resource_name: AristaConfig
+    tests:
+      - name: AristaConfig
+        expect: PASS
+        spec:
+          kind: python-transform-unit-process
+          directory: AristaConfig/baseline_spine

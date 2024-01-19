@@ -1,0 +1,94 @@
+{
+    "router_bgp": {
+      "as": null,
+      "router_id": null,
+      "peer_groups": []
+    },
+    "ethernet_interfaces": [
+      {
+        "name": "Ethernet1",
+        "description": "Leaf: ethernet1.atl-pod1-spine1 to ethernet9.atl-pod1-leaf1",
+        "shutdown": false,
+        "type": "routed"
+      },
+      {
+        "name": "Ethernet10",
+        "description": "Peer: ethernet10.atl-pod1-spine1",
+        "shutdown": false,
+        "type": "routed"
+      },
+      {
+        "name": "Ethernet11",
+        "description": "Transit: ethernet11.atl-pod1-spine1",
+        "shutdown": false,
+        "type": "routed",
+        "ip_address": "203.0.113.0/31"
+      },
+      {
+        "name": "Ethernet12",
+        "description": "Transit: ethernet12.atl-pod1-spine1",
+        "shutdown": false,
+        "type": "routed",
+        "ip_address": "203.0.113.10/31"
+      },
+      {
+        "name": "Ethernet2",
+        "description": "Leaf: ethernet2.atl-pod1-spine1 to ethernet9.atl-pod1-leaf2",
+        "shutdown": false,
+        "type": "routed"
+      },
+      {
+        "name": "Ethernet3",
+        "description": "Leaf: ethernet3.atl-pod1-spine1",
+        "shutdown": false,
+        "type": "routed"
+      },
+      {
+        "name": "Ethernet4",
+        "description": "Leaf: ethernet4.atl-pod1-spine1",
+        "shutdown": false,
+        "type": "routed"
+      },
+      {
+        "name": "Ethernet5",
+        "description": "Leaf: ethernet5.atl-pod1-spine1",
+        "shutdown": false,
+        "type": "routed"
+      },
+      {
+        "name": "Ethernet6",
+        "description": "Leaf: ethernet6.atl-pod1-spine1",
+        "shutdown": false,
+        "type": "routed"
+      },
+      {
+        "name": "Ethernet7",
+        "description": "Spare: ethernet7.atl-pod1-spine1",
+        "shutdown": false,
+        "type": "routed"
+      },
+      {
+        "name": "Ethernet8",
+        "description": "Spare: ethernet8.atl-pod1-spine1",
+        "shutdown": false,
+        "type": "routed"
+      },
+      {
+        "name": "Ethernet9",
+        "description": "Peer: ethernet9.atl-pod1-spine1",
+        "shutdown": false,
+        "type": "routed"
+      }
+    ],
+    "management_interfaces": [
+      {
+        "name": "Management1",
+        "description": "Mgmt: management1.atl-pod1-spine1",
+        "shutdown": false,
+        "type": "oob",
+        "vrf": "default",
+        "ip_address": "172.16.0.3/24"
+      }
+    ],
+    "loopback_interfaces": []
+  }

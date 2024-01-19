@@ -1,0 +1,95 @@
+!
+no aaa root
+!
+username admin privilege 15 role network-admin secret sha512 $6$q4ez.aZgB/G/eeWW$ukvRobb5RtYmUlCcY0atxhwPmA6FPoRjR3AxYFJqNFoCRgJjrohKGrBsbY12n1uRZeCer1L8oejx5aPlrf.op0
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+hostname ord-pod1-leaf1
+spanning-tree mode mstp
+!
+management api http-commands
+   no shutdown
+!
+management api gnmi
+   transport grpc default
+!
+management api netconf
+   transport ssh default
+!
+interface Ethernet1
+   description Server: ethernet1.ord-pod1-leaf1
+!
+interface Ethernet10
+   description Uplink: ethernet10.ord-pod1-leaf1 to ethernet1.ord-pod1-spine2
+!
+interface Ethernet11
+   description Uplink: ethernet11.ord-pod1-leaf1
+!
+interface Ethernet12
+   description Uplink: ethernet12.ord-pod1-leaf1
+!
+interface Ethernet2
+   description Server: ethernet2.ord-pod1-leaf1
+!
+interface Ethernet3
+   description Server: ethernet3.ord-pod1-leaf1
+!
+interface Ethernet4
+   description Server: ethernet4.ord-pod1-leaf1
+!
+interface Ethernet5
+   description Spare: ethernet5.ord-pod1-leaf1
+!
+interface Ethernet6
+   description Spare: ethernet6.ord-pod1-leaf1
+!
+interface Ethernet7
+   description Peer: ethernet7.ord-pod1-leaf1
+!
+interface Ethernet8
+   description Peer: ethernet8.ord-pod1-leaf1
+!
+interface Ethernet9
+   description Uplink: ethernet9.ord-pod1-leaf1 to ethernet1.ord-pod1-spine1
+!
+!
+interface Management1
+   description role: management
+!
+interface loopback 1
+   description role: loopback
+!
+ip prefix-list BOGON-Prefixes seq 10 permit 172.16.0.0/12 le 24
+ip prefix-list BOGON-Prefixes seq 20 permit 192.168.0.0/16 le 24
+ip prefix-list BOGON-Prefixes seq 10 permit 172.16.0.0/12 le 24
+ip prefix-list BOGON-Prefixes seq 20 permit 192.168.0.0/16 le 24
+!
+ip routing
+!
+ip route 0.0.0.0/0 172.20.20.1
+!
+router bgp 64496
+   router-id None
+   neighbor IX_DEFAULT peer group
+   neighbor POP_GLOBAL peer group
+   neighbor POP_INTERNAL peer group
+   neighbor UPSTREAM_ARELION peer group
+   neighbor UPSTREAM_DEFAULT peer group
+!
+!
+router ospf 1
+   router-id None
+   redistribute connected
+   max-lsa 12000
+   passive-interface Loopback0
+   network 0.0.0.0/0 area 0.0.0.0
+!
+route-map BOGONS permit 10
+   match ip address prefix-list BOGON-Prefixes
+!
+route-map BOGONS deny 20
+!
+end
