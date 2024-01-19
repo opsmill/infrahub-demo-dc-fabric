@@ -3,10 +3,14 @@
 {% for intf in data.InfraDevice.edges[0].node.interfaces.edges %}
 {%   if intf.node.role.value == "loopback" %}
 {%     set ns.loopback_intf_name = intf.node.name.value %}
-{%     set ns.loopback_ip = intf.node.ip_addresses.edges[0].node.address.value.split('/')[0] %}
+{%     if intf.node.ip_addresses.edges %}
+{%       set ns.loopback_ip = intf.node.ip_addresses.edges[0].node.address.value.split('/')[0] %}
+{%     endif %}
 {%   elif intf.node.role.value == "management" %}
 {%     set ns.management_intf_name = intf.node.name.value %}
-{%     set ns.management_ip = intf.node.ip_addresses.edges[0].node.address.value.split('/')[0] %}
+{%     if intf.node.ip_addresses.edges %}
+{%       set ns.management_ip = intf.node.ip_addresses.edges[0].node.address.value.split('/')[0] %}
+{%     endif %}
 {%   endif %}
 {% endfor %}
 !
