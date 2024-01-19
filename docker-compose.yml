@@ -22,18 +22,16 @@ services:
       retries: 3
 
   database:
-    image: "${DATABASE_DOCKER_IMAGE:-neo4j:community}"
-    environment:
-      - "NEO4J_AUTH=neo4j/admin"
-      - "NEO4J_dbms_security_procedures_unrestricted=apoc.*"
-      - "NEO4J_dbms_security_auth__minimum__password__length=4"
+    image: "${DATABASE_DOCKER_IMAGE:-memgraph/memgraph:latest}"
     volumes:
-      - "./plugins:/plugins"
-      - "database_data:/data"
-      - "database_logs:/logs"
+      - database_data:/var/lib/memgraph
+      - database_logs:/var/log/memgraph
+    environment:
+      - MGCONSOLE="--username neo4j --password admin"
+      - APP_CYPHER_QUERY_MAX_LEN=10000
     healthcheck:
-      test: wget http://localhost:7474 || exit 1
-      interval: 2s
+      test: ["CMD", "bash", "-c", 'mgconsole < <(echo "SHOW TRANSACTIONS;")']
+      interval: 5s
       timeout: 10s
       retries: 20
       start_period: 3s
@@ -57,7 +55,7 @@ services:
       - "INFRAHUB_ALLOW_ANONYMOUS_ACCESS=true"
       - "PROMETHEUS_MULTIPROC_DIR=/prom_shared"
       - "INFRAHUB_FRONTEND_DIRECTORY=/opt/infrahub/frontend"
-      - "INFRAHUB_DB_TYPE=neo4j"
+      - "INFRAHUB_DB_TYPE=memgraph"
     ports:
       - "8000:8000"
     volumes:
@@ -86,7 +84,7 @@ services:
       - "INFRAHUB_LOG_LEVEL=DEBUG"
       - "INFRAHUB_SDK_API_TOKEN=${INFRAHUB_SDK_API_TOKEN}"
       - "INFRAHUB_SDK_TIMEOUT=20"
-      - "INFRAHUB_DB_TYPE=neo4j"
+      - "INFRAHUB_DB_TYPE=memgraph"
     volumes:
       - "git_data:/opt/infrahub/git"
       - "git_remote_data:/remote"
