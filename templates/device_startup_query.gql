@@ -70,18 +70,6 @@ query device_startup ($device: String!) {
       }
     }
   }
-  InfraTopology {
-    edges {
-      node {
-        dns {
-          value
-        }
-        ntp {
-          value
-        }
-      }
-    }
-  }
   InfraBGPSession(type__value: "INTERNAL") {
     edges {
       node {
