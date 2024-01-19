@@ -51,10 +51,10 @@ artifact_definitions:
     targets: "arista_devices"
     transformation: "AristaConfig"
 
-check_definitions:
-  - name: check_device_topology
-    class_name: InfrahubCheckDeviceTopology
-    file_path: "checks/check_device_topology.py"
+# check_definitions:
+#   - name: check_device_topology
+#     class_name: InfrahubCheckDeviceTopology
+#     file_path: "checks/check_device_topology.py"
 
 python_transforms:
   - name: AristaBGP
