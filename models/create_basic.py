@@ -179,7 +179,7 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
                 kind_name="InfraAutonomousSystem",
                 data=data_asn,
                 store=store,
-            batch=batch
+                batch=batch
                 )
     async for node, _ in batch.execute():
         log.info(f"- Created {node._schema.kind} - {node.name.value}")

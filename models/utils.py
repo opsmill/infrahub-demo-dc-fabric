@@ -16,8 +16,7 @@ async def upsert_object(
         data: Dict,
         store: NodeStore,
         batch: Optional[InfrahubBatch] = None,
-        upsert: Optional[bool] = True,
-        allow_update: Optional[bool] = True,
+        allow_upsert: Optional[bool] = True,
         retrived_on_failure: Optional[bool] = False,
     ) -> InfrahubNode:
     try:
@@ -26,17 +25,11 @@ async def upsert_object(
             kind=kind_name,
             data=data,
         )
-        async def save_object():
-            if upsert:
-                await obj.create(at=Timestamp(), allow_update=allow_update)
-            else:
-                await obj.save()
-
         if not batch:
-            await save_object()
+            await obj.save(allow_upsert=allow_upsert)
             log.info(f"- Created {obj._schema.kind} - {object_name}")
         else:
-            batch.add(task=save_object, node=obj)
+            batch.add(task=obj.save, allow_upsert=allow_upsert, node=obj)
         store.set(key=object_name, node=obj)
     except GraphQLError as e:
         log.info(f"- Creation failed for {obj._schema.kind} - {object_name} due to {e}" )

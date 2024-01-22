@@ -116,6 +116,57 @@ generics:
         identifier: connected__endpoint
 
 nodes:
+  - name: DeviceType
+    namespace: Infra
+    description: "A model of device"
+    label: "Device Type"
+    icon: "mdi:poll"
+    menu_placement: "InfraDevice"
+    display_labels:
+      - name__value
+    order_by:
+      - name__value
+    attributes:
+      - name: name
+        kind: Text
+        unique: true
+        order_weight: 1000
+      - name: description
+        kind: Text
+        optional: true
+        order_weight: 1100
+      - name: part_number
+        label: Part Number
+        optional: true
+        kind: Text
+        order_weight: 1200
+      - name: height
+        label: "Height (U)"
+        optional: true
+        kind: Number
+        order_weight: 1400
+      - name: full_depth
+        label: "Full Depth"
+        default_value: true
+        kind: Boolean
+        order_weight: 1500
+      - name: weight
+        label: "Weight (kg)"
+        optional: true
+        kind: Number
+        order_weight: 1600
+    relationships:
+      - name: platform
+        peer: InfraPlatform
+        cardinality: one
+        kind: Attribute
+        order_weight: 1300
+      - name: tags
+        peer: BuiltinTag
+        optional: true
+        cardinality: many
+        kind: Attribute
+        order_weight: 2000
   - name: Platform
     namespace: Infra
     description: "A Platform represent the type of software running on a device."
@@ -170,8 +221,6 @@ nodes:
       - name: description
         kind: Text
         optional: true
-      - name: type
-        kind: Text
       - name: status
         kind: Dropdown
         optional: true
@@ -249,8 +298,8 @@ nodes:
         optional: true
         cardinality: one
         kind: Attribute
-      - name: platform
-        peer: InfraPlatform
+      - name: device_type
+        peer: InfraDeviceType
         optional: true
         cardinality: one
         kind: Attribute
@@ -314,7 +363,8 @@ nodes:
     namespace: Infra
     description: "IP Address"
     label: "IP Address"
-    icon: "mdi:ip-outline"
+    icon: "mdi:ip"
+    menu_placement: "InfraPrefix"
     default_filter: address__value
     order_by:
       - "address__value"

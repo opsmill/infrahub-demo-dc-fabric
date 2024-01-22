@@ -29,8 +29,8 @@ TOPOLOGY_ELEMENT = (
     # Name, Quantity, Device Role, Device Type, Topology
     ( "spine-pod1", 2, "spine", "CCS-720DP-48S-2F", "pod1"),
     ( "leaf-pod1", 2, "leaf", "CCS-720DP-48S-2F", "pod1"),
-    ( "spine-pod2", 2, "spine", "CCS-720DP-48S-2F", "pod2"),
-    ( "leaf-pod2", 6, "leaf", "NCS-5501-SE", "pod2"),
+    ( "spine-pod2", 4, "spine", "CCS-720DP-48S-2F", "pod2"),
+    ( "leaf-pod2", 12, "leaf", "NCS-5501-SE", "pod2"),
 )
 
 DEVICE_TYPES = (

@@ -13,8 +13,8 @@ from utils import add_relationships, group_add_member, populate_local_store, ups
 # pylint: skip-file
 
 LOCATIONS_TOPOLOGIES = {
-    "atl": ["pod1"],
-    "ord": ["pod1", "pod2"]
+    # "atl": ["pod1"],
+    "ord": ["pod2"]
 }
 
 INTERFACE_MGMT_NAME = {
@@ -96,32 +96,32 @@ DEVICES_INTERFACES = {
 # 12 Interfaces to fit DEVICES_INTERFACES
 INTERFACE_ROLES_MAPPING = {
     "spine": [
-        "leaf",
-        "leaf",
-        "leaf",
-        "leaf",
-        "leaf",
-        "leaf",
-        "spare",
-        "spare",
-        "peer",
-        "peer",
-        "transit",
-        "transit",
+        "leaf",     # Ethernet1
+        "leaf",     # Ethernet2
+        "leaf",     # Ethernet3
+        "leaf",     # Ethernet4
+        "leaf",     # Ethernet5
+        "leaf",     # Ethernet6
+        "spare",    # Ethernet7
+        "spare",    # Ethernet8
+        "peer",     # Ethernet9
+        "peer",     # Ethernet10
+        "transit",  # Ethernet11
+        "transit",  # Ethernet12
     ],
     "leaf": [
-        "server",
-        "server",
-        "server",
-        "server",
-        "spare",
-        "spare",
-        "peer",
-        "peer",
-        "uplink",
-        "uplink",
-        "uplink",
-        "uplink",
+        "server",   # Ethernet1
+        "server",   # Ethernet2
+        "server",   # Ethernet3
+        "server",   # Ethernet4
+        "spare",    # Ethernet5
+        "spare",    # Ethernet6
+        "peer",     # Ethernet7
+        "peer",     # Ethernet8
+        "uplink",   # Ethernet9
+        "uplink",   # Ethernet10
+        "uplink",   # Ethernet11
+        "uplink",   # Ethernet12
     ]
 }
 
@@ -521,8 +521,10 @@ async def generate_topology(client: InfrahubClient, log: logging.Logger, branch:
                     uplink_port = leaf_uplink_interfaces[0] if spine_idx % 2 != 0 else leaf_uplink_interfaces[1]
                 else:
                     offset = (spine_pair_num - 1) * 2
-                    spine_port = leaf_uplink_interfaces[offset] if leaf_idx % 2 != 0 else leaf_uplink_interfaces[offset + 1]
-                leaf_type = "odd" if leaf_idx % 2 != 0 else "even"
+                    if spine_idx % 2 != 0:
+                        uplink_port = leaf_uplink_interfaces[offset]
+                    else:
+                        uplink_port = leaf_uplink_interfaces[offset + 1]
 
                 # Retrieve interfaces from store (as we create them above)
                 intf_spine_obj = store.get(kind="InfraInterfaceL3", key=f"{location_name}-{location_topology}-spine{spine_idx}-{spine_port}")

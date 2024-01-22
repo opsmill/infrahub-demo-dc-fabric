@@ -5,11 +5,13 @@ generics:
   - name: GenericElement
     namespace: Topology
     description: "Base model for elements"
-    label: "Generic Element"
+    label: "Generic Topology Element"
+    icon: "carbon:network-3-reference"
     default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
-    include_in_menu: false
+    include_in_menu: true
+    menu_placement: "TopologyTopology"
     attributes:
       - name: name
         kind: Text
@@ -31,10 +33,11 @@ generics:
     namespace: Topology
     description: "Generic model for network strategies (underlays and overlays)."
     label: "Network Strategy"
+    icon: "iconoir:strategy"
     default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
-    include_in_menu: false
+    include_in_menu: true
     menu_placement: "TopologyTopology"
     attributes:
       - name: name
@@ -51,64 +54,41 @@ generics:
         cardinality: one
         kind: Parent
 
-nodes:
-  - name: DeviceType
-    namespace: Template
-    description: "A model of device"
-    label: "Device Type"
-    icon: "mdi:poll"
-    menu_placement: "InfraDevice"
-    display_labels:
-      - name__value
-    order_by:
-      - name__value
+  - name: NetworkManagement
+    namespace: Topology
+    description: "Generic model for network management server (dns, ntp, and dhcp)."
+    label: "Network Management Servers"
+    default_filter: name__value
+    display_labels: [name__value]
+    order_by: [name__value]
+    include_in_menu: true
+    menu_placement: "TopologyTopology"
     attributes:
       - name: name
         kind: Text
-        unique: true
         order_weight: 1000
       - name: description
         kind: Text
-        optional: true
         order_weight: 1100
-      - name: part_number
-        label: Part Number
         optional: true
-        kind: Text
-        order_weight: 1200
-      - name: height
-        label: "Height (U)"
-        optional: true
-        kind: Number
-        order_weight: 1400
-      - name: full_depth
-        label: "Full Depth"
-        default_value: true
-        kind: Boolean
-        order_weight: 1500
-      - name: weight
-        label: "Weight (kg)"
-        optional: true
-        kind: Number
-        order_weight: 1600
     relationships:
-      - name: platform
-        peer: InfraPlatform
+      - name: topology
+        peer: TopologyTopology
+        optional: true
         cardinality: one
-        kind: Attribute
-        order_weight: 1300
-      - name: tags
-        peer: BuiltinTag
+        kind: Parent
+      - name: ip_addresses
+        peer: InfraIPAddress
         optional: true
         cardinality: many
-        kind: Attribute
-        order_weight: 2000
+        kind: Component
 
+nodes:
   - name: Topology
     namespace: Topology
     description: "A Topology represents the entire network pod."
     label: "Topology"
-    icon: "mdi:vector-triangle"
+    icon: "carbon:network-3"
     default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
@@ -134,10 +114,16 @@ nodes:
         optional: true
         cardinality: one
         kind: Component
+      - name: network_management
+        label: "Network Management Servers"
+        peer: TopologyNetworkManagement
+        optional: true
+        cardinality: many
+        kind: Component
       - name: locations
         peer: BuiltinLocation # Should be GenericLocation to use new inheritnce
         optional: true
-        cardinality: many
+        cardinality: one
         kind: Attribute
 
   # --------------------  Strategies  --------------------
@@ -145,9 +131,10 @@ nodes:
     namespace: Topology
     description: "Specific strategy attributes for MPLS."
     label: "MPLS Strategy"
+    icon: "eos-icons:neural-network"
     inherit_from:
       - TopologyNetworkStrategy
-    menu_placement: "TopologyTopology"
+    menu_placement: "TopologyNetworkStrategy"
     default_filter: name__value
     order_by: [name__value]
     attributes:
@@ -174,9 +161,10 @@ nodes:
     namespace: Topology
     description: "Specific strategy attributes for EVPN."
     label: "EVPN Strategy"
+    icon: "carbon:load-balancer-network"
     inherit_from:
       - TopologyNetworkStrategy
-    menu_placement: "TopologyTopology"
+    menu_placement: "TopologyNetworkStrategy"
     default_filter: name__value
     order_by: [name__value]
     attributes:
@@ -202,7 +190,8 @@ nodes:
     namespace: Topology
     description: "Physical aspect of topology elements."
     label: "Physical Topology Element"
-    menu_placement: "TopologyTopology"
+    icon: "carbon:network-3-reference"
+    menu_placement: "TopologyGenericElement"
     default_filter: name__value
     order_by: [name__value]
     inherit_from:
@@ -239,7 +228,7 @@ nodes:
     relationships:
       - name: device_type
         label: Type
-        peer: TemplateDeviceType
+        peer: InfraDeviceType
         optional: true
         cardinality: one
         kind: Attribute
@@ -306,12 +295,13 @@ nodes:
         kind: Component
         order_weight: 1600
 
-  # --------------------  DHCP  --------------------
+  # --------------------  Network Management  --------------------
   - name: DHCPOption
     namespace: IPAM
     description: "Represents a configurable option within a DHCP server."
     label: "DHCP Option"
-    menu_placement: "IPAMDHCPServer"
+    icon: "gis:globe-options"
+    menu_placement: "TopologyNetworkManagement"
     default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
@@ -334,17 +324,14 @@ nodes:
     namespace: IPAM
     description: "Represents a DHCP server in the network."
     label: "DHCP Server"
+    icon: "eos-icons:ip"
+    menu_placement: "TopologyNetworkManagement"
     default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
+    inherit_from:
+      - TopologyNetworkManagement
     attributes:
-      - name: name
-        kind: Text
-        order_weight: 1000
-      - name: description
-        kind: Text
-        optional: true
-        order_weight: 1100
       - name: lease_time
         kind: Text
         order_weight: 2100
@@ -364,8 +351,55 @@ nodes:
         optional: true
         cardinality: many
         kind: Component
-      - name: ip_addresses
-        peer: InfraIPAddress
-        optional: true
-        cardinality: many
-        kind: Component
+
+  - name: NameServer
+    namespace: IPAM
+    description: "Represents a DNS server in the network."
+    label: "DNS Server"
+    icon: "eos-icons:dns"
+    menu_placement: "TopologyNetworkManagement"
+    default_filter: name__value
+    display_labels: [name__value]
+    order_by: [name__value]
+    inherit_from:
+      - TopologyNetworkManagement
+    attributes:
+      # - name: lease_time
+      #   kind: Text
+      #   order_weight: 2100
+      - name: status
+        kind: Dropdown
+        choices:
+          - name: active
+            label: Active
+          - name: inactive
+            label: Inactive
+          - name: fault
+            label: Fault
+        order_weight: 2000
+
+  - name: NTPServer
+    namespace: IPAM
+    description: "Represents a NTP server in the network."
+    label: "NTP Server"
+    icon: "iconoir:time-zone"
+    menu_placement: "TopologyNetworkManagement"
+    default_filter: name__value
+    display_labels: [name__value]
+    order_by: [name__value]
+    inherit_from:
+      - TopologyNetworkManagement
+    attributes:
+      # - name: lease_time
+      #   kind: Text
+      #   order_weight: 2100
+      - name: status
+        kind: Dropdown
+        choices:
+          - name: active
+            label: Active
+          - name: inactive
+            label: Inactive
+          - name: fault
+            label: Fault
+        order_weight: 2000
