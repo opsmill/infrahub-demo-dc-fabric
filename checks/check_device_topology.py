@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 from infrahub.checks import InfrahubCheck
 
 
@@ -7,12 +5,12 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
 
     query = "check_device_topology"
 
-    def validate(self):
+    def validate(self, data):
 
         device_roles = {}
         expected_roles = {}
 
-        for device in self.data["data"]["InfraDevice"]["edges"]:
+        for device in data["data"]["InfraDevice"]["edges"]:
             role = device["node"]["role"]["value"]
             site = device["node"]["site"]["node"]["name"]["value"]
 
@@ -24,7 +22,7 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
             else:
                 device_roles[site][role] = 1
 
-        for element in self.data["data"]["InfraTopologyElement"]["edges"]:
+        for element in data["data"]["InfraTopologyElement"]["edges"]:
             expected_role = element["node"]["name"]["value"]
             expected_roles[expected_role] = element["node"]["amount"]["value"]
 
