@@ -1,4 +1,4 @@
-query device_startup_info ($device: String!) {
+query device_info ($device: String!) {
   InfraDevice(name__value: $device) {
     edges {
       node {
