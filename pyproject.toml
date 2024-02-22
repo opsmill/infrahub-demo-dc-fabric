@@ -6,7 +6,7 @@ authors = ["OpsMill <info@opsmill.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10, < 3.12"
-infrahub-sdk = "^0, >=0.3.0"
+infrahub-sdk = "^0, >=0.6.0"
 invoke = "^2.1.2"
 nornir-infrahub = "^0, >=0.2.2"
 ansible-core = "2.14"
