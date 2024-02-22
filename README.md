@@ -96,7 +96,7 @@ export INFRAHUB_API="http://localhost:8000"
 export INFRAHUB_TOKEN="06438eb2-8019-4776-878c-0941b1f1d1ec"
 export INFRAHUB_SDK_API_TOKEN="06438eb2-8019-4776-878c-0941b1f1d1ec"
 export INFRAHUB_DOCKER_IMAGE="9r2s1098.c1.gra9.container-registry.ovh.net/opsmill/infrahub:0.8.2"
-export DATABASE_DOCKER_IMAGE="neo4j:5.13-community"
+export DATABASE_DOCKER_IMAGE="neo4j:5.16-community"
 export INFRAHUB_SECURITY_SECRET_KEY="327f747f-efac-42be-9e73-999f08f86b92"
 export CACHE_DOCKER_IMAGE="redis:7.2"
 export MESSAGE_QUEUE_IMAGE="rabbitmq:3.12-management"
@@ -105,41 +105,27 @@ export LINUX_HOST_DOCKER_IMAGE="9r2s1098.c1.gra9.container-registry.ovh.net/exte
 ```
 
 - Have Infrahub running on your computer, you can run `docker-compose up -d` or use `.devcontainer/onCreateCommand.sh`
-- Have the base schema loaded, you can run `docker compose run infrahub-git infrahubctl schema load /source/models/infrastructure_base.yml` or use `.devcontainer/postCreateCommand.sh`
 
 ## Installation Steps
 
 ### 1. Export Infrahub env variable needed for infrahubctl
 
-```sh
+```shell
 export INFRAHUB_ADDRESS="http://localhost:8000"
 export INFRAHUB_API_TOKEN=06438eb2-8019-4776-878c-0941b1f1d1ec
 ```
 
-### 2. Load Base and Topology schema
+### 2. Load Base and Topology schema, and demo data
 
-```sh
-poetry run infrahubctl schema load models
-```
-### 3. Create Data
+This will create :
+- Basics data (Account, organization, ASN, Device Type, and Tags)
+- Locations data (Locations, VLANs, and Prefixes)
+- Topology data (Topoogy, Topology Elements)
 
-#### 3.a. Create the basics data (Account, organization, ASN, Tags)
-
-```sh
-poetry run infrahubctl run models/create_basic.py
+```shell
+./.devcontainer/postCreateCommand.sh
 ```
 
-#### 3.b. Create the locations (Locations, VLANs, Prefixes)
-
-```sh
-poetry run infrahubctl run models/create_location.py
-```
-
-#### 3.c. Create the topology (Topoogy, Topology Elements, Device Type, BGP Peer Groups)
-
-```sh
-poetry run infrahubctl run models/create_topology.py
-```
 
 ### 4. Add the repository into Infrahub (Replace GITHUB_USER and GITHUB_TOKEN)
 
@@ -163,12 +149,12 @@ mutation {
 
 ### 5. Generate the topology devices, cables and iBGP sessions
 
-```sh
-poetry run infrahubctl run models/generate_devices_from_topology.py
+```shell
+poetry run infrahubctl run generators/generate_topology.py
 ```
 
 
-### 6. Rfiles
+### 6. Transform Python & Jinja
 ```shell
 infrahubctl render device_startup device=atl-spine1
 ```

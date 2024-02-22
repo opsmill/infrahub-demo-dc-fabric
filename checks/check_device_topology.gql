@@ -1,0 +1,87 @@
+query check_device_topology {
+  InfraDevice {
+    edges {
+      node {
+        id
+        name {
+          value
+        }
+        role {
+          value
+        }
+        device_type {
+          node {
+            name {
+              value
+            }
+          }
+        }
+        location {
+          node {
+            name {
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+  CoreStandardGroup {
+    edges {
+      node {
+        name {
+          value
+        }
+        members {
+          edges {
+            node {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+  TopologyTopology {
+    edges {
+      node {
+        id
+        name {
+          value
+        }
+        elements {
+          edges {
+            node {
+              id
+              name {
+                value
+              }
+              quantity {
+                value
+              }
+              ... on TopologyPhysicalElement {
+                device_role {
+                  value
+                }
+                device_type {
+                  node {
+                    name {
+                      value
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        location {
+          node {
+            name {
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+}
