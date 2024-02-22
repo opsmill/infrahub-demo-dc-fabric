@@ -1,6 +1,6 @@
-{% if data.data.InfraDevice.edges and data.data.InfraDevice.edges is iterable %}
 {% set ns = namespace(loopback_intf_name=None, loopback_ip=None, management_intf_name=None, management_ip=None, ntp_servers=[], name_servers=[]) %}
-{%   for ancestor_edge in data.data.InfraDevice.edges[0].node.location.node.ancestors.edges %}
+{% if data.InfraDevice.edges and data.InfraDevice.edges is iterable %}
+{%   for ancestor_edge in data.InfraDevice.edges[0].node.location.node.ancestors.edges %}
 {%      for server_edge in ancestor_edge.node.network_management_servers.edges %}
 {%         if server_edge.node.__typename == 'NetworkNTPServer' %}
 {%            set _ = ns.ntp_servers.append(server_edge.node.name.value) %}
@@ -9,69 +9,69 @@
 {%         endif %}
 {%      endfor %}
 {%   endfor %}
-{% for intf in data.data.InfraDevice.edges[0].node.interfaces.edges %}
-{%   if intf.node.role.value == "loopback" %}
-{%     set ns.loopback_intf_name = intf.node.name.value %}
-{%     if intf.node.ip_addresses.edges %}
-{%       set ns.loopback_ip = intf.node.ip_addresses.edges[0].node.address.ip %}
-{%     endif %}
-{%   elif intf.node.role.value == "management" %}
-{%     set ns.management_intf_name = intf.node.name.value %}
-{%     if intf.node.ip_addresses.edges %}
-{%       set ns.management_ip = intf.node.ip_addresses.edges[0].node.address.ip %}
-{%       set broadcast_address = intf.node.ip_addresses.edges[0].node.prefix.node.prefix.broadcast_address %}
-{%       set octets = broadcast_address.split('.') %}
-{%       set last_octet = octets[3] | int - 1 %}
-{%       set ns.mangement_gw_ip = octets[0] ~ '.' ~ octets[1] ~ '.' ~ octets[2] ~ '.' ~ last_octet | string %}
-{%     endif %}
-{%   endif %}
-{% endfor %}
+{%   for intf in data.InfraDevice.edges[0].node.interfaces.edges %}
+{%      if intf.node.role.value == "loopback" %}
+{%         set ns.loopback_intf_name = intf.node.name.value %}
+{%         if intf.node.ip_addresses.edges %}
+{%            set ns.loopback_ip = intf.node.ip_addresses.edges[0].node.address.ip %}
+{%         endif %}
+{%      elif intf.node.role.value == "management" %}
+{%         set ns.management_intf_name = intf.node.name.value %}
+{%         if intf.node.ip_addresses.edges %}
+{%            set ns.management_ip = intf.node.ip_addresses.edges[0].node.address.ip %}
+{%            set broadcast_address = intf.node.ip_addresses.edges[0].node.prefix.node.prefix.broadcast_address %}
+{%            set octets = broadcast_address.split('.') %}
+{%            set last_octet = octets[3] | int - 1 %}
+{%            set ns.mangement_gw_ip = octets[0] ~ '.' ~ octets[1] ~ '.' ~ octets[2] ~ '.' ~ last_octet | string %}
+{%         endif %}
+{%      endif %}
+{%   endfor %}
 
 ! Device Basic Configuration
-hostname {{ data.data.InfraDevice.edges[0].node.name.value }}
+hostname {{ data.InfraDevice.edges[0].node.name.value }}
 !
-{% for ntp_server in ns.ntp_servers %}
-ntp server {{ ntp_server }}
-{% endfor %}
+{%   if ns.ntp_servers %}
+{%      for ntp_server in ns.ntp_servers %}
+ntp server  {{ ntp_server }}
+{%      endfor %}
+{%   endif %}
 !
-{% for name_server in ns.name_servers %}
+{%   if ns.name_servers %}
+{%      for name_server in ns.name_servers %}
 ip name-server {{ name_server }}
-{% endfor %}
+{%      endfor %}
+{%   endif %}
 !
 ! Interface Configuration
-{% for intf in data.data.InfraDevice.edges[0].node.interfaces.edges %}
+{%   for intf in data.InfraDevice.edges[0].node.interfaces.edges %}
 interface {{ intf.node.name.value }}
-{%   if intf.node.description.value %}
+{%      if intf.node.description.value %}
   description "{{ intf.node.description.value }}"
-{%   endif %}
-{%   if not intf.node.enabled.value %}
+{%      endif %}
+{%      if not intf.node.enabled.value %}
   shutdown
-{%   endif %}
-{%   if intf.node.role.value == 'loopback' %}
-{%   set ns.loopback_intf_name = intf.node.name.value %}
-{%     if intf.node.ip_addresses.edges %}
-{%     set ns.loopback_ip = intf.node.ip_addresses.edges[0].node.address.ip %}
-    ip address {{ ns.loopback_ip }}
-{%     endif %}
-{%   elif intf.node.role.value == 'management' %}
-{%   set ns.management_intf_name = intf.node.name.value %}
-{%     if intf.node.ip_addresses.edges %}
-{%     set ns.management_ip = intf.node.ip_addresses.edges[0].node.address.ip %}
-    ip address {{ ns.management_ip }}
-{%     endif %}
-{%   endif %}
+{%      endif %}
+{%      if intf.node["ip_addresses"] %}
+{%         for ip in intf.node["ip_addresses"]["edges"] %}
+   ip address {{ ip.node["address"]["value"] }}
+   no switchport
+{%            if intf.node.role.value == "peer" or intf.node.role.value == "backbone" %}
+   ip ospf network point-to-point
+{%            endif %}
+{%         endfor %}
+{%      endif %}
 !
-{% endfor %}
-
-! BGP Configuration
-{% if data.data.InfraDevice.edges[0].node.asn %}
-router bgp {{ data.data.InfraDevice.edges[0].node.asn.node.asn.value }}
+{%   endfor %}
+!
+ip routing
+!
+ip route 0.0.0.0/0 {{ ns.mangement_gw_ip }}
+!
+{%   if data.InfraDevice.edges[0].node.asn %}
+router bgp {{ data.InfraDevice.edges[0].node.asn.node.asn.value }}
    router-id {{ ns.loopback_ip }}
-   ! Define your BGP neighbors and policies here
-   ! neighbor <neighbor-ip> remote-as <neighbor-asn>
-   ! Additional neighbor configurations
-{% endif %}
-
+!
+{%   endif %}
 {% else %}
 {# Warning: No Device found with this name #}
 {% endif %}

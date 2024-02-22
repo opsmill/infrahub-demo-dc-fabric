@@ -25,12 +25,9 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
 
             if group_name not in group_devices:
                 self.log_error(
-                    message=f"No corresponding group found for topology {topology_name}.",
-                    object_id=topology_name,
-                    object_type="group_not_found"
+                    message=f"No corresponding group found for topology {topology_name}."
                 )
                 continue
-
             group_device_ids = group_devices[group_name]
             expected_role_device_counts = {}
 
@@ -67,17 +64,14 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
                         self.log_error(
                             message=f"{topology_name} has an odd number of Elements for role {role}. Expected: {expected_count}"
                         )
-                    if expected_count != actual_count and actual_count > 0:
-                        self.log_error(
-                            message=f"{topology_name} has mismatched quantity of {expected_type} devices with role {role}. Expected: {expected_count}, Actual: {actual_count}"
-                        )
-                    elif expected_type not in actual_role_device_counts.get(role, {}) and unexpected_types:
+                    if actual_count > 0:
+                        if expected_count != actual_count:
+                            self.log_error(
+                                message=f"{topology_name} has mismatched quantity of {expected_type} devices with role {role}. Expected: {expected_count}, Actual: {actual_count}"
+                            )
+                    if expected_type not in actual_role_device_counts.get(role, {}) and unexpected_types:
                         unexpected_types_str = ", ".join(unexpected_types)
                         self.log_error(
                             message=f"{topology_name} expected {expected_type} devices with role {role}, but found different type(s): {unexpected_types_str}."
                         )
-                    # It's normal when a TopologyTopology is not generated
-                    # if not unexpected_types:
-                    #     self.log_info(
-                    #         message=f"{topology_name} expected {expected_type} devices with role {role}, but none were found and no alternative types are present."
-                    #     )
+

@@ -1,19 +1,12 @@
 ---
-check_definitions:
-  - name: "check_device_topology"
-    class_name: "InfrahubCheckDeviceTopology"
-    parameters:
-      topology_name: "name__value"
-    file_path: "checks/check_device_topology.py"
-
 jinja2_transforms:
   - name: "device_cisco"
-    description: "Template to generate startup configuration for network devices"
+    description: "Template to generate startup configuration for Cisco devices"
     query: "device_info"
     template_path: "templates/device_cisco_config.tpl.j2"
 
   - name: "device_arista"
-    description: "Template to generate startup configuration for network devices"
+    description: "Template to generate startup configuration for Arista devices"
     query: "device_info"
     template_path: "templates/device_arista_config.tpl.j2"
 
@@ -45,6 +38,11 @@ artifact_definitions:
     content_type: "text/plain"
     targets: "arista_devices"
     transformation: "device_arista"
+
+check_definitions:
+  - name: "check_device_topology"
+    class_name: "InfrahubCheckDeviceTopology"
+    file_path: "checks/check_device_topology.py"
 
 python_transforms:
   - name: OCInterfaces
