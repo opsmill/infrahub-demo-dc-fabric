@@ -68,9 +68,8 @@ interface {{ intf.node.name.value }}
 router bgp {{ data.data.InfraDevice.edges[0].node.asn.node.asn.value }}
    router-id {{ ns.loopback_ip }}
    ! Define your BGP neighbors and policies here
-   neighbor <neighbor-ip> remote-as <neighbor-asn>
+   ! neighbor <neighbor-ip> remote-as <neighbor-asn>
    ! Additional neighbor configurations
-   ...
 {% endif %}
 
 {% else %}
