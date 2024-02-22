@@ -1,5 +1,5 @@
-query topology_info {
-  InfraDevice {
+query topology_info ($topology_name: String!) {
+  InfraDevice(member_of_groups__name__value: $topology_name) {
     edges {
       node {
         name {
@@ -9,6 +9,7 @@ query topology_info {
           edges {
             node {
               id
+              name {value}
               role {
                 value
               }
@@ -18,6 +19,26 @@ query topology_info {
                     node {
                       address {
                         value
+                      }
+                    }
+                  }
+                }
+              }
+              enabled { value}
+              ... on InfraEndpoint {
+                connected_endpoint {
+                  node {
+                    id
+                    ... on InfraInterface {
+                      name {
+                        value
+                      }
+                      device {
+                        node {
+                          name {
+                            value
+                          }
+                        }
                       }
                     }
                   }

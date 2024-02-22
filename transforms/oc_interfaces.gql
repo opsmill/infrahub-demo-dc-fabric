@@ -1,5 +1,5 @@
-query oc_interfaces ($device_name: String!) {
-  InfraDevice(name__value: $device_name) {
+query oc_interfaces ($device: String!) {
+  InfraDevice(name__value: $device) {
     edges {
       node {
         id

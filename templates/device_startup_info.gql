@@ -1,5 +1,5 @@
-query device_startup_info ($device_name: String!) {
-  InfraDevice(name__value: $device_name) {
+query device_startup_info ($device: String!) {
+  InfraDevice(name__value: $device) {
     edges {
       node {
         id

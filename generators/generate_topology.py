@@ -111,8 +111,8 @@ INTERFACE_ROLES_MAPPING = {
         "leaf",     # Ethernet8  - leaf8 (L3)
         "peer",     # Ethernet9  - spine (L2)
         "peer",     # Ethernet10 - spine (L2)
-        "transit",  # Ethernet11
-        "transit",  # Ethernet12
+        "upstream",  # Ethernet11
+        "upstream",  # Ethernet12
         "spare",    # Ethernet13
         "spare",    # Ethernet14
     ],
@@ -136,7 +136,7 @@ INTERFACE_ROLES_MAPPING = {
 
 L3_ROLE_MAPPING = [
     "backbone",
-    "transit",
+    "upstream",
     "peering",
     "uplink",
     "leaf"
@@ -325,7 +325,6 @@ async def generate_topology(client: InfrahubClient, log: logging.Logger, branch:
 
     loopback_address_pool = location_loopback_net_pool[0].prefix.value.hosts()
     mgmt_address_pool = location_mgmt_net_pool[0].prefix.value.hosts()
-    location_external_net_pool_iter = iter(list(location_external_net[0].prefix.value.subnets(new_prefix=31)))
     topology_elements = await client.filters(kind="TopologyPhysicalElement", topology__ids=topology.id, populate_store=True, prefetch_relationships=True)
 
     batch = await client.create_batch()
@@ -510,48 +509,6 @@ async def generate_topology(client: InfrahubClient, log: logging.Logger, branch:
                     store=store,
                     batch=batch
                 )
-    async for response, _ in batch.execute():
-        log.info(f"Created {response}")
-
-    batch = await client.create_batch()
-    for topology_element in topology_elements:
-        if not topology_element.device_type:
-            log.info(f"No device_type for {topology_element.name.value} - Ignored")
-            continue
-        device_type = await client.get(ids=topology_element.device_type.id, kind="InfraDeviceType")
-        if not device_type.platform.id:
-            log.info(f"No platform for {device_type.name.value} - Ignored")
-            continue
-        for id in range(1, int(topology_element.quantity.value)+1):
-            if device_role_name.lower() not in ["spine", "leaf"]:
-                continue
-
-            for intf_idx, intf_name in enumerate(DEVICES_INTERFACES[device_type_name]):
-                intf_role = INTERFACE_ROLES_MAPPING[device_role_name.lower()][intf_idx]
-                interface_description = f"{intf_role.title()}: {intf_name.lower().replace(' ', '')}.{device_name.lower()}"
-
-                # Creation IP for some L3 Interface
-                # FIXME Get back the prefix reference
-                if intf_role in ["upstream", "transit"]:
-                    ico_hosts = list(next(location_external_net_pool_iter).hosts())
-                    address = f"{str(ico_hosts[0])}/31"
-                    # peer_address = f"{str(ico_hosts[1])}/31"
-                    if not address:
-                        continue
-                    await upsert_ip_address(
-                        client=client,
-                        log=log,
-                        branch=branch,
-                        prefix_obj=None,
-                        device_name=device_name,
-                        interface_obj=interface_obj,
-                        description=interface_description,
-                        account_pop_id=account_pop.id,
-                        address=address,
-                        store=store,
-                        batch=batch
-                        )
-
     async for response, _ in batch.execute():
         log.info(f"Created {response}")
 
@@ -765,8 +722,14 @@ async def generate_topology(client: InfrahubClient, log: logging.Logger, branch:
     async for response, _ in batch.execute():
         log.info(f"Created {response}")
 
-    #   ---------- iBGP Logic    ----------
-    # Create iBGP Sessions within the Site
+    #   -------------------- iBGP Spines & Leafs --------------------
+    #   - iBGP Sessions within the Site (Spines <-> Spines, Spines <-> Leaf)
+    # TODO
+
+    #   -------------------- eBGP Upstream --------------------
+    #   - Cabling Spines Transit / Provider Network
+    #   - Add public/external IP to Spines
+    #   - Add public/external IP to Spines
     # TODO
 
     return location_shortname
@@ -829,6 +792,7 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str, **kwargs
     # ------------------------------------------
     # Create Topology
     # ------------------------------------------
+    topology_name= None
     if "topology" in kwargs:
         topology_name = kwargs["topology"]
     if not topology_name:
