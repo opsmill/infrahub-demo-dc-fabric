@@ -1,6 +1,6 @@
-{% if data.data.InfraDevice.edges and data.data.InfraDevice.edges is iterable %}
+{% if data.InfraDevice.edges and data.InfraDevice.edges is iterable %}
 {% set ns = namespace(loopback_intf_name=None, loopback_ip=None, management_intf_name=None, management_ip=None, ntp_servers=[], name_servers=[]) %}
-{%   for ancestor_edge in data.data.InfraDevice.edges[0].node.location.node.ancestors.edges %}
+{%   for ancestor_edge in data.InfraDevice.edges[0].node.location.node.ancestors.edges %}
 {%      for server_edge in ancestor_edge.node.network_management_servers.edges %}
 {%         if server_edge.node.__typename == 'NetworkNTPServer' %}
 {%            set _ = ns.ntp_servers.append(server_edge.node.name.value) %}
@@ -9,7 +9,7 @@
 {%         endif %}
 {%      endfor %}
 {%   endfor %}
-{% for intf in data.data.InfraDevice.edges[0].node.interfaces.edges %}
+{% for intf in data.InfraDevice.edges[0].node.interfaces.edges %}
 {%   if intf.node.role.value == "loopback" %}
 {%     set ns.loopback_intf_name = intf.node.name.value %}
 {%     if intf.node.ip_addresses.edges %}
@@ -35,7 +35,7 @@ transceiver qsfp default-mode 4x10G
 !
 service routing protocols model multi-agent
 !
-hostname {{ data.data.InfraDevice.edges[0].node.name.value }}
+hostname {{ data.InfraDevice.edges[0].node.name.value }}
 !
 {% if ns.ntp_servers %}
 {%   for ntp_server in ns.ntp_servers %}
@@ -60,7 +60,7 @@ management api gnmi
 management api netconf
    transport ssh default
 !
-{% for intf in data.data.InfraDevice.edges[0].node.interfaces.edges %}
+{% for intf in data.InfraDevice.edges[0].node.interfaces.edges %}
 interface {{ intf.node.name.value }}
 {%   if intf.node["description"]["value"] %}
    description "{{ intf.node["description"]["value"] }}"
@@ -92,8 +92,8 @@ ip routing
 !
 ip route 0.0.0.0/0 {{ ns.mangement_gw_ip }}
 !
-{% if data.data.InfraDevice.edges[0].node.asn %}
-router bgp {{ data.data.InfraDevice.edges[0].node.asn.node.asn.value }}
+{% if data.InfraDevice.edges[0].node.asn %}
+router bgp {{ data.InfraDevice.edges[0].node.asn.node.asn.value }}
    router-id {{ ns.loopback_ip }}
 !
 {% endif %}
