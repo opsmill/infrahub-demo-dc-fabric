@@ -1,6 +1,6 @@
-{% if data.InfraDevice.edges and data.InfraDevice.edges is iterable %}
+{% if data.data.InfraDevice.edges and data.data.InfraDevice.edges is iterable %}
 {% set ns = namespace(loopback_intf_name=None, loopback_ip=None, management_intf_name=None, management_ip=None, ntp_servers=[], name_servers=[]) %}
-{%   for ancestor_edge in data.InfraDevice.edges[0].node.location.node.ancestors.edges %}
+{%   for ancestor_edge in data.data.InfraDevice.edges[0].node.location.node.ancestors.edges %}
 {%      for server_edge in ancestor_edge.node.network_management_servers.edges %}
 {%         if server_edge.node.__typename == 'NetworkNTPServer' %}
 {%            set _ = ns.ntp_servers.append(server_edge.node.name.value) %}
@@ -9,7 +9,7 @@
 {%         endif %}
 {%      endfor %}
 {%   endfor %}
-{% for intf in data.InfraDevice.edges[0].node.interfaces.edges %}
+{% for intf in data.data.InfraDevice.edges[0].node.interfaces.edges %}
 {%   if intf.node.role.value == "loopback" %}
 {%     set ns.loopback_intf_name = intf.node.name.value %}
 {%     if intf.node.ip_addresses.edges %}
@@ -28,7 +28,7 @@
 {% endfor %}
 
 ! Device Basic Configuration
-hostname {{ data.InfraDevice.edges[0].node.name.value }}
+hostname {{ data.data.InfraDevice.edges[0].node.name.value }}
 !
 {% for ntp_server in ns.ntp_servers %}
 ntp server {{ ntp_server }}
@@ -39,7 +39,7 @@ ip name-server {{ name_server }}
 {% endfor %}
 !
 ! Interface Configuration
-{% for intf in data.InfraDevice.edges[0].node.interfaces.edges %}
+{% for intf in data.data.InfraDevice.edges[0].node.interfaces.edges %}
 interface {{ intf.node.name.value }}
 {%   if intf.node.description.value %}
   description "{{ intf.node.description.value }}"
@@ -64,8 +64,8 @@ interface {{ intf.node.name.value }}
 {% endfor %}
 
 ! BGP Configuration
-{% if data.InfraDevice.edges[0].node.asn %}
-router bgp {{ data.InfraDevice.edges[0].node.asn.node.asn.value }}
+{% if data.data.InfraDevice.edges[0].node.asn %}
+router bgp {{ data.data.InfraDevice.edges[0].node.asn.node.asn.value }}
    router-id {{ ns.loopback_ip }}
    ! Define your BGP neighbors and policies here
    ! neighbor <neighbor-ip> remote-as <neighbor-asn>
