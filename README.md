@@ -115,7 +115,12 @@ export INFRAHUB_ADDRESS="http://localhost:8000"
 export INFRAHUB_API_TOKEN=06438eb2-8019-4776-878c-0941b1f1d1ec
 ```
 
-### 2. Load Base and Topology schema, and demo data
+### 2. Install Infrahub SDK and other dependencies
+```shell
+poetry install --no-interaction --no-ansi --no-root
+```
+
+### 3. Load Base and Topology schema, and demo data
 
 This will create :
 - Basics data (Account, organization, ASN, Device Type, and Tags)
@@ -125,7 +130,6 @@ This will create :
 ```shell
 ./.devcontainer/postCreateCommand.sh
 ```
-
 
 ### 4. Add the repository into Infrahub (Replace GITHUB_USER and GITHUB_TOKEN)
 
