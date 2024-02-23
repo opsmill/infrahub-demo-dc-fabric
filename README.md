@@ -120,6 +120,10 @@ export INFRAHUB_API_TOKEN=06438eb2-8019-4776-878c-0941b1f1d1ec
 poetry install --no-interaction --no-ansi --no-root
 ```
 
+> [!NOTE] 
+> If you run in to a poetry error "Failed to unlock the collection!" you can use a [a shell variable export workaround](https://stackoverflow.com/questions/74438817/poetry-failed-to-unlock-the-collection)
+
+
 ### 3. Load Base and Topology schema, and demo data
 
 This will create :
@@ -132,6 +136,11 @@ This will create :
 ```
 
 ### 4. Add the repository into Infrahub (Replace GITHUB_USER and GITHUB_TOKEN)
+
+You can do this in multiple ways:
+
+* Via the [GraphQL UI](http://<IP ADDRESS>:8000/graphql)
+* Via the [Infrahub WebUI](http://<IP ADDRESS>:8000/objects/CoreRepository)
 
 ```graphql
 mutation {
@@ -153,14 +162,17 @@ mutation {
 
 ### 5. Generate the topology devices, cables and iBGP sessions
 
+> [!NOTE]
+> The example below uses a sample topology
+
 ```shell
-poetry run infrahubctl run generators/generate_topology.py
+poetry run infrahubctl run generators/generate_topology.py topology=de1-pod1
 ```
 
 
 ### 6. Transform Python & Jinja
 ```shell
-infrahubctl render device_startup device=atl-spine1
+poetry run infrahubctl render device_arista device=atl-spine1
 ```
 
 ### 7. Show a proposed change
