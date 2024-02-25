@@ -6,89 +6,10 @@
 
 The infrahub-demo-dc-fabric repository demonstrates the capabilities to use Infrahub with Arista AVD. Infrahub generates configurations which AVD deploys
 
-```
-.
-├── .devcontainer
-│   ├── Dockerfile
-│   ├── devcontainer.json
-│   ├── onCreateCommand.sh
-│   ├── plugins
-│   │   └── apoc-5.6.0-core.jar
-│   ├── postAttachCommand.sh
-│   └── postCreateCommand.sh
-│
-├── README.md
-├── ansible-requirements.yml
-├── ansible.cfg
-│
-├── checks
-│   ├── check_device_topology.gql
-│   └── check_device_topology.py
-│
-├── docker-compose.yml
-│
-├── generated-configs
-│   ├── clab
-│   │   └── clab_topology.yml
-│   ├── isis
-│   │   ├── atl-leaf1.cfg
-│   │   ├── atl-leaf2.cfg
-│   │   ├── atl-leaf3.cfg
-│   │   ├── atl-leaf4.cfg
-│   │   ├── atl-spine1.cfg
-│   │   └── atl-spine2.cfg
-│   └── startup
-│       ├── atl-leaf1.cfg
-│       ├── atl-leaf2.cfg
-│       ├── atl-leaf3.cfg
-│       ├── atl-leaf4.cfg
-│       ├── atl-spine1.cfg
-│       └── atl-spine2.cfg
-│
-├── infrahub-demo-dc-fabric.excalidraw.svg
-│
-├── models
-│   ├── infrastructure_base.yml
-│   ├── infrastructure_devices.py
-│   ├── infrastructure_devices_2.py
-│   ├── infrastructure_topology.py
-│   └── infrastructure_topology.yml
-│
-├── playbooks
-│   ├── artifact-configs.yml
-│   ├── avd-checks.yml
-│   ├── avd-config.yml
-│   ├── group_vars
-│   │   └── all.yaml
-│   ├── inventory.yml
-│   ├── query.yml
-│   └── startup-configs.yml
-│
-├── plugins
-├── poetry.lock
-├── pyproject.toml
-├── templates
-│   ├── clab_topology.j2
-│   ├── device_startup_config.j2
-│   ├── device_startup_config_isis.j2
-│   ├── device_startup_query.gql
-│   └── topology_info_query.gql
-│
-├── topology
-│   ├── ceos.cfg.tpl
-│   └── demo.clab.yml
-│
-└── transforms
-    ├── __init__.py
-    ├── avd_bgp.gql
-    ├── avd_config.gql
-    ├── avd_config.py
-    └── avdbgp.py
-```
-
 ## Getting Started
 
 ### Prerequisites
+
 - If you are not using devcontainer, you will need to export those variables before the `docker-compose` :
 
 ```shell
@@ -116,6 +37,7 @@ export INFRAHUB_API_TOKEN=06438eb2-8019-4776-878c-0941b1f1d1ec
 ```
 
 ### 2. Install Infrahub SDK and other dependencies
+
 ```shell
 poetry install --no-interaction --no-ansi --no-root
 ```
@@ -123,15 +45,19 @@ poetry install --no-interaction --no-ansi --no-root
 ### 3. Load Base and Topology schema, and demo data
 
 This will create :
+
 - Basics data (Account, organization, ASN, Device Type, and Tags)
 - Locations data (Locations, VLANs, and Prefixes)
-- Topology data (Topoogy, Topology Elements)
+- Topology data (Topology, Topology Elements)
 
 ```shell
 ./.devcontainer/postCreateCommand.sh
 ```
 
 ### 4. Add the repository into Infrahub (Replace GITHUB_USER and GITHUB_TOKEN)
+
+> [!NOTE]
+> Reference the [Infrahub documentation](https://docs.infrahub.app/guides/repository) for the multiple ways this can be done.
 
 ```graphql
 mutation {
@@ -153,20 +79,25 @@ mutation {
 
 ### 5. Generate the topology devices, cables and iBGP sessions
 
+> [!NOTE]
+> The example below creates the topology de1-pod1
+
 ```shell
-poetry run infrahubctl run generators/generate_topology.py
+poetry run infrahubctl run generators/generate_topology.py topology=de1-pod1
 ```
 
-
 ### 6. Transform Python & Jinja
+
 ```shell
-infrahubctl render device_startup device=atl-spine1
+poetry run infrahubctl render device_arista device=atl-spine1
 ```
 
 ### 7. Show a proposed change
-  - All checks here should pass
+
+- All checks here should pass
 
 ### 8. Show a check
-  - Delete a device via the UI
-  - Create a PC
-  - Check should fail now
+
+- Delete a device via the UI
+- Create a PC
+- Check should fail now
