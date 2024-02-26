@@ -9,7 +9,7 @@ class OCInterfaces(InfrahubTransform):
         response_payload = {}
         response_payload["openconfig-interfaces:interface"] = []
 
-        for intf in data["data"]["InfraDevice"]["edges"][0]["node"]["interfaces"]["edges"]:
+        for intf in data["InfraDevice"]["edges"][0]["node"]["interfaces"]["edges"]:
 
             intf_name = intf["node"]["name"]["value"]
 
