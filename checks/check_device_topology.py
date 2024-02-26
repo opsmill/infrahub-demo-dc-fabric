@@ -9,14 +9,14 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
 
     def validate(self, data):
         # Extract Topology and Group data
-        topologies = data["data"]["TopologyTopology"]["edges"]
-        groups = data["data"]["CoreStandardGroup"]["edges"]
+        topologies = data["TopologyTopology"]["edges"]
+        groups = data["CoreStandardGroup"]["edges"]
 
         # Map of group names to device IDs
         group_devices = {group["node"]["name"]["value"]: {edge["node"]["id"] for edge in group["node"]["members"]["edges"] if edge["node"]} for group in groups}
 
         # Map of device IDs to device info
-        device_map = {edge["node"]["id"]: edge["node"] for edge in data["data"]["InfraDevice"]["edges"]}
+        device_map = {edge["node"]["id"]: edge["node"] for edge in data["InfraDevice"]["edges"]}
 
         for topology_edge in topologies:
             topology_node = topology_edge["node"]
