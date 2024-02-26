@@ -74,4 +74,3 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
                         self.log_error(
                             message=f"{topology_name} expected {expected_type} devices with role {role}, but found different type(s): {unexpected_types_str}."
                         )
-
