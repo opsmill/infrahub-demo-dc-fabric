@@ -1,115 +1,207 @@
 # yaml-language-server: $schema=https://schema.infrahub.app/develop/schema.schema.json
 ---
 version: '1.0'
+generics:
+  - name: GenericElement
+    namespace: Topology
+    description: "Base model for elements"
+    label: "Generic Topology Element"
+    icon: "carbon:network-3-reference"
+    default_filter: name__value
+    display_labels: [name__value]
+    order_by: [name__value]
+    include_in_menu: false
+    menu_placement: "TopologyTopology"
+    attributes:
+      - name: name
+        kind: Text
+        order_weight: 1000
+      - name: description
+        kind: Text
+        order_weight: 1100
+        optional: true
+      - name: quantity
+        kind: Number
+        order_weight: 1200
+    relationships:
+      - name: topology
+        peer: TopologyTopology
+        cardinality: one
+        kind: Parent
+  - name: NetworkStrategy
+    namespace: Topology
+    description: "Generic model for network strategies (underlays and overlays)."
+    label: "Network Strategy"
+    icon: "iconoir:strategy"
+    default_filter: name__value
+    display_labels: [name__value]
+    order_by: [name__value]
+    include_in_menu: true
+    menu_placement: "TopologyTopology"
+    attributes:
+      - name: name
+        kind: Text
+        order_weight: 1000
+      - name: description
+        kind: Text
+        order_weight: 1100
+        optional: true
+    relationships:
+      - name: topology
+        peer: TopologyTopology
+        optional: true
+        cardinality: one
+        kind: Parent
+
 nodes:
   - name: Topology
-    namespace: Infra
-    description: "A Topology represent a a top level network topology pod."
+    namespace: Topology
+    description: "A Topology represents the entire network pod."
     label: "Topology"
-    icon: "mdi:vector-triangle"
+    icon: "carbon:network-3"
     default_filter: name__value
-    order_by:
-      - name__value
     display_labels:
       - name__value
+    order_by: [name__value]
     inherit_from:
-      - "CoreArtifactTarget"
+      - CoreArtifactTarget
     attributes:
       - name: name
         kind: Text
         unique: true
+        order_weight: 1000
       - name: description
         kind: Text
         optional: true
-      - name: dns
-        kind: Text
-        optional: true
-      - name: ntp
-        kind: Text
-        optional: true
-      - name: syslog
-        kind: Text
-        optional: true
-      - name: mtu
-        kind: Number
-        optional: true
+        order_weight: 1100
     relationships:
-      - name: element
-        peer: InfraTopologyElement
-        identifier: "topology__element"
+      - name: elements
+        peer: TopologyGenericElement
         optional: true
         cardinality: many
         kind: Component
-      - name: devices
-        peer: InfraDevice
-        identifier: "topology__device"
+      - name: strategy
+        peer: TopologyNetworkStrategy
         optional: true
-        cardinality: many
+        cardinality: one
         kind: Component
-  - name: TopologyElement
-    namespace: Infra
-    description: "A TopologyElement represent a device within a topology pod."
-    label: "TopologyElement"
-    icon: "mdi:vector-point-select"
-    menu_placement: "InfraTopology"
-    include_in_menu: true
-    default_filter: name__value
-    order_by:
-      - name__value
-    display_labels:
-      - name__value
-    attributes:
-      - name: name
-        kind: Text
-        unique: true
-      - name: description
-        kind: Text
-        optional: true
-      - name: amount
-        kind: Number
-      - name: type
-        kind: Text
-      - name: role
-        kind: Dropdown
-        optional: true
-        choices:
-          - name: core
-            label: Core Router
-            description: Central part of the network.
-            color: "#7f7fff"
-          - name: edge
-            label: Edge Router
-            description: "Network boundary with external networks."
-            color: "#bf7fbf"
-          - name: cpe
-            label: Customer Premise Equipment
-            description: "Devices located at the customer's premises."
-            color: "#bf7f7f"
-          - name: firewall
-            label: Firewall
-            description: "Ensures network security."
-            color: "#ffa07a"
-          - name: spine
-            label: Spine Router
-            description: "Aggregation router part of a Fabric."
-            color: "#aeeeee"
-          - name: leaf
-            label: Leaf Switch
-            description: "Top of Rack part of a Fabric."
-            color: "#e6e6fa"
-          - name: client
-            label: "Client"
-            description: "Client & Server endpoints in a Fabric."
-            color: "#c5a3ff"
-    relationships:
-      - name: platform
-        peer: InfraPlatform
+      - name: location
+        peer: LocationGeneric
         optional: true
         cardinality: one
         kind: Attribute
-      - name: topology
-        peer: InfraTopology
-        identifier: "topology__element"
-        optional: false
+
+  # --------------------  Strategies  --------------------
+  - name: MPLSStrategy
+    namespace: Topology
+    description: "Specific strategy attributes for MPLS."
+    label: "MPLS Strategy"
+    icon: "eos-icons:neural-network"
+    inherit_from:
+      - TopologyNetworkStrategy
+    menu_placement: "TopologyNetworkStrategy"
+    include_in_menu: false
+    default_filter: name__value
+    order_by: [name__value]
+    display_labels:
+      - name__value
+    attributes:
+      - name: underlay
+        kind: Dropdown
+        choices:
+          - name: ospf
+            label: OSPF
+          - name: isis
+            label: ISIS
+          - name: bgp
+            label: BGP
+      - name: overlay
+        kind: Dropdown
+        choices:
+          - name: ldp
+            label: LDP
+          - name: rsvp
+            label: RSVP
+          - name: segment_routing
+            label: "Segment Routing"
+  - name: EVPNStrategy
+    namespace: Topology
+    description: "Specific strategy attributes for EVPN."
+    label: "EVPN Strategy"
+    icon: "carbon:load-balancer-network"
+    inherit_from:
+      - TopologyNetworkStrategy
+    menu_placement: "TopologyNetworkStrategy"
+    include_in_menu: false
+    default_filter: name__value
+    order_by: [name__value]
+    display_labels:
+      - name__value
+    attributes:
+      - name: underlay
+        kind: Dropdown
+        choices:
+          - name: ebgp
+            label: EBGP
+          - name: ospf
+            label: OSPF
+          - name: isis
+            label: ISIS
+      - name: overlay
+        kind: Dropdown
+        choices:
+          - name: ebgp
+            label: EBGP
+          - name: ibgp
+            label: IBGP
+
+  # --------------------  Elements  --------------------
+  - name: PhysicalElement
+    namespace: Topology
+    description: "Physical aspect of topology elements."
+    label: "Physical Topology Element"
+    icon: "carbon:network-3-reference"
+    menu_placement: "TopologyTopology"
+    default_filter: name__value
+    order_by: [name__value]
+    display_labels:
+      - name__value
+    inherit_from:
+      - TopologyGenericElement
+    attributes:
+      - name: mtu
+        kind: Number
+        default_value: 1500
+        order_weight: 3000
+      - name: mlag_support
+        kind: Boolean
+        label: "MLAG Support"
+        default_value: false
+        order_weight: 2500
+      - name: device_role
+        label: Role
+        kind: Dropdown
+        choices:
+          - name: spine
+            color: "#ffb3ba" # Light Red
+          - name: leaf
+            color: "#ffdfba" # Light Orange
+          - name: pe_router
+            color: "#baffc9" # Light Green
+          - name: p_router
+            color: "#bae1ff" # Light Blue
+          - name: route_reflector
+            color: "#ffbaba" # Pink
+          - name: cpe
+            color: "#f2bae1" # Light Purple
+          - name: firewall
+            color: "#c5a3ff" # Pastel Purple
+        order_weight: 1300
+    relationships:
+      - name: device_type
+        label: Type
+        peer: InfraDeviceType
+        optional: true
         cardinality: one
-        kind: Parent
+        kind: Attribute
+        order_weight: 1400
