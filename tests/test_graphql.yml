@@ -1,0 +1,27 @@
+---
+version: "1.0"
+infrahub_tests:
+  # --------------------  GraphQLQuery  --------------------
+  - resource: GraphQLQuery
+    resource_name: device_info
+    tests:
+      - name: syntax_check
+        spec:
+          path: templates/device_info.gql
+          kind: graphql-query-smoke
+
+  - resource: GraphQLQuery
+    resource_name: oc_interfaces
+    tests:
+      - name: syntax_check
+        spec:
+          path: transforms/oc_interfaces.gql
+          kind: graphql-query-smoke
+
+  - resource: GraphQLQuery
+    resource_name: check_device_topology
+    tests:
+      - name: syntax_check
+        spec:
+          path: checks/check_device_topology.gql
+          kind: graphql-query-smoke

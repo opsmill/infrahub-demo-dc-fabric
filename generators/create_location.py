@@ -29,13 +29,22 @@ LOCATIONS = {
                                 "buildings": {
                                     "Equinix FRA05": {
                                         "shortname": "FRA05",
+                                        "facility_id": "eqx-fra05",
+                                        "owner": "Equinix",
                                         "floors": {
                                             "floor-32": {
                                                 "shortname": "F32",
                                                 "suites": {
                                                     "suite-325": {
                                                         "shortname": "S325",
-                                                        "racks": ["rack-3255"]
+                                                        "facility_id": "F32S5",
+                                                        "owner": "Equinix",
+                                                        "racks": {
+                                                            "Rack-05": {
+                                                                "facility_id": "F33S5R05",
+                                                                "owner": "Duff"
+                                                            },
+                                                        }
                                                     }
                                                 }
                                             },
@@ -44,7 +53,14 @@ LOCATIONS = {
                                                 "suites": {
                                                     "suite-338": {
                                                         "shortname": "S338",
-                                                        "racks": ["rack-3389"]
+                                                        "facility_id": "F33S8",
+                                                        "owner": "Equinix",
+                                                        "racks": {
+                                                            "Rack-09": {
+                                                                "facility_id": "F33S8R09",
+                                                                "owner": "Duff"
+                                                            },
+                                                        }
                                                     }
                                                 }
                                             }
@@ -68,13 +84,24 @@ LOCATIONS = {
                                 "buildings": {
                                     "Interxion AMS9": {
                                         "shortname": "AMS9",
+                                        "facility_id": "ITX-AMS9",
+                                        "owner": "Interxion",
                                         "floors": {
                                             "floor-0": {
                                                 "shortname": "F0",
                                                 "suites": {
                                                     "suite-ld8-596": {
                                                         "shortname": "LD8",
-                                                        "racks": ["ld8-596-R01B01", "ld8-596-R01B02"]
+                                                        "facility_id": "00-ld8-596",
+                                                        "owner": "Duff",
+                                                        "racks": {
+                                                            "R01B01": {
+                                                                "facility_id": "LD8-596-R01B01",
+                                                            },
+                                                            "R01B02": {
+                                                                "facility_id": "LD8-596-R01B02",
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
@@ -111,17 +138,33 @@ LOCATIONS = {
                                 "buildings": {
                                     "Equinix DE1": {
                                         "shortname": "DE1",
+                                        "facility_id": "eqx-de1",
+                                        "owner": "Equinix",
                                         "floors": {
                                             "floor-11": {
                                                 "shortname": "F11",
                                                 "suites": {
                                                     "suite-111": {
                                                         "shortname": "S111",
-                                                        "racks": ["rack-1111"]
+                                                        "facility_id": "F11S1",
+                                                        "owner": "Equinix",
+                                                        "racks": {
+                                                            "Rack-1111": {
+                                                                "facility_id": "F11S1R01",
+                                                                "owner": "Duff",
+                                                            }
+                                                        }
                                                     },
                                                     "suite-112": {
                                                         "shortname": "S112",
-                                                        "racks": ["rack-1121"]
+                                                        "facility_id": "F11S2",
+                                                        "owner": "Equinix",
+                                                        "racks": {
+                                                            "Rack-1121": {
+                                                                "facility_id": "F11S2R01",
+                                                                "owner": "Duff",
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             },
@@ -130,7 +173,14 @@ LOCATIONS = {
                                                 "suites": {
                                                     "suite-121": {
                                                         "shortname": "S121",
-                                                        "racks": ["rack-1211"]
+                                                        "facility_id": "F12S1",
+                                                        "owner": "Equinix",
+                                                        "racks": {
+                                                            "Rack-1211": {
+                                                                "facility_id": "F12S1R01",
+                                                                "owner": "Duff",
+                                                            },
+                                                        }
                                                     }
                                                 }
                                             }
@@ -138,17 +188,33 @@ LOCATIONS = {
                                     },
                                     "Equinix DE2": {
                                         "shortname": "DE2",
+                                        "facility_id": "eqx-de2",
+                                        "owner": "Equinix",
                                         "floors": {
                                             "floor-21": {
                                                 "shortname": "F21",
                                                 "suites": {
                                                     "suite-211": {
                                                         "shortname": "S211",
-                                                        "racks": ["rack-2111"]
+                                                        "facility_id": "F21S1",
+                                                        "owner": "Equinix",
+                                                        "racks": {
+                                                            "Rack-21211": {
+                                                                "facility_id": "F21S1R11",
+                                                                "owner": "Duff"
+                                                            },
+                                                        }
                                                     },
                                                     "suite-212": {
                                                         "shortname": "S212",
-                                                        "racks": ["rack-2121"]
+                                                        "facility_id": "F21S2",
+                                                        "owner": "Equinix",
+                                                        "racks": {
+                                                            "Rack-21210": {
+                                                                "facility_id": "F21S2R10",
+                                                                "owner": "Duff",
+                                                            },
+                                                        }
                                                     }
                                                 }
                                             },
@@ -157,7 +223,16 @@ LOCATIONS = {
                                                 "suites": {
                                                     "suite-221": {
                                                         "shortname": "S221",
-                                                        "racks": ["rack-2211"]
+                                                        "facility_id": "F22S1",
+                                                        "owner": "Duff",
+                                                        "racks": {
+                                                            "Rack-22105": {
+                                                                "facility_id": "F22S1R05",
+                                                            },
+                                                            "Rack-22106": {
+                                                                "facility_id": "F22S1R06",
+                                                            },
+                                                        }
                                                     }
                                                 }
                                             }
@@ -172,6 +247,8 @@ LOCATIONS = {
         }
     }
 }
+
+
 
 MGMT_SERVERS = {
     # Name, Description, Type
@@ -191,11 +268,11 @@ for continent_name, continent_data in LOCATIONS.items():
                 for building_name, building_data in metro_data.get("buildings", {}).items():
                     site_locations.append({"name": building_name, "shortname": building_data["shortname"]})
 
-# We assigned a /16 per Location for "data" (257 Locations possibles)
+# We assigned a /16 per Location for "data" (257 Site possibles)
 INTERNAL_POOL = IPv4Network("10.0.0.0/8").subnets(new_prefix=16)
 LOCATION_SUPERNETS = {location["shortname"]: next(INTERNAL_POOL) for location in site_locations}
 
-# We assigned a /24 per Location for "management" (257 Locations possibles)
+# We assigned a /24 per Location for "management" (257 Site possibles) <- Out of Band Access (out of /16)
 MANAGEMENT_POOL = IPv4Network("172.16.0.0/16").subnets(new_prefix=24)
 LOCATION_MGMTS = {location["shortname"]: next(MANAGEMENT_POOL) for location in site_locations}
 
@@ -205,15 +282,15 @@ EXTERNAL_NETWORKS = [
     IPv4Network("192.0.2.0/24"),
     IPv4Network("198.51.100.0/24")
 ]
-# We assigned one /28 per Location (48 Location possibles)
+# We assigned one /28 per Location (48 Sites possibles)
 NETWORKS_POOL_EXTERNAL = [subnet for network in EXTERNAL_NETWORKS for subnet in network.subnets(new_prefix=28)]
 NETWORKS_POOL_ITER = iter(NETWORKS_POOL_EXTERNAL)
 LOCATION_EXTERNAL_NETS = {location["shortname"]: next(NETWORKS_POOL_ITER) for location in site_locations}
 
-VLANS = (
-    ("200", "server"),
-    ("400", "management"),
-)
+VLANS = {
+    ("100", "server-pxe"),
+    ("4000", "management-ooba"),
+}
 
 # Mapping Dropdown Role and Status here
 ACTIVE_STATUS = "active"
@@ -221,14 +298,22 @@ ACTIVE_STATUS = "active"
 store = NodeStore()
 
 async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger, branch: str):
+    orga_duff_obj = store.get(key="Duff", kind="OrganizationTenant")
+    orga_eqx_obj = store.get(key="Equinix", kind="OrganizationProvider")
+    orga_itx_obj = store.get(key="Interxion", kind="OrganizationProvider")
+    account_crm = store.get(key="CRM Synchronization", kind="CoreAccount")
+
+    batch_racks = await client.create_batch()
+
     for continent_name, continent_data in LOCATIONS.items():
         continent_shortname = continent_data["shortname"]
         continent_timezone = continent_data.get("timezone", None)
         data={
-                "name": continent_name,
-                "shortname": continent_shortname,
-                "timezone": continent_timezone,
-            }
+            "name": {"value": continent_name, "is_protected": True, "source": account_crm.id},
+            "description": {"value": f"Continent {continent_name.lower()}"},
+            "shortname": continent_shortname,
+            "timezone": continent_timezone,
+        }
         continent_obj = await upsert_object(
             client=client,
             log=log,
@@ -244,11 +329,12 @@ async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger,
             country_shortname = country_data["shortname"]
             country_timezone = country_data.get("timezone", None)
             data={
-                    "name": country_name,
-                    "shortname": country_shortname,
-                    "parent": continent_obj,
-                    "timezone": country_timezone,
-                }
+                "name": {"value": country_name, "is_protected": True, "source": account_crm.id},
+                "description": {"value": f"Country {country_name.lower()}"},
+                "shortname": country_shortname,
+                "parent": continent_obj,
+                "timezone": country_timezone,
+            }
             country_obj = await upsert_object(
                 client=client,
                 log=log,
@@ -264,11 +350,12 @@ async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger,
                 region_shortname = region_data["shortname"]
                 region_timezone = region_data.get("timezone", None)
                 data={
-                        "name": region_name,
-                        "shortname": region_shortname,
-                        "parent": country_obj,
-                        "timezone": region_timezone,
-                    }
+                    "name": {"value": region_name, "is_protected": True, "source": account_crm.id},
+                    "description": {"value": f"Region {region_name.lower()}"},
+                    "shortname": region_shortname,
+                    "parent": country_obj,
+                    "timezone": region_timezone,
+                }
                 region_obj = await upsert_object(
                     client=client,
                     log=log,
@@ -303,10 +390,11 @@ async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger,
                 for metro_name, metro_data in region_data.get("metros", {}).items():
                     metro_shortname = metro_data["shortname"]
                     data={
-                            "name": metro_name,
-                            "shortname": metro_shortname,
-                            "parent": region_obj,
-                        }
+                        "name": {"value": metro_name, "is_protected": True, "source": account_crm.id},
+                        "description": {"value": f"Metro area {metro_name.lower()}"},
+                        "shortname": metro_shortname,
+                        "parent": region_obj,
+                     }
                     metro_obj = await upsert_object(
                         client=client,
                         log=log,
@@ -320,9 +408,19 @@ async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger,
 
                     for building_name, building_data in metro_data.get("buildings", {}).items():
                         building_shortname = building_data["shortname"]
+                        building_facility_id = building_data["facility_id"]
+                        building_owner = building_data.get("owner")
+                        owner_id = None
+                        if building_owner == "Equinix":
+                            owner_id = orga_eqx_obj.id
+                        elif building_owner == "Interxion":
+                            owner_id = orga_itx_obj.id
                         data={
-                            "name": building_name,
+                            "name": {"value": building_name, "is_protected": True, "source": account_crm.id},
+                            "description": {"value": f"Building {building_name.lower()}"},
                             "shortname": building_shortname,
+                            "facility_id": building_facility_id,
+                            "owner": owner_id,
                             "parent": metro_obj,
                         }
                         building_obj = await upsert_object(
@@ -339,7 +437,8 @@ async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger,
                         for floor_name, floor_data in building_data.get("floors", {}).items():
                             floor_shortname = floor_data["shortname"]
                             data={
-                                "name": floor_name,
+                                "name": {"value": floor_name, "is_protected": True, "source": account_crm.id},
+                                "description": {"value": f"Floor {floor_name.lower()}-{building_name.lower()}"},
                                 "shortname": floor_shortname,
                                 "parent": building_obj,
                             }
@@ -356,9 +455,21 @@ async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger,
 
                             for suite_name, suite_data in floor_data.get("suites", {}).items():
                                 suite_shortname = suite_data["shortname"]
+                                suite_facility_id = suite_data["facility_id"]
+                                suite_owner = suite_data.get("owner")
+                                owner_id = None
+                                if suite_owner == "Equinix":
+                                    owner_id = orga_eqx_obj.id
+                                elif suite_owner == "Interxion":
+                                    owner_id = orga_itx_obj.id
+                                elif suite_owner == "Duff":
+                                    owner_id = orga_duff_obj.id
                                 data={
-                                    "name": suite_name,
+                                    "name": {"value": suite_name, "is_protected": True, "source": account_crm.id},
+                                    "description": {"value": f"Suite {suite_shortname.lower()}-{floor_shortname.lower()}-{building_shortname.lower()}"},
                                     "shortname": suite_shortname,
+                                    "facility_id": suite_facility_id.upper(),
+                                    "owner": owner_id,
                                     "parent": floor_obj,
                                 }
                                 suite_obj = await upsert_object(
@@ -372,33 +483,45 @@ async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger,
                                     retrived_on_failure=True
                                 )
 
-                                for rack in suite_data.get("racks", []):
+                                for rack_name, rack_data in suite_data.get("racks", {}).items():
+                                    rack_facility_id = rack_data["facility_id"]
+                                    rack_owner = rack_data.get("owner")
+                                    owner_id = None
+                                    if rack_owner == "Duff":
+                                        owner_id = orga_duff_obj.id
                                     data={
-                                        "name": rack,
-                                        "shortname": rack.upper(),
+                                        "name": {"value": rack_name, "is_protected": True, "source": account_crm.id},
+                                        "description": {"value": f"Rack {rack_name.lower()} in {suite_shortname.lower()}-{floor_shortname.lower()}-{building_shortname.lower()}"},
+                                        "shortname": rack_name.upper(),
+                                        "facility_id": rack_facility_id.upper(),
+                                        "owner": owner_id,
                                         "parent": suite_obj,
                                     }
                                     rack_obj = await upsert_object(
                                         client=client,
                                         log=log,
                                         branch=branch,
-                                        object_name=rack,
+                                        object_name=rack_name,
                                         kind_name="LocationRack",
                                         data=data,
                                         store=store,
-                                        retrived_on_failure=True
+                                        batch=batch_racks,
+                                        retrived_on_failure=False
                                     )
+
+    async for node, _ in batch_racks.execute():
+        accessor = f"{node._schema.default_filter.split('__')[0]}"
+        log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
 async def create_location(client: InfrahubClient, log: logging.Logger, branch: str):
     # --------------------------------------------------
     # Preparating some variables for the Location
     # --------------------------------------------------
     account_pop = store.get(key="pop-builder", kind="CoreAccount")
-    account_crm = store.get(key="CRM Synchronization", kind="CoreAccount")
     account_eng = store.get(key="Engineering Team", kind="CoreAccount")
     account_ops = store.get(key="Operation Team", kind="CoreAccount")
 
-    orga_duff = store.get(key="Duff", kind="CoreOrganization")
+    orga_duff_obj = store.get(key="Duff", kind="OrganizationTenant")
 
     for mgmt_server in MGMT_SERVERS:
         mgmt_server_name = mgmt_server[0]
@@ -434,6 +557,7 @@ async def create_location(client: InfrahubClient, log: logging.Logger, branch: s
         location_supernet = LOCATION_SUPERNETS[location_shortname]
         location_loopback_pool = list(location_supernet.subnets(new_prefix=24))[-1]
         location_p2p_pool = list(location_supernet.subnets(new_prefix=24))[-2]
+        location_vtep_pool = list(location_supernet.subnets(new_prefix=24))[-3]
 
         location_mgmt_pool = LOCATION_MGMTS[location_shortname]
         # mgmt_address_pool = location_mgmt.hosts()
@@ -443,6 +567,7 @@ async def create_location(client: InfrahubClient, log: logging.Logger, branch: s
             location_external_net,
             location_loopback_pool,
             location_p2p_pool,
+            location_vtep_pool,
             location_mgmt_pool
             ]
         # --------------------------------------------------
@@ -452,13 +577,13 @@ async def create_location(client: InfrahubClient, log: logging.Logger, branch: s
         batch = await client.create_batch()
         location_id = location_obj.id
         for vlan in VLANS:
-            role = vlan[1]
+            role = vlan[1].split("-")[0]
             vlan_name = f"{location_shortname.lower()}_{vlan[1]}"
 
             data={
                 "name": {"value": vlan_name, "is_protected": True, "source": account_pop.id},
                 "vlan_id": {"value": int(vlan[0]), "is_protected": True, "owner": account_eng.id, "source": account_pop.id},
-                "description": {"value": f"{location_name.upper()} {vlan[1].title()} VLAN" },
+                "description": {"value": f"{location_name.upper()} - {vlan[1].lower()} VLAN" },
                 "status": {"value": ACTIVE_STATUS, "owner": account_ops.id},
                 "role": {"value": role, "source": account_pop.id, "is_protected": True, "owner": account_eng.id},
                 "location": {"id": location_id},
@@ -474,62 +599,68 @@ async def create_location(client: InfrahubClient, log: logging.Logger, branch: s
                 batch=batch
                 )
         async for node, _ in batch.execute():
-            log.info(f"- Created {node._schema.kind} - {node.name.value}")
-
-        mgmt_vlan = store.get(key=f"{location_shortname.lower()}_management", kind="InfraVLAN")
+            accessor = f"{node._schema.default_filter.split('__')[0]}"
+            log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
         # --------------------------------------------------
         # Create Prefix
         # --------------------------------------------------
+        # TODO Add a relation between the supernets and the smaller prefixes
         batch = await client.create_batch()
         # Create Supernet
         supernet_description = f"{location_shortname.lower()}-supernet-{IPv4Network(location_supernet).network_address}"
         data = {
             "prefix":  {"value": location_supernet },
             "description": {"value": supernet_description},
-            "organization": {"id": orga_duff.id },
+            "organization": {"id": orga_duff_obj.id },
             "location": {"id": location_id },
-            "status": {"value": "active"},
-            "role": {"value": "supernet"},
+            "status": {"value": "active" },
+            "role": {"value": "supernet" },
         }
-        prefix_obj = await upsert_object(
+        supernet_obj = await upsert_object(
             client=client,
             log=log,
             branch=branch,
             object_name=location_supernet,
             kind_name="InfraPrefix",
             data=data,
-            store=store,
-            batch=batch
+            store=store
         )
         # Create /24 specifics subnets Pool
         for prefix in location_prefixes:
-            vlan_id = None
+            # vlan_id = None
             if any(prefix.subnet_of(external_net) for external_net in EXTERNAL_NETWORKS):
                 prefix_status = "active"
                 prefix_description = f"{location_shortname.lower()}-ext-{IPv4Network(prefix).network_address}"
                 prefix_role = "public"
+                vrf_id = store.get(key="Internet", kind="InfraVRF").id
             elif prefix.subnet_of(location_mgmt_pool):
                 prefix_status = "active"
                 prefix_description = f"{location_shortname.lower()}-mgmt-{IPv4Network(prefix).network_address}"
                 prefix_role = "management"
-                vlan_id = mgmt_vlan.id
+                vrf_id = store.get(key="Management", kind="InfraVRF").id
             else:
                 prefix_status = "reserved"
-                prefix_description = f"{location_shortname.lower()}-int-{IPv4Network(prefix).network_address}"
-                if prefix.subnet_of(location_loopback_pool):
+                prefix_role = "technical"
+                vrf_id = store.get(key="Backbone", kind="InfraVRF").id
+                if  prefix.subnet_of(location_p2p_pool):
+                    prefix_description = f"{location_shortname.lower()}-p2p-{IPv4Network(prefix).network_address}"
+                elif  prefix.subnet_of(location_vtep_pool):
+                    prefix_description = f"{location_shortname.lower()}-vtep-{IPv4Network(prefix).network_address}"
+                    prefix_role = "loopback-vtep"
+                if  prefix.subnet_of(location_loopback_pool):
+                    prefix_description = f"{location_shortname.lower()}-loop-{IPv4Network(prefix).network_address}"
                     prefix_role = "loopback"
-                else:
-                    prefix_role = "technical"
             data = {
                 "prefix":  {"value": prefix },
                 "description": {"value": prefix_description},
-                "organization": {"id": orga_duff.id },
+                "organization": {"id": orga_duff_obj.id },
                 "location": {"id": location_id },
-                "status": {"value": prefix_status},
-                "role": {"value": prefix_role},
-                "vlan": {"id": vlan_id},
+                "status": {"value": prefix_status },
+                "role": {"value": prefix_role },
+                "vrf": { "id": vrf_id },
             }
+
             prefix_obj = await upsert_object(
                 client=client,
                 log=log,
@@ -541,7 +672,8 @@ async def create_location(client: InfrahubClient, log: logging.Logger, branch: s
                 batch=batch
                 )
         async for node, _ in batch.execute():
-            log.info(f"- Created {node._schema.kind} - {node.prefix.value}")
+            accessor = f"{node._schema.default_filter.split('__')[0]}"
+            log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
 # ---------------------------------------------------------------
 # Use the `infrahubctl run` command line to execute this script
@@ -558,20 +690,16 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str, **kwargs
     try:
         accounts=await client.all("CoreAccount")
         populate_local_store(objects=accounts, key_type="name", store=store)
-        organizations=await client.all("CoreOrganization")
-        populate_local_store(objects=organizations, key_type="name", store=store)
+        tenants=await client.all("OrganizationTenant")
+        populate_local_store(objects=tenants, key_type="name", store=store)
+        providers=await client.all("OrganizationProvider")
+        populate_local_store(objects=providers, key_type="name", store=store)
         autonomous_systems=await client.all("InfraAutonomousSystem")
         populate_local_store(objects=autonomous_systems, key_type="name", store=store)
-        platforms=await client.all("InfraPlatform")
-        populate_local_store(objects=platforms, key_type="name", store=store)
         groups=await client.all("CoreStandardGroup")
         populate_local_store(objects=groups, key_type="name", store=store)
-        device_types=await client.all("InfraDeviceType")
-        populate_local_store(objects=device_types, key_type="name", store=store)
-        devices=await client.all("InfraDevice")
-        populate_local_store(objects=devices, key_type="name", store=store)
-        topologies=await client.all("TopologyTopology")
-        populate_local_store(objects=topologies, key_type="name", store=store)
+        vrfs=await client.all("InfraVRF")
+        populate_local_store(objects=vrfs, key_type="name", store=store)
 
     except Exception as e:
         log.info(f"Fail to populate due to {e}")

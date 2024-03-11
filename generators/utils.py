@@ -30,8 +30,8 @@ async def upsert_object(
         else:
             batch.add(task=obj.save, allow_upsert=allow_upsert, node=obj)
         store.set(key=object_name, node=obj)
-    except GraphQLError as e:
-        log.debug(f"- Creation failed for {obj._schema.kind} - {object_name} due to {e}" )
+    except GraphQLError as exc:
+        log.debug(f"- Creation failed for {obj._schema.kind} - {object_name} due to {exc}" )
         if retrived_on_failure:
             obj = await client.get(kind=kind_name, name__value=object_name)
             store.set(key=object_name, node=obj)

@@ -26,13 +26,27 @@
 {%         endif %}
 {%      endif %}
 {%   endfor %}
-
-! Device Basic Configuration
+!RANCID-CONTENT-TYPE: arista
+!
+vlan internal order ascending range 1006 1199
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
 hostname {{ data.InfraDevice.edges[0].node.name.value }}
+dns domain atd.lab
+!
+spanning-tree mode mstp
+no spanning-tree vlan-id 4093-4094
+spanning-tree mst 0 priority 16384
+!
+no enable password
+no aaa root
 !
 {%   if ns.ntp_servers %}
 {%      for ntp_server in ns.ntp_servers %}
-ntp server  {{ ntp_server }}
+ntp server {{ ntp_server }}
 {%      endfor %}
 {%   endif %}
 !
@@ -41,15 +55,39 @@ ntp server  {{ ntp_server }}
 ip name-server {{ name_server }}
 {%      endfor %}
 {%   endif %}
+! Vlan Configuration
+{%   for network_services in data.InfraDevice.edges[0].node.topology.node.network_services.edges %}
+{%      if network_services.node.vlan %}
+vlan {{ network_services.node.vlan.node.vlan_id.value }}
+   name {{ network_services.node.vlan.node.name.value }}
+{%      endif %}
+{%   endfor %}
+!
+vlan 4093
+   name LEAF_PEER_L3
+   trunk group LEAF_PEER_L3
+!
+vlan 4094
+   name MLAG_PEER
+   trunk group MLAG
+!
+! VRF Configuration
+{%   for vrf in data.InfraVRF.edges %}
+vrf instance {{ vrf.node.name.value }}
+!
+{%   endfor %}
 !
 ! Interface Configuration
 {%   for intf in data.InfraDevice.edges[0].node.interfaces.edges %}
 interface {{ intf.node.name.value }}
 {%      if intf.node.description.value %}
-  description "{{ intf.node.description.value }}"
+   description "{{ intf.node.description.value }}"
 {%      endif %}
 {%      if not intf.node.enabled.value %}
-  shutdown
+   shutdown
+{%      endif %}
+{%      if intf.node.mtu.value %}
+   mtu {{ intf.node.mtu.value }}
 {%      endif %}
 {%      if intf.node["ip_addresses"] %}
 {%         for ip in intf.node["ip_addresses"]["edges"] %}
@@ -59,19 +97,86 @@ interface {{ intf.node.name.value }}
    ip ospf network point-to-point
 {%            endif %}
 {%         endfor %}
+{%      else %}
+   switchport mode trunk
+{%         if intf.node["tagged_vlan"] %}
+   switchport trunk native vlan {{ intf.node["untagged_vlan"]["node"]["vlan_id"]["value"] }}
+{%         endif %}
+{%         if intf.node["tagged_vlan"] %}
+   switchport trunk allowed vlan {% for tagged_vlan in intf.node["tagged_vlan"]["edges"] %} {{ tagged_vlan["node"]["vlan_id"]["value"] }}, {% endfor %}
+
+{%         endif %}
+{%         if intf.node.role.value == "server" %}
+   spanning-tree portfast
+{%         endif %}
 {%      endif %}
 !
 {%   endfor %}
+interface Vlan4093
+   description MLAG_PEER_L3_PEERING
+   no shutdown
+   mtu 1550
+   ip address 192.168.91.40/31
+!
+interface Vlan4094
+   description MLAG_PEER
+   no shutdown
+   mtu 1550
+   no autostate
+   ip address 192.168.90.40/31
+!
+interface Vxlan1
+   description leaf1-dc1_VTEP
+   vxlan source-interface Loopback1
+   vxlan virtual-router encapsulation mac-address mlag-system-id
+   vxlan udp-port 4789
+{%   for network_services in data.InfraDevice.edges[0].node.topology.node.network_services.edges %}
+{%      if network_services.node.vlan %}
+{%         if network_services.node.service_type.value == "Layer2" %}
+   vxlan vlan {{ network_services.node.vlan.node.vlan_id.value }} vni 201{{ network_services.node.vlan.node.vlan_id.value }}
+{%         elif network_services.node.service_type.value == "Layer3" %}
+   vxlan vlan {{ network_services.node.vlan.node.vlan_id.value }} vni {{ network_services.node.prefix.node.vrf.node.vrf_rd.value }}{{ network_services.node.vlan.node.vlan_id.value }}
+{%         endif %}
+{%      endif %}
+{%   endfor %}
+{%   for vrf in data.InfraVRF.edges %}
+   vxlan vrf {{ vrf.node.name.value }} vni {{ vrf.node.vrf_rd.value }}
+{%   endfor %}
 !
 ip routing
+{%   for vrf in data.InfraVRF.edges %}
+ip routing vrf {{ vrf.node.name.value }}
+{%   endfor %}
 !
 ip route 0.0.0.0/0 {{ ns.mangement_gw_ip }}
 !
 {%   if data.InfraDevice.edges[0].node.asn %}
 router bgp {{ data.InfraDevice.edges[0].node.asn.node.asn.value }}
    router-id {{ ns.loopback_ip }}
+   maximum-paths 4 ecmp 4
+   update wait-install
+   no bgp default ipv4-unicast
+   no update wait-install
+   no bgp default ipv4-unicast
 !
+{%   for vrf in data.InfraVRF.edges %}
+   vrf {{ vrf.node.name.value }}
+   rd {{ ns.loopback_ip }}:{{ vrf.node.vrf_rd.value }}
+   route-target import evpn {{ vrf.node.import_rt.node.name.value }}
+   route-target export evpn {{ vrf.node.export_rt.node.name.value }}
+   router-id {{ ns.loopback_ip }}
+   redistribute connected
+!
+{%   endfor %}
 {%   endif %}
+management api http-commands
+   protocol https
+   no shutdown
+   !
+   vrf default
+      no shutdown
+!
+end
 {% else %}
 {# Warning: No Device found with this name #}
 {% endif %}

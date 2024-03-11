@@ -70,6 +70,7 @@ query check_device_topology {
                     }
                   }
                 }
+                border { value}
               }
             }
           }
