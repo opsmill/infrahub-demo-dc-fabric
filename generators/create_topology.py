@@ -24,6 +24,7 @@ TOPOLOGY = (
     # ("ams9-pod1", "Big Fabric in Interxion AMS9", "AMS9", None),
     ("de1-pod1", "Medium Fabric in Equinix DE1", "DE1", "ebgp-ebgp"),
     ("de2-pod1", "Medium Fabric in Equinix DE2", "DE2", "ospf-ibgp"),
+    ("denver-mpls1", "Medium MPLS in Denver Metro (DE1+DE2)", "DEN", "isis-ibgp"),
 )
 
 TOPOLOGY_ELEMENTS = {
@@ -38,13 +39,18 @@ TOPOLOGY_ELEMENTS = {
     #     ( 2, "leaf", "CCS-720DP-48S-2F", 9192, True, True), # borderleaf
     # ],
     "de1-pod1": [
-        ( 2, "spine", "CCS-720DP-48S-2F", 9192, False, True), #spine as border because why not ?
+        ( 2, "spine", "CCS-720DP-48S-2F", 9192, False, True), # spine as border
         ( 4, "leaf", "NCS-5501-SE", 9192, True, False),
     ],
     "de2-pod1": [
         ( 2, "spine", "CCS-720DP-48S-2F", 9192, False, False),
         ( 4, "leaf", "NCS-5501-SE", 9192, True, False),
         ( 2, "leaf", "CCS-720DP-48S-2F", 9192, True, True), # borderleaf
+    ],
+    "denver-mpls1": [
+        ( 2, "route_reflector", "DCS-7280DR3-24-F", 9192, False, False),
+        ( 4, "pe_router", "DCS-7280DR3-24-F", 9192, True, False),
+        ( 2, "p_router", "DCS-7280DR3-24-F", 9192, True, True), # PE as border
     ],
 }
 

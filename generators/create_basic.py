@@ -74,24 +74,24 @@ ASNS = (
 
 VRF = {
     # Name, Description, RD, RT-import, RT-export
-    ("Internet", "Internet VRF", "65000:100", "65000:100", "65000:100"),
-    ("Backbone", "Backbone VRF", "65000:101", "65000:101", "65000:101"),
-    ("Management", "OOBA Management VRF", "65000:199", "65000:199", "65000:199"),
-    ("Production", "Production VRF", "200", "200", "200"),
-    ("Staging", "Staging VRF", "201", "201", "201"),
-    ("Development", "Development VRF", "202", "202", "202"),
-    ("DMZ", "DMZ VRF", "666", "666", "666"),
+    ("Internet", "Internet VRF", "100", "100:100", "100:100"),
+    ("Backbone", "Backbone VRF", "101", "101:101", "101:101"),
+    ("Management", "OOBA Management VRF", "199", "199:199", "199:199"),
+    ("Production", "Production VRF", "200", "200:200", "200:200"),
+    ("Staging", "Staging VRF", "201", "201:201", "201:201"),
+    ("Development", "Development VRF", "202", "202:202", "202:202"),
+    ("DMZ", "DMZ VRF", "666", "666:666", "666:666"),
 }
 
 ROUTE_TARGETS = {
     # Name, Description
-    ("65000:100", "Internet VRF Route Target"),
-    ("65000:101", "Backbone VRF Route Target"),
-    ("65000:199", "OOBA Management VRF Route Target"),
-    ("200", "Production Environment VRF Route Target"),
-    ("201", "Staging Environment VRF Route Target"),
-    ("202", "Development Environment VRF Route Target"),
-    ("666", "DMZ VRF Route Target"),
+    ("100:100", "Internet VRF Route Target"),
+    ("101:101", "Backbone VRF Route Target"),
+    ("199:199", "OOBA Management VRF Route Target"),
+    ("200:200", "Production Environment VRF Route Target"),
+    ("201:201", "Staging Environment VRF Route Target"),
+    ("202:202", "Development Environment VRF Route Target"),
+    ("666:666", "DMZ VRF Route Target"),
 }
 
 PLATFORMS = (
@@ -108,6 +108,7 @@ DEVICE_TYPES = (
     # name, part_number, height (U), full_depth, platform
     ("MX204", "MX204-HWBASE-AC-FS", 1, False, "Juniper JunOS"),
     ("CCS-720DP-48S-2F", None, 1, False, "Arista EOS"),
+    ("DCS-7280DR3-24-F", None, 1, False, "Arista EOS"),
     ("NCS-5501-SE", None, 1, False, "Cisco IOS-XR"),
     ("ASR1002-HX", None, 2, True, "Cisco IOS-XR"),
 )
