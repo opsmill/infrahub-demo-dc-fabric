@@ -1,0 +1,189 @@
+# yaml-language-server: $schema=https://schema.infrahub.app/develop/schema.schema.json
+---
+version: '1.0'
+generics:
+  - name: Generic
+    namespace: Location
+    description: "Generic Location Interface."
+    label: "Location"
+    icon: "mingcute:location-line"
+    include_in_menu: true
+    hierarchical: True
+    default_filter: shortname__value
+    order_by:
+      - name__value
+    display_labels:
+      - name__value
+    attributes:
+      - name: name
+        kind: Text
+        order_weight: 1000
+      - name: shortname
+        kind: Text
+        unique: true
+        order_weight: 1100
+      - name: description
+        kind: Text
+        optional: true
+        order_weight: 1200
+      - name: timezone
+        kind: Text
+        optional: true
+        order_weight: 1300
+    relationships:
+      - name: prefixes
+        label: Prefixes
+        peer: InfraPrefix
+        cardinality: many
+        optional: true
+      - name: vlans
+        label: VLANs
+        peer: InfraVLAN
+        cardinality: many
+        optional: true
+      - name: devices
+        label: Devices
+        peer: InfraDevice
+        cardinality: many
+        optional: true
+      - name: network_management_servers
+        label: "Network Management Servers"
+        peer: NetworkMangementServer
+        optional: true
+        cardinality: many
+        kind: Component
+      - name: tags
+        peer: BuiltinTag
+        kind: Attribute
+        optional: true
+        cardinality: many
+
+nodes:
+  # --------------------  Locations  --------------------
+  - name: Continent
+    namespace: Location
+    inherit_from: ["LocationGeneric"]
+    include_in_menu: true
+    menu_placement: "LocationGeneric"
+    label: Continent
+    display_labels:
+      - name__value
+    parent: ""
+    children: "LocationCountry"
+    icon: "jam:world"
+  - name: Country
+    namespace: Location
+    inherit_from: ["LocationGeneric"]
+    include_in_menu: true
+    menu_placement: "LocationGeneric"
+    label: Country
+    display_labels:
+      - name__value
+    parent: "LocationContinent"
+    children: "LocationRegion"
+    icon: "gis:search-country"
+  - name: Region
+    namespace: Location
+    inherit_from: ["LocationGeneric"]
+    include_in_menu: true
+    menu_placement: "LocationGeneric"
+    label: Region
+    display_labels:
+      - name__value
+    parent: "LocationCountry"
+    children: "LocationMetro"
+    icon: "carbon:cics-region-target"
+  - name: Metro
+    namespace: Location
+    inherit_from: ["LocationGeneric"]
+    include_in_menu: true
+    menu_placement: "LocationGeneric"
+    label: Metro
+    display_labels:
+      - name__value
+    parent: "LocationRegion"
+    children: "LocationBuilding"
+    icon: "healthicons:city"
+  - name: Building
+    namespace: Location
+    inherit_from: ["LocationGeneric"]
+    include_in_menu: true
+    menu_placement: "LocationGeneric"
+    label: Building
+    display_labels:
+      - name__value
+    parent: "LocationMetro"
+    children: "LocationFloor"
+    icon: "ri:building-line"
+    attributes:
+      - name: facility_id
+        kind: Text
+        unique: false
+        optional: True
+        order_weight: 1100
+      - name: physical_address
+        kind: Text
+        unique: false
+        optional: True
+        order_weight: 1500
+    relationships:
+      - name: owner
+        peer: OrganizationGeneric
+        optional: true
+        cardinality: one
+  - name: Floor
+    namespace: Location
+    inherit_from: ["LocationGeneric"]
+    include_in_menu: true
+    menu_placement: "LocationGeneric"
+    label: Floor
+    display_labels:
+      - name__value
+    parent: "LocationBuilding"
+    icon: "mdi:home-floor-0"
+    children: "LocationSuite"
+  - name: Suite
+    namespace: Location
+    inherit_from: ["LocationGeneric"]
+    include_in_menu: true
+    menu_placement: "LocationGeneric"
+    label: Suite
+    display_labels:
+      - name__value
+    parent: "LocationFloor"
+    children: "LocationRack"
+    icon: "game-icons:cage"
+    attributes:
+      - name: facility_id
+        kind: Text
+        unique: false
+        optional: True
+        order_weight: 1100
+    relationships:
+      - name: owner
+        peer: OrganizationGeneric
+        optional: true
+        cardinality: one
+  - name: Rack
+    namespace: Location
+    inherit_from: ["LocationGeneric"]
+    include_in_menu: true
+    label: Rack
+    default_filter: shortname__value
+    display_labels:
+      - name__value
+    menu_placement: "LocationGeneric"
+    parent: "LocationSuite"
+    children: ""
+    icon: "clarity:rack-server-line"
+    attributes:
+      - name: facility_id
+        kind: Text
+        unique: false
+        optional: True
+        order_weight: 1100
+    relationships:
+      - name: owner
+        peer: OrganizationGeneric
+        optional: true
+        cardinality: one
