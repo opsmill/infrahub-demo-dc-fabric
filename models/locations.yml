@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://schema.infrahub.app/develop/schema.schema.json
+# yaml-language-server: $schema=https://schema.infrahub.app/infrahub/schema/latest.json
 ---
 version: '1.0'
 generics:
@@ -48,7 +48,7 @@ generics:
         optional: true
       - name: network_management_servers
         label: "Network Management Servers"
-        peer: NetworkMangementServer
+        peer: NetworkManagementServer
         optional: true
         cardinality: many
         kind: Component

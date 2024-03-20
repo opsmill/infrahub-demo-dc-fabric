@@ -1,5 +1,3 @@
-!RANCID-CONTENT-TYPE: arista
-!
 vlan internal order ascending range 1006 1199
 !
 transceiver qsfp default-mode 4x10G

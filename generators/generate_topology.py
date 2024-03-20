@@ -159,7 +159,7 @@ DEVICE_INTERFACE_OBJS: Dict[str, List[InfrahubNode]] = defaultdict(list)
 
 # Mapping Dropdown Role and Status here
 ACTIVE_STATUS = "active"
-PROVISIONING_STATUS = "provisionning"
+PROVISIONING_STATUS = "provisioning"
 LOOPBACK_ROLE = "loopback"
 MGMT_ROLE = "management"
 
@@ -418,7 +418,7 @@ async def generate_topology(client: InfrahubClient, log: logging.Logger, branch:
                         kind_name="InfraAutonomousSystem",
                         data=data_asn,
                         store=store,
-                        retrived_on_failure=True
+                        retrieved_on_failure=True
                     )
                     device_asn_id = asn_obj.id
                 data_device = {
@@ -439,7 +439,7 @@ async def generate_topology(client: InfrahubClient, log: logging.Logger, branch:
                     kind_name="InfraDevice",
                     data=data_device,
                     store=store,
-                    retrived_on_failure=True
+                    retrieved_on_failure=True
                     )
 
                 # Add device to groups

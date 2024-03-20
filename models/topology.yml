@@ -1,8 +1,8 @@
-# yaml-language-server: $schema=https://schema.infrahub.app/develop/schema.schema.json
+# yaml-language-server: $schema=https://schema.infrahub.app/infrahub/schema/latest.json
 ---
 version: '1.0'
 generics:
-  - name: MangementServer
+  - name: ManagementServer
     namespace: Network
     description: "Generic model for network management server (dns, ntp, and dhcp)."
     label: "Network Management Servers"
@@ -25,7 +25,7 @@ generics:
             label: Active
             description: "Fully operational and currently in service."
             color: "#7fbf7f"
-          - name: provisionning
+          - name: provisioning
             label: Provisioning
             description: "In the process of being set up and configured."
             color: "#ffff7f"
@@ -273,7 +273,7 @@ nodes:
     description: "Represents a configurable option within a Dhcp server."
     label: "Dhcp Option"
     icon: "gis:globe-options"
-    menu_placement: "NetworkMangementServer"
+    menu_placement: "NetworkManagementServer"
     include_in_menu: false
     default_filter: name__value
     display_labels: [name__value]
@@ -297,13 +297,13 @@ nodes:
     description: "Represents a Dhcp server in the network."
     label: "Dhcp Server"
     icon: "eos-icons:ip"
-    menu_placement: "NetworkMangementServer"
+    menu_placement: "NetworkManagementServer"
     include_in_menu: false
     default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
     inherit_from:
-      - NetworkMangementServer
+      - NetworkManagementServer
     attributes:
       - name: lease_time
         kind: Text
@@ -319,23 +319,23 @@ nodes:
     description: "Represents a DNS server in the network."
     label: "DNS Server"
     icon: "eos-icons:dns"
-    menu_placement: "NetworkMangementServer"
+    menu_placement: "NetworkManagementServer"
     default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
     inherit_from:
-      - NetworkMangementServer
+      - NetworkManagementServer
   - name: NTPServer
     namespace: Network
     description: "Represents a NTP server in the network."
     label: "NTP Server"
     icon: "iconoir:time-zone"
-    menu_placement: "NetworkMangementServer"
+    menu_placement: "NetworkManagementServer"
     default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
     inherit_from:
-      - NetworkMangementServer
+      - NetworkManagementServer
 
   # --------------------  Network Services --------------------
   - name: NetworkServiceIdentifier

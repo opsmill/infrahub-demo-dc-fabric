@@ -16,7 +16,7 @@ from utils import add_relationships, group_add_member, populate_local_store, ups
 
 # Mapping Dropdown Role and Status here
 ACTIVE_STATUS = "active"
-PROVISIONING_STATUS = "provisionning"
+PROVISIONING_STATUS = "provisioning"
 
 store = NodeStore()
 async def generate_network_services(
@@ -154,7 +154,7 @@ async def generate_network_services(
             kind_name="InfraVLAN",
             data=vlan_data,
             store=store,
-            retrived_on_failure=True
+            retrieved_on_failure=True
             )
         # Create Prefix
         prefix_obj = None
@@ -178,7 +178,7 @@ async def generate_network_services(
                 kind_name="InfraPrefix",
                 data=prefix_data,
                 store=store,
-                retrived_on_failure=True
+                retrieved_on_failure=True
                 )
         # Create Service Identifier
         identifier_data = {
@@ -192,7 +192,7 @@ async def generate_network_services(
             kind_name="TopologyNetworkServiceIdentifier",
             data=identifier_data,
             store=store,
-            retrived_on_failure=True
+            retrieved_on_failure=True
             )
         # Create Service
         vlan_obj_id = vlan_obj.id

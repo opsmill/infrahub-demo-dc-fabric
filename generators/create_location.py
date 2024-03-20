@@ -322,7 +322,7 @@ async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger,
             kind_name="LocationContinent",
             data=data,
             store=store,
-            retrived_on_failure=True
+            retrieved_on_failure=True
             )
 
         for country_name, country_data in continent_data["countries"].items():
@@ -343,7 +343,7 @@ async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger,
                 kind_name="LocationCountry",
                 data=data,
                 store=store,
-                retrived_on_failure=True
+                retrieved_on_failure=True
                 )
 
             for region_name, region_data in country_data.get("regions", {}).items():
@@ -364,7 +364,7 @@ async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger,
                     kind_name="LocationRegion",
                     data=data,
                     store=store,
-                    retrived_on_failure=True
+                    retrieved_on_failure=True
                 )
                 name_servers = [server[0] for server in MGMT_SERVERS if server[2] == "Name"]
                 random_name_server = random.choice(name_servers)
@@ -403,7 +403,7 @@ async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger,
                         kind_name="LocationMetro",
                         data=data,
                         store=store,
-                        retrived_on_failure=True
+                        retrieved_on_failure=True
                     )
 
                     for building_name, building_data in metro_data.get("buildings", {}).items():
@@ -431,7 +431,7 @@ async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger,
                             kind_name="LocationBuilding",
                             data=data,
                             store=store,
-                            retrived_on_failure=True
+                            retrieved_on_failure=True
                         )
 
                         for floor_name, floor_data in building_data.get("floors", {}).items():
@@ -450,7 +450,7 @@ async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger,
                                 kind_name="LocationFloor",
                                 data=data,
                                 store=store,
-                                retrived_on_failure=True
+                                retrieved_on_failure=True
                             )
 
                             for suite_name, suite_data in floor_data.get("suites", {}).items():
@@ -480,7 +480,7 @@ async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger,
                                     kind_name="LocationSuite",
                                     data=data,
                                     store=store,
-                                    retrived_on_failure=True
+                                    retrieved_on_failure=True
                                 )
 
                                 for rack_name, rack_data in suite_data.get("racks", {}).items():
@@ -506,7 +506,7 @@ async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger,
                                         data=data,
                                         store=store,
                                         batch=batch_racks,
-                                        retrived_on_failure=False
+                                        retrieved_on_failure=False
                                     )
 
     async for node, _ in batch_racks.execute():
@@ -515,7 +515,7 @@ async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger,
 
 async def create_location(client: InfrahubClient, log: logging.Logger, branch: str):
     # --------------------------------------------------
-    # Preparating some variables for the Location
+    # Preparing some variables for the Location
     # --------------------------------------------------
     account_pop = store.get(key="pop-builder", kind="CoreAccount")
     account_eng = store.get(key="Engineering Team", kind="CoreAccount")
@@ -544,7 +544,7 @@ async def create_location(client: InfrahubClient, log: logging.Logger, branch: s
             kind_name=mgmt_server_kind,
             data=data,
             store=store,
-            retrived_on_failure=True
+            retrieved_on_failure=True
             )
 
     await create_location_hierarchy(client=client, branch=branch, log=log)
@@ -553,7 +553,7 @@ async def create_location(client: InfrahubClient, log: logging.Logger, branch: s
         location_name = location["name"]
         location_shortname = location["shortname"]
 
-        # We cut the prefixes attribued to the Location
+        # We cut the prefixes attributed to the Location
         location_supernet = LOCATION_SUPERNETS[location_shortname]
         location_loopback_pool = list(location_supernet.subnets(new_prefix=24))[-1]
         location_p2p_pool = list(location_supernet.subnets(new_prefix=24))[-2]

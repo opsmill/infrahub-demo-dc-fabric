@@ -8,7 +8,7 @@ from utils import upsert_object
 # pylint: skip-file
 
 ACCOUNTS = (
-    # name, pasword, type, role
+    # name, password, type, role
     ("pop-builder", "Script", "Password123", "read-write"),
     ("generator", "Script", "Password123", "read-write"),
     ("CRM Synchronization", "Script", "Password123", "read-write"),
@@ -43,7 +43,7 @@ ORGANIZATIONS = (
     ("Cogent Communications", "provider"),
     ("Comcast Cable Communication", "provider"),
     ("Telecom Italia Sparkle", "provider"),
-     ("AT&T Services", "provider"),
+    ("AT&T Services", "provider"),
     ("Duff", "tenant"),
     ("Juniper", "manufacturer"),
     ("Cisco", "manufacturer"),
@@ -135,7 +135,7 @@ BGP_PEER_GROUPS = (
 
 store = NodeStore()
 
-async def create_bascis(
+async def create_basics(
         client: InfrahubClient,
         log: logging.Logger,
         branch: str
@@ -445,4 +445,4 @@ async def create_bascis(
 #
 # ---------------------------------------------------------------
 async def run(client: InfrahubClient, log: logging.Logger, branch: str, **kwargs) -> None:
-    await create_bascis(client=client, log=log, branch=branch)
+    await create_basics(client=client, log=log, branch=branch)
