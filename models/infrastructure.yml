@@ -193,6 +193,8 @@ nodes:
     icon: "mdi:application-cog-outline"
     menu_placement: "InfraDevice"
     default_filter: name__value
+    display_labels:
+      - name__value
     order_by:
       - manufacturer__name__value
       - name__value
