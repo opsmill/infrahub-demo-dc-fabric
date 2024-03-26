@@ -10,7 +10,10 @@ generics:
     display_labels:
       - name__value
     order_by:
+      - device__name__value
       - name__value
+    uniqueness_constraints:
+        - [ "device", "name__value"]
     attributes:
       - name: name
         kind: Text
@@ -133,7 +136,10 @@ nodes:
     display_labels:
       - name__value
     order_by:
+      - manufacturer__name__value
       - name__value
+    uniqueness_constraints:
+        - [ "manufacturer", "name__value"]
     attributes:
       - name: name
         kind: Text
@@ -188,9 +194,10 @@ nodes:
     menu_placement: "InfraDevice"
     default_filter: name__value
     order_by:
+      - manufacturer__name__value
       - name__value
-    display_labels:
-      - name__value
+    uniqueness_constraints:
+        - [ "manufacturer", "name__value"]
     attributes:
       - name: name
         kind: Text
@@ -732,7 +739,6 @@ nodes:
         peer: InfraInterfaceL3
         optional: true
         cardinality: one
-        kind: Parent
       - name: prefix
         peer: InfraPrefix
         optional: true
@@ -804,9 +810,12 @@ nodes:
     label: "Prefix"
     default_filter: prefix__value
     order_by:
+      - vrf__name__value
       - prefix__value
     display_labels:
       - prefix__value
+    uniqueness_constraints:
+        - [ "vrf", "prefix__value"]
     attributes:
       - name: prefix
         kind: IPNetwork
@@ -894,7 +903,6 @@ nodes:
         peer: TopologyNetworkService
         optional: true
         cardinality: one
-        kind: Parent
         order_weight: 1400
       - name: ip_addresses
         peer: InfraIPAddress
@@ -965,4 +973,3 @@ nodes:
         peer: InfraVRF
         optional: true
         cardinality: many
-        kind: Parent

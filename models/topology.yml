@@ -73,6 +73,7 @@ generics:
         peer: TopologyTopology
         cardinality: one
         kind: Parent
+        optional: false
   - name: NetworkStrategy
     namespace: Topology
     description: "Generic model for network strategies (underlays and overlays)."
@@ -96,7 +97,6 @@ generics:
         peer: TopologyTopology
         optional: true
         cardinality: many
-        kind: Parent
 
 nodes:
   # --------------------  Topology  --------------------
@@ -390,6 +390,7 @@ nodes:
         peer: TopologyTopology
         cardinality: one
         kind: Parent
+        optional: false
       - name: vlan
         peer: InfraVLAN
         optional: true

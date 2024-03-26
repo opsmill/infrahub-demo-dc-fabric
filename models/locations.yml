@@ -172,6 +172,7 @@ nodes:
     default_filter: shortname__value
     display_labels:
       - name__value
+    
     menu_placement: "LocationGeneric"
     parent: "LocationSuite"
     children: ""
