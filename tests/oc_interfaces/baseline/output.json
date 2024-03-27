@@ -1,0 +1,314 @@
+{
+    "openconfig-interfaces:interface": [
+      {
+        "name": "Ethernet1",
+        "config": {
+          "enabled": true,
+          "description": "Leaf: ethernet1.fra05-pod1-spine1 to ethernet10.fra05-pod1-leaf1"
+        },
+        "subinterfaces": {
+          "subinterface": [
+            {
+              "index": 0,
+              "openconfig-if-ip:ipv4": {
+                "addresses": {
+                  "address": [
+                    {
+                      "ip": "10.0.254.0",
+                      "config": {
+                        "ip": "10.0.254.0",
+                        "prefix-length": "31"
+                      }
+                    }
+                  ]
+                },
+                "config": {
+                  "enabled": true
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Ethernet10",
+        "config": {
+          "enabled": true,
+          "description": "Leaf: ethernet10.fra05-pod1-spine1"
+        },
+        "subinterfaces": {
+          "subinterface": []
+        }
+      },
+      {
+        "name": "Ethernet11",
+        "config": {
+          "enabled": true,
+          "description": "Uplink: ethernet11.fra05-pod1-spine1 to ethernet10.fra05-pod1-borderleaf1"
+        },
+        "subinterfaces": {
+          "subinterface": [
+            {
+              "index": 0,
+              "openconfig-if-ip:ipv4": {
+                "addresses": {
+                  "address": [
+                    {
+                      "ip": "10.0.254.8",
+                      "config": {
+                        "ip": "10.0.254.8",
+                        "prefix-length": "31"
+                      }
+                    }
+                  ]
+                },
+                "config": {
+                  "enabled": true
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Ethernet12",
+        "config": {
+          "enabled": true,
+          "description": "Uplink: ethernet12.fra05-pod1-spine1 to ethernet10.fra05-pod1-borderleaf2"
+        },
+        "subinterfaces": {
+          "subinterface": [
+            {
+              "index": 0,
+              "openconfig-if-ip:ipv4": {
+                "addresses": {
+                  "address": [
+                    {
+                      "ip": "10.0.254.12",
+                      "config": {
+                        "ip": "10.0.254.12",
+                        "prefix-length": "31"
+                      }
+                    }
+                  ]
+                },
+                "config": {
+                  "enabled": true
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Ethernet13",
+        "config": {
+          "enabled": true,
+          "description": "Spare: ethernet13.fra05-pod1-spine1"
+        },
+        "subinterfaces": {
+          "subinterface": []
+        }
+      },
+      {
+        "name": "Ethernet14",
+        "config": {
+          "enabled": true,
+          "description": "Spare: ethernet14.fra05-pod1-spine1"
+        },
+        "subinterfaces": {
+          "subinterface": []
+        }
+      },
+      {
+        "name": "Ethernet2",
+        "config": {
+          "enabled": true,
+          "description": "Leaf: ethernet2.fra05-pod1-spine1 to ethernet10.fra05-pod1-leaf2"
+        },
+        "subinterfaces": {
+          "subinterface": [
+            {
+              "index": 0,
+              "openconfig-if-ip:ipv4": {
+                "addresses": {
+                  "address": [
+                    {
+                      "ip": "10.0.254.4",
+                      "config": {
+                        "ip": "10.0.254.4",
+                        "prefix-length": "31"
+                      }
+                    }
+                  ]
+                },
+                "config": {
+                  "enabled": true
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Ethernet3",
+        "config": {
+          "enabled": true,
+          "description": "Leaf: ethernet3.fra05-pod1-spine1"
+        },
+        "subinterfaces": {
+          "subinterface": []
+        }
+      },
+      {
+        "name": "Ethernet4",
+        "config": {
+          "enabled": true,
+          "description": "Leaf: ethernet4.fra05-pod1-spine1"
+        },
+        "subinterfaces": {
+          "subinterface": []
+        }
+      },
+      {
+        "name": "Ethernet5",
+        "config": {
+          "enabled": true,
+          "description": "Leaf: ethernet5.fra05-pod1-spine1"
+        },
+        "subinterfaces": {
+          "subinterface": []
+        }
+      },
+      {
+        "name": "Ethernet6",
+        "config": {
+          "enabled": true,
+          "description": "Leaf: ethernet6.fra05-pod1-spine1"
+        },
+        "subinterfaces": {
+          "subinterface": []
+        }
+      },
+      {
+        "name": "Ethernet7",
+        "config": {
+          "enabled": true,
+          "description": "Leaf: ethernet7.fra05-pod1-spine1"
+        },
+        "subinterfaces": {
+          "subinterface": []
+        }
+      },
+      {
+        "name": "Ethernet8",
+        "config": {
+          "enabled": true,
+          "description": "Leaf: ethernet8.fra05-pod1-spine1"
+        },
+        "subinterfaces": {
+          "subinterface": []
+        }
+      },
+      {
+        "name": "Ethernet9",
+        "config": {
+          "enabled": true,
+          "description": "Leaf: ethernet9.fra05-pod1-spine1"
+        },
+        "subinterfaces": {
+          "subinterface": []
+        }
+      },
+      {
+        "name": "Management1",
+        "config": {
+          "enabled": true,
+          "description": "Mgmt: management1.fra05-pod1-spine1"
+        },
+        "subinterfaces": {
+          "subinterface": [
+            {
+              "index": 0,
+              "openconfig-if-ip:ipv4": {
+                "addresses": {
+                  "address": [
+                    {
+                      "ip": "172.16.0.1",
+                      "config": {
+                        "ip": "172.16.0.1",
+                        "prefix-length": "24"
+                      }
+                    }
+                  ]
+                },
+                "config": {
+                  "enabled": true
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "loopback 0",
+        "config": {
+          "enabled": true,
+          "description": "Loopback: loopback0.fra05-pod1-spine1"
+        },
+        "subinterfaces": {
+          "subinterface": [
+            {
+              "index": 0,
+              "openconfig-if-ip:ipv4": {
+                "addresses": {
+                  "address": [
+                    {
+                      "ip": "10.0.255.1",
+                      "config": {
+                        "ip": "10.0.255.1",
+                        "prefix-length": "32"
+                      }
+                    }
+                  ]
+                },
+                "config": {
+                  "enabled": true
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "loopback 1",
+        "config": {
+          "enabled": true,
+          "description": "Loopback: VTEP loopback1.fra05-pod1-spine1"
+        },
+        "subinterfaces": {
+          "subinterface": [
+            {
+              "index": 0,
+              "openconfig-if-ip:ipv4": {
+                "addresses": {
+                  "address": [
+                    {
+                      "ip": "10.0.253.1",
+                      "config": {
+                        "ip": "10.0.253.1",
+                        "prefix-length": "32"
+                      }
+                    }
+                  ]
+                },
+                "config": {
+                  "enabled": true
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }

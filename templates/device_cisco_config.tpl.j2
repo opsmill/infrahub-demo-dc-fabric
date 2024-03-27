@@ -51,15 +51,6 @@ ip name-server {{ name_server }}
 !
 spanning-tree mode mstp
 !
-management api http-commands
-   no shutdown
-!
-management api gnmi
-   transport grpc default
-!
-management api netconf
-   transport ssh default
-!
 {%   for intf in data.InfraDevice.edges[0].node.interfaces.edges %}
 interface {{ intf.node.name.value }}
 {%      if intf.node.description.value %}

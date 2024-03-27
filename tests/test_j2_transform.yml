@@ -1,0 +1,22 @@
+---
+version: "1.0"
+infrahub_tests:
+  # --------------------  Jinja2Transform  --------------------
+  - resource: Jinja2Transform
+    resource_name: device_arista
+    tests:
+      - name: syntax_check
+        spec:
+          kind: jinja2-transform-smoke
+
+      - name: baseline
+        expect: PASS
+        spec:
+          kind: "jinja2-transform-unit-render"
+          directory: device_arista/baseline
+
+      - name: missing_interfaces
+        expect: FAIL
+        spec:
+          kind: "jinja2-transform-unit-render"
+          directory: device_arista/missing_interfaces

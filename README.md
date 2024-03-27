@@ -16,7 +16,7 @@ The infrahub-demo-dc-fabric repository demonstrates the capabilities to use Infr
 export INFRAHUB_API="http://localhost:8000"
 export INFRAHUB_TOKEN="06438eb2-8019-4776-878c-0941b1f1d1ec"
 export INFRAHUB_SDK_API_TOKEN="06438eb2-8019-4776-878c-0941b1f1d1ec"
-export INFRAHUB_DOCKER_IMAGE="9r2s1098.c1.gra9.container-registry.ovh.net/opsmill/infrahub:0.11.2"
+export INFRAHUB_DOCKER_IMAGE="9r2s1098.c1.gra9.container-registry.ovh.net/opsmill/infrahub:0.12.1"
 export DATABASE_DOCKER_IMAGE="neo4j:5.16-community"
 export INFRAHUB_SECURITY_SECRET_KEY="327f747f-efac-42be-9e73-999f08f86b92"
 export CACHE_DOCKER_IMAGE="redis:7.2"
@@ -77,27 +77,70 @@ mutation {
 }
 ```
 
-### 5. Generate the topology devices, cables and iBGP sessions
+### 5. Generate a Topology (Device, Interfaces, Caling, BGP Sessions, ...)
 
 > [!NOTE]
-> The example below creates the topology de1-pod1
+> The example below creates the topology fra05-pod1
 
 ```shell
-poetry run infrahubctl run generators/generate_topology.py topology=de1-pod1
+poetry run infrahubctl run generators/generate_topology.py topology=fra05-pod1
 ```
 
-### 6. Transform Python & Jinja
+### 5. Generate a nerwotk service in a Topology
+
+> [!NOTE]
+> The example below creates the Layer2 network service and a another Layer3 on topology fra05-pod1
 
 ```shell
-poetry run infrahubctl render device_arista device=atl-spine1
+poetry run infrahubctl run generators/generate_network-services.py topology=fra05-pod1 type=layer2
+poetry run infrahubctl run generators/generate_network-services.py topology=fra05-pod1 type=layer2 vrf=production
 ```
 
-### 7. Show a proposed change
+### 6. Render Artifacts
 
-- All checks here should pass
+Artifact Generation is presen in the UI but it's posisble to try it out locally :
 
-### 8. Show a check
+> [!NOTE]
+> This command will render the artifact define with `device_arista` Transformation, for `fra05-pod1-leaf1` device
 
-- Delete a device via the UI
-- Create a PC
-- Check should fail now
+```shell
+poetry run infrahubctl render device_arista device=fra05-pod1-leaf1
+```
+
+### 7. Try out our pytest plugin :
+
+> [!NOTE]
+> The command will use our infrahub pytest plugin. It will run the differents test in the `tests` folder. Those tests included :
+> - Syntax checks for all the Grahpqlql Queries
+> - Syntax checks for the Checks
+> - Syntax checks for all the jinja files used in `templates`
+> - will use the input/output file to try out the rendering and confirm there is no unexpected missing piece
+
+```shell
+pytest -v ./tests
+```
+
+### 8. Create a new Branch
+
+Create directly a new branch `test` in the UI, or if you prefer to use our SDK in CLI :
+
+```shell
+poetry run infrahubctl branch create test --sync-with-git
+```
+
+### 9. Create new Network Services and Regenerate Artifacts in your branch
+
+> [!NOTE]
+> You will be able to see the Diff in the Branch not only about the Data but about the Artifact as well
+> You can go back in time to see the Diff on the branch before you create the new services (you can do it `main` after merging the proposed changes too)
+
+
+### 10. Create a proposed change
+
+Using your new branch `test` you will be able to see the Diff in the Proposed Change and you will see the checks / tests in the CI pipeline
+
+
+### 11. Try out  the topology check
+
+- Modify an Elements in a Topology (example: increase or decresde the quantity of leafs in fra05-pod1)
+- The checks will run in the Proposed Changes -> check_device_topology will fail.

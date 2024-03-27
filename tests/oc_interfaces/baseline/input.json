@@ -1,0 +1,345 @@
+{
+    "data": {
+      "InfraDevice": {
+        "edges": [
+          {
+            "node": {
+              "id": "17b9d72a-750f-aa08-3f2e-22a46fecbd68",
+              "interfaces": {
+                "edges": [
+                  {
+                    "node": {
+                      "name": {
+                        "value": "Ethernet1"
+                      },
+                      "description": {
+                        "value": "Leaf: ethernet1.fra05-pod1-spine1 to ethernet10.fra05-pod1-leaf1"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": [
+                          {
+                            "node": {
+                              "address": {
+                                "value": "10.0.254.0/31"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "node": {
+                      "name": {
+                        "value": "Ethernet10"
+                      },
+                      "description": {
+                        "value": "Leaf: ethernet10.fra05-pod1-spine1"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": []
+                      }
+                    }
+                  },
+                  {
+                    "node": {
+                      "name": {
+                        "value": "Ethernet11"
+                      },
+                      "description": {
+                        "value": "Uplink: ethernet11.fra05-pod1-spine1 to ethernet10.fra05-pod1-borderleaf1"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": [
+                          {
+                            "node": {
+                              "address": {
+                                "value": "10.0.254.8/31"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "node": {
+                      "name": {
+                        "value": "Ethernet12"
+                      },
+                      "description": {
+                        "value": "Uplink: ethernet12.fra05-pod1-spine1 to ethernet10.fra05-pod1-borderleaf2"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": [
+                          {
+                            "node": {
+                              "address": {
+                                "value": "10.0.254.12/31"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "node": {
+                      "name": {
+                        "value": "Ethernet13"
+                      },
+                      "description": {
+                        "value": "Spare: ethernet13.fra05-pod1-spine1"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": []
+                      }
+                    }
+                  },
+                  {
+                    "node": {
+                      "name": {
+                        "value": "Ethernet14"
+                      },
+                      "description": {
+                        "value": "Spare: ethernet14.fra05-pod1-spine1"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": []
+                      }
+                    }
+                  },
+                  {
+                    "node": {
+                      "name": {
+                        "value": "Ethernet2"
+                      },
+                      "description": {
+                        "value": "Leaf: ethernet2.fra05-pod1-spine1 to ethernet10.fra05-pod1-leaf2"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": [
+                          {
+                            "node": {
+                              "address": {
+                                "value": "10.0.254.4/31"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "node": {
+                      "name": {
+                        "value": "Ethernet3"
+                      },
+                      "description": {
+                        "value": "Leaf: ethernet3.fra05-pod1-spine1"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": []
+                      }
+                    }
+                  },
+                  {
+                    "node": {
+                      "name": {
+                        "value": "Ethernet4"
+                      },
+                      "description": {
+                        "value": "Leaf: ethernet4.fra05-pod1-spine1"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": []
+                      }
+                    }
+                  },
+                  {
+                    "node": {
+                      "name": {
+                        "value": "Ethernet5"
+                      },
+                      "description": {
+                        "value": "Leaf: ethernet5.fra05-pod1-spine1"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": []
+                      }
+                    }
+                  },
+                  {
+                    "node": {
+                      "name": {
+                        "value": "Ethernet6"
+                      },
+                      "description": {
+                        "value": "Leaf: ethernet6.fra05-pod1-spine1"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": []
+                      }
+                    }
+                  },
+                  {
+                    "node": {
+                      "name": {
+                        "value": "Ethernet7"
+                      },
+                      "description": {
+                        "value": "Leaf: ethernet7.fra05-pod1-spine1"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": []
+                      }
+                    }
+                  },
+                  {
+                    "node": {
+                      "name": {
+                        "value": "Ethernet8"
+                      },
+                      "description": {
+                        "value": "Leaf: ethernet8.fra05-pod1-spine1"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": []
+                      }
+                    }
+                  },
+                  {
+                    "node": {
+                      "name": {
+                        "value": "Ethernet9"
+                      },
+                      "description": {
+                        "value": "Leaf: ethernet9.fra05-pod1-spine1"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": []
+                      }
+                    }
+                  },
+                  {
+                    "node": {
+                      "name": {
+                        "value": "Management1"
+                      },
+                      "description": {
+                        "value": "Mgmt: management1.fra05-pod1-spine1"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": [
+                          {
+                            "node": {
+                              "address": {
+                                "value": "172.16.0.1/24"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "node": {
+                      "name": {
+                        "value": "loopback 0"
+                      },
+                      "description": {
+                        "value": "Loopback: loopback0.fra05-pod1-spine1"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": [
+                          {
+                            "node": {
+                              "address": {
+                                "value": "10.0.255.1/32"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "node": {
+                      "name": {
+                        "value": "loopback 1"
+                      },
+                      "description": {
+                        "value": "Loopback: VTEP loopback1.fra05-pod1-spine1"
+                      },
+                      "enabled": {
+                        "value": true
+                      },
+                      "ip_addresses": {
+                        "edges": [
+                          {
+                            "node": {
+                              "address": {
+                                "value": "10.0.253.1/32"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }

@@ -13,4 +13,4 @@ docker compose pull
 docker compose up -d
 
 # Deploy the lab!
-sudo -E containerlab deploy -t ./topology/demo.clab.yml --reconfigure
+# sudo -E containerlab deploy -t ./topology/demo.clab.yml --reconfigure

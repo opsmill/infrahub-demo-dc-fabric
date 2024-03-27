@@ -30,7 +30,7 @@
       "INFRAHUB_API": "http://localhost:8000",
       "INFRAHUB_TOKEN": "06438eb2-8019-4776-878c-0941b1f1d1ec",
       "INFRAHUB_SDK_API_TOKEN": "06438eb2-8019-4776-878c-0941b1f1d1ec",
-      "INFRAHUB_DOCKER_IMAGE": "9r2s1098.c1.gra9.container-registry.ovh.net/opsmill/infrahub:0.11.2",
+      "INFRAHUB_DOCKER_IMAGE": "9r2s1098.c1.gra9.container-registry.ovh.net/opsmill/infrahub:0.12.1",
       "DATABASE_DOCKER_IMAGE": "neo4j:5.16-community",
       "INFRAHUB_DB_TYPE": "neo4j",
       "INFRAHUB_SECURITY_SECRET_KEY": "327f747f-efac-42be-9e73-999f08f86b92",

@@ -1,0 +1,1006 @@
+{
+  "data": {
+    "InfraDevice": {
+      "edges": [
+        {
+          "node": {
+            "id": "17bbbbe6-fe22-c558-3f2a-22a4773c77b3",
+            "name": {
+              "value": "fra05-pod1-leaf1"
+            },
+            "asn": {
+              "node": {
+                "asn": {
+                  "value": 65311
+                }
+              }
+            },
+            "primary_address": {
+              "node": {
+                "address": {
+                  "value": "172.16.0.3/24"
+                }
+              }
+            },
+            "topology": {
+              "node": {
+                "name": {
+                  "value": "fra05-pod1"
+                },
+                "network_services": {
+                  "edges": [
+                    {
+                      "node": {
+                        "name": {
+                          "value": "l2_server_3701"
+                        },
+                        "service_type": {
+                          "value": "Layer2"
+                        },
+                        "vlan": {
+                          "node": {
+                            "name": {
+                              "value": "fra05_1701"
+                            },
+                            "role": {
+                              "value": "server"
+                            },
+                            "vlan_id": {
+                              "value": 1701
+                            }
+                          }
+                        },
+                        "prefix": {
+                          "node": null
+                        }
+                      }
+                    },
+                    {
+                      "node": {
+                        "name": {
+                          "value": "l3_server_3702"
+                        },
+                        "service_type": {
+                          "value": "Layer3"
+                        },
+                        "vlan": {
+                          "node": {
+                            "name": {
+                              "value": "fra05_1702"
+                            },
+                            "role": {
+                              "value": "server"
+                            },
+                            "vlan_id": {
+                              "value": 1702
+                            }
+                          }
+                        },
+                        "prefix": {
+                          "node": {
+                            "role": {
+                              "value": "server"
+                            },
+                            "prefix": {
+                              "value": "10.0.1.0/24"
+                            },
+                            "vrf": {
+                              "node": {
+                                "vrf_rd": {
+                                  "value": "201"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "location": {
+              "node": {
+                "id": "17bbbbd7-49f3-36d0-3f2f-22a404f2b0bf",
+                "name": {
+                  "value": "Equinix FRA05"
+                },
+                "timezone": {
+                  "value": null
+                },
+                "ancestors": {
+                  "edges": [
+                    {
+                      "node": {
+                        "network_management_servers": {
+                          "edges": []
+                        }
+                      }
+                    },
+                    {
+                      "node": {
+                        "network_management_servers": {
+                          "edges": []
+                        }
+                      }
+                    },
+                    {
+                      "node": {
+                        "network_management_servers": {
+                          "edges": []
+                        }
+                      }
+                    },
+                    {
+                      "node": {
+                        "network_management_servers": {
+                          "edges": [
+                            {
+                              "node": {
+                                "__typename": "NetworkNameServer",
+                                "name": {
+                                  "value": "8.8.4.4"
+                                }
+                              }
+                            },
+                            {
+                              "node": {
+                                "__typename": "NetworkNTPServer",
+                                "name": {
+                                  "value": "time1.google.com"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "interfaces": {
+              "edges": [
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL2",
+                    "id": "17bbbbe7-5228-46f0-3f2b-22a4a6df1b63",
+                    "name": {
+                      "value": "Ethernet1"
+                    },
+                    "description": {
+                      "value": "ethernet1.fra05-pod1-leaf1"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "server"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "tagged_vlan": {
+                      "edges": [
+                        {
+                          "node": {
+                            "vlan_id": {
+                              "value": 100
+                            },
+                            "name": {
+                              "value": "fra05_server-pxe"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "untagged_vlan": {
+                      "node": {
+                        "vlan_id": {
+                          "value": 100
+                        },
+                        "name": {
+                          "value": "fra05_server-pxe"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL3",
+                    "id": "17bbbbe7-5246-4a88-3f20-22a45b1f5a55",
+                    "name": {
+                      "value": "Ethernet10"
+                    },
+                    "description": {
+                      "value": "ethernet10.fra05-pod1-leaf1 to ethernet1.fra05-pod1-spine1"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "uplink"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "ip_addresses": {
+                      "edges": [
+                        {
+                          "node": {
+                            "prefix": {
+                              "node": {
+                                "prefix": {
+                                  "broadcast_address": "10.0.254.1"
+                                }
+                              }
+                            },
+                            "address": {
+                              "value": "10.0.254.1/31",
+                              "ip": "10.0.254.1"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL3",
+                    "id": "17bbbbe7-5247-2d18-3f2b-22a414b39885",
+                    "name": {
+                      "value": "Ethernet11"
+                    },
+                    "description": {
+                      "value": "ethernet11.fra05-pod1-leaf1 to ethernet1.fra05-pod1-spine2"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "uplink"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "ip_addresses": {
+                      "edges": [
+                        {
+                          "node": {
+                            "prefix": {
+                              "node": {
+                                "prefix": {
+                                  "broadcast_address": "10.0.254.3"
+                                }
+                              }
+                            },
+                            "address": {
+                              "value": "10.0.254.3/31",
+                              "ip": "10.0.254.3"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL3",
+                    "id": "17bbbbe7-5247-e898-3f21-22a478bf6328",
+                    "name": {
+                      "value": "Ethernet12"
+                    },
+                    "description": {
+                      "value": "ethernet12.fra05-pod1-leaf1"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "uplink"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "ip_addresses": {
+                      "edges": []
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL3",
+                    "id": "17bbbbe7-5248-9478-3f25-22a4dce15f22",
+                    "name": {
+                      "value": "Ethernet13"
+                    },
+                    "description": {
+                      "value": "ethernet13.fra05-pod1-leaf1"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "uplink"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "ip_addresses": {
+                      "edges": []
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL3",
+                    "id": "17bbbbe7-5249-6380-3f23-22a497234f80",
+                    "name": {
+                      "value": "Ethernet14"
+                    },
+                    "description": {
+                      "value": "ethernet14.fra05-pod1-leaf1"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "spare"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "ip_addresses": {
+                      "edges": []
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL2",
+                    "id": "17bbbbe7-522a-0828-3f29-22a482aecc71",
+                    "name": {
+                      "value": "Ethernet2"
+                    },
+                    "description": {
+                      "value": "ethernet2.fra05-pod1-leaf1"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "server"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "tagged_vlan": {
+                      "edges": [
+                        {
+                          "node": {
+                            "vlan_id": {
+                              "value": 100
+                            },
+                            "name": {
+                              "value": "fra05_server-pxe"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "untagged_vlan": {
+                      "node": {
+                        "vlan_id": {
+                          "value": 100
+                        },
+                        "name": {
+                          "value": "fra05_server-pxe"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL2",
+                    "id": "17bbbbe7-522a-fa58-3f2d-22a41da95b1e",
+                    "name": {
+                      "value": "Ethernet3"
+                    },
+                    "description": {
+                      "value": "ethernet3.fra05-pod1-leaf1"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "server"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "tagged_vlan": {
+                      "edges": [
+                        {
+                          "node": {
+                            "vlan_id": {
+                              "value": 100
+                            },
+                            "name": {
+                              "value": "fra05_server-pxe"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "untagged_vlan": {
+                      "node": {
+                        "vlan_id": {
+                          "value": 100
+                        },
+                        "name": {
+                          "value": "fra05_server-pxe"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL2",
+                    "id": "17bbbbe7-522b-d900-3f2a-22a4646e3098",
+                    "name": {
+                      "value": "Ethernet4"
+                    },
+                    "description": {
+                      "value": "ethernet4.fra05-pod1-leaf1"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "server"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "tagged_vlan": {
+                      "edges": [
+                        {
+                          "node": {
+                            "vlan_id": {
+                              "value": 100
+                            },
+                            "name": {
+                              "value": "fra05_server-pxe"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "untagged_vlan": {
+                      "node": {
+                        "vlan_id": {
+                          "value": 100
+                        },
+                        "name": {
+                          "value": "fra05_server-pxe"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL2",
+                    "id": "17bbbbe7-522c-afd8-3f2d-22a4abdc825a",
+                    "name": {
+                      "value": "Ethernet5"
+                    },
+                    "description": {
+                      "value": "ethernet5.fra05-pod1-leaf1"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "server"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "tagged_vlan": {
+                      "edges": [
+                        {
+                          "node": {
+                            "vlan_id": {
+                              "value": 100
+                            },
+                            "name": {
+                              "value": "fra05_server-pxe"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "untagged_vlan": {
+                      "node": {
+                        "vlan_id": {
+                          "value": 100
+                        },
+                        "name": {
+                          "value": "fra05_server-pxe"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL2",
+                    "id": "17bbbbe7-522d-86b0-3f21-22a472dc414e",
+                    "name": {
+                      "value": "Ethernet6"
+                    },
+                    "description": {
+                      "value": "ethernet6.fra05-pod1-leaf1"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "server"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "tagged_vlan": {
+                      "edges": [
+                        {
+                          "node": {
+                            "vlan_id": {
+                              "value": 100
+                            },
+                            "name": {
+                              "value": "fra05_server-pxe"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "untagged_vlan": {
+                      "node": {
+                        "vlan_id": {
+                          "value": 100
+                        },
+                        "name": {
+                          "value": "fra05_server-pxe"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL3",
+                    "id": "17bbbbe7-522e-5d88-3f2d-22a4c5fd5da3",
+                    "name": {
+                      "value": "Ethernet7"
+                    },
+                    "description": {
+                      "value": "ethernet7.fra05-pod1-leaf1"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "spare"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "ip_addresses": {
+                      "edges": []
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL2",
+                    "id": "17bbbbe7-522f-24c0-3f2f-22a45c8a54c3",
+                    "name": {
+                      "value": "Ethernet8"
+                    },
+                    "description": {
+                      "value": "ethernet8.fra05-pod1-leaf1 to ethernet8.fra05-pod1-leaf2"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "peer"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "tagged_vlan": {
+                      "edges": [
+                        {
+                          "node": {
+                            "vlan_id": {
+                              "value": 100
+                            },
+                            "name": {
+                              "value": "fra05_server-pxe"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "untagged_vlan": {
+                      "node": {
+                        "vlan_id": {
+                          "value": 100
+                        },
+                        "name": {
+                          "value": "fra05_server-pxe"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL2",
+                    "id": "17bbbbe7-5244-2f78-3f21-22a4fb44de29",
+                    "name": {
+                      "value": "Ethernet9"
+                    },
+                    "description": {
+                      "value": "ethernet9.fra05-pod1-leaf1 to ethernet9.fra05-pod1-leaf2"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "peer"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "tagged_vlan": {
+                      "edges": [
+                        {
+                          "node": {
+                            "vlan_id": {
+                              "value": 100
+                            },
+                            "name": {
+                              "value": "fra05_server-pxe"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "untagged_vlan": {
+                      "node": {
+                        "vlan_id": {
+                          "value": 100
+                        },
+                        "name": {
+                          "value": "fra05_server-pxe"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL3",
+                    "id": "17bbbbe7-1a36-ca28-3f2f-22a43cf54599",
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": "loopback0.fra05-pod1-leaf1"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "loopback"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "ip_addresses": {
+                      "edges": [
+                        {
+                          "node": {
+                            "prefix": {
+                              "node": {
+                                "prefix": {
+                                  "broadcast_address": "10.0.255.255"
+                                }
+                              }
+                            },
+                            "address": {
+                              "value": "10.0.255.3/32",
+                              "ip": "10.0.255.3"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL3",
+                    "id": "17bbbbe7-25b6-5120-3f22-22a4444f7e56",
+                    "name": {
+                      "value": "Loopback1"
+                    },
+                    "description": {
+                      "value": "loopback1.fra05-pod1-leaf1"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "loopback"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "ip_addresses": {
+                      "edges": [
+                        {
+                          "node": {
+                            "prefix": {
+                              "node": {
+                                "prefix": {
+                                  "broadcast_address": "10.0.253.255"
+                                }
+                              }
+                            },
+                            "address": {
+                              "value": "10.0.253.3/32",
+                              "ip": "10.0.253.3"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "InfraInterfaceL3",
+                    "id": "17bbbbe7-30bd-96f0-3f26-22a4898f5a3c",
+                    "name": {
+                      "value": "Management0"
+                    },
+                    "description": {
+                      "value": "management0.fra05-pod1-leaf1"
+                    },
+                    "enabled": {
+                      "value": true
+                    },
+                    "role": {
+                      "value": "management"
+                    },
+                    "mtu": {
+                      "value": 1500
+                    },
+                    "ip_addresses": {
+                      "edges": [
+                        {
+                          "node": {
+                            "prefix": {
+                              "node": {
+                                "prefix": {
+                                  "broadcast_address": "172.16.0.255"
+                                }
+                              }
+                            },
+                            "address": {
+                              "value": "172.16.0.3/24",
+                              "ip": "172.16.0.3"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "InfraVRF": {
+      "edges": [
+        {
+          "node": {
+            "id": "17bbbbd4-0457-0d70-3f2f-22a4596e6349",
+            "name": {
+              "value": "Backbone"
+            },
+            "vrf_rd": {
+              "value": "65000:101"
+            },
+            "import_rt": {
+              "node": {
+                "name": {
+                  "value": "65000:101"
+                }
+              }
+            },
+            "export_rt": {
+              "node": {
+                "name": {
+                  "value": "65000:101"
+                }
+              }
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "17bbbbd4-0458-f5b8-3f21-22a42fa466a6",
+            "name": {
+              "value": "DMZ"
+            },
+            "vrf_rd": {
+              "value": "666"
+            },
+            "import_rt": {
+              "node": {
+                "name": {
+                  "value": "666"
+                }
+              }
+            },
+            "export_rt": {
+              "node": {
+                "name": {
+                  "value": "666"
+                }
+              }
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "17bbbbd4-0458-6148-3f22-22a4d6ec6e4a",
+            "name": {
+              "value": "Development"
+            },
+            "vrf_rd": {
+              "value": "202"
+            },
+            "import_rt": {
+              "node": {
+                "name": {
+                  "value": "202"
+                }
+              }
+            },
+            "export_rt": {
+              "node": {
+                "name": {
+                  "value": "202"
+                }
+              }
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "17bbbbd4-0457-bd38-3f20-22a497eea327",
+            "name": {
+              "value": "Internet"
+            },
+            "vrf_rd": {
+              "value": "65000:100"
+            },
+            "import_rt": {
+              "node": {
+                "name": {
+                  "value": "65000:100"
+                }
+              }
+            },
+            "export_rt": {
+              "node": {
+                "name": {
+                  "value": "65000:100"
+                }
+              }
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "17bbbbd4-0459-8e10-3f27-22a436320a10",
+            "name": {
+              "value": "Management"
+            },
+            "vrf_rd": {
+              "value": "65000:199"
+            },
+            "import_rt": {
+              "node": {
+                "name": {
+                  "value": "65000:199"
+                }
+              }
+            },
+            "export_rt": {
+              "node": {
+                "name": {
+                  "value": "65000:199"
+                }
+              }
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "17bbbbd4-045a-2a50-3f26-22a4857e8e6d",
+            "name": {
+              "value": "Production"
+            },
+            "vrf_rd": {
+              "value": "200"
+            },
+            "import_rt": {
+              "node": {
+                "name": {
+                  "value": "200"
+                }
+              }
+            },
+            "export_rt": {
+              "node": {
+                "name": {
+                  "value": "200"
+                }
+              }
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "17bbbbd4-0455-c168-3f2f-22a4dd8ad338",
+            "name": {
+              "value": "Staging"
+            },
+            "vrf_rd": {
+              "value": "201"
+            },
+            "import_rt": {
+              "node": {
+                "name": {
+                  "value": "201"
+                }
+              }
+            },
+            "export_rt": {
+              "node": {
+                "name": {
+                  "value": "201"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

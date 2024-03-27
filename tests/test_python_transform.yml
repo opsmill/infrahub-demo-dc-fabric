@@ -1,0 +1,12 @@
+---
+version: "1.0"
+infrahub_tests:
+  # --------------------  PythonTransform  --------------------
+  - resource: PythonTransform
+    resource_name: OCInterfaces
+    tests:
+      - name: baseline
+        expect: PASS
+        spec:
+          kind: python-transform-unit-process
+          directory: oc_interfaces/baseline

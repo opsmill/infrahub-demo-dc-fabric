@@ -4,7 +4,7 @@
 poetry run infrahubctl schema load models
 
 # Wait a bit extra to be sure the schema are properly loaded
-sleep 15
+sleep 30
 
 # Load infra-data
 poetry run infrahubctl run generators/create_basic.py

@@ -1,0 +1,9 @@
+---
+version: "1.0"
+infrahub_tests:
+  - resource: Check
+    resource_name: "check_device_topology"
+    tests:
+      - name: syntax_check
+        spec:
+          kind: check-smoke

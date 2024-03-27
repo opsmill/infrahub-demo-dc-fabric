@@ -1,0 +1,335 @@
+{
+  "data": {
+    "InfraDevice": {
+      "edges": [
+        {
+          "node": {
+            "id": "17ba876b-8724-15c0-3f28-22a42dc94599",
+            "name": {
+              "value": "fra05-pod1-leaf1"
+            },
+            "asn": {
+              "node": {
+                "asn": {
+                  "value": 65321
+                }
+              }
+            },
+            "primary_address": {
+              "node": {
+                "address": {
+                  "value": "172.16.0.5/24"
+                }
+              }
+            },
+            "topology": {
+              "node": {
+                "name": {
+                  "value": "fra05-pod1"
+                },
+                "network_services": {
+                  "edges": [
+                    {
+                      "node": {
+                        "name": {
+                          "value": "l2_server_3701"
+                        },
+                        "service_type": {
+                          "value": "Layer2"
+                        },
+                        "vlan": {
+                          "node": {
+                            "name": {
+                              "value": "fra05_1701"
+                            },
+                            "role": {
+                              "value": "server"
+                            },
+                            "vlan_id": {
+                              "value": 1701
+                            }
+                          }
+                        },
+                        "prefix": {
+                          "node": null
+                        }
+                      }
+                    },
+                    {
+                      "node": {
+                        "name": {
+                          "value": "l2_server_3702"
+                        },
+                        "service_type": {
+                          "value": "Layer2"
+                        },
+                        "vlan": {
+                          "node": {
+                            "name": {
+                              "value": "fra05_1702"
+                            },
+                            "role": {
+                              "value": "server"
+                            },
+                            "vlan_id": {
+                              "value": 1702
+                            }
+                          }
+                        },
+                        "prefix": {
+                          "node": null
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "location": {
+              "node": {
+                "id": "17ba8713-c71d-4488-3f2c-22a44ce8f156",
+                "name": {
+                  "value": "Equinix FRA05"
+                },
+                "timezone": {
+                  "value": null
+                },
+                "ancestors": {
+                  "edges": [
+                    {
+                      "node": {
+                        "network_management_servers": {
+                          "edges": []
+                        }
+                      }
+                    },
+                    {
+                      "node": {
+                        "network_management_servers": {
+                          "edges": []
+                        }
+                      }
+                    },
+                    {
+                      "node": {
+                        "network_management_servers": {
+                          "edges": []
+                        }
+                      }
+                    },
+                    {
+                      "node": {
+                        "network_management_servers": {
+                          "edges": [
+                            {
+                              "node": {
+                                "__typename": "NetworkNameServer",
+                                "name": {
+                                  "value": "1.1.1.1"
+                                }
+                              }
+                            },
+                            {
+                              "node": {
+                                "__typename": "NetworkNTPServer",
+                                "name": {
+                                  "value": "time.cloudflare.com"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "interfaces": {
+              "edges": []
+            }
+          }
+        }
+      ]
+    },
+    "InfraVRF": {
+      "edges": [
+        {
+          "node": {
+            "id": "17ba8710-5005-9088-3f24-22a4d2fb9365",
+            "name": {
+              "value": "Backbone"
+            },
+            "vrf_rd": {
+              "value": "65000:101"
+            },
+            "import_rt": {
+              "node": {
+                "name": {
+                  "value": "65000:101"
+                }
+              }
+            },
+            "export_rt": {
+              "node": {
+                "name": {
+                  "value": "65000:101"
+                }
+              }
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "17ba8710-5003-f278-3f25-22a4cdc466d3",
+            "name": {
+              "value": "DMZ"
+            },
+            "vrf_rd": {
+              "value": "666"
+            },
+            "import_rt": {
+              "node": {
+                "name": {
+                  "value": "666"
+                }
+              }
+            },
+            "export_rt": {
+              "node": {
+                "name": {
+                  "value": "666"
+                }
+              }
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "17ba8710-5008-24b0-3f2b-22a4a0a6c4f9",
+            "name": {
+              "value": "Development"
+            },
+            "vrf_rd": {
+              "value": "202"
+            },
+            "import_rt": {
+              "node": {
+                "name": {
+                  "value": "202"
+                }
+              }
+            },
+            "export_rt": {
+              "node": {
+                "name": {
+                  "value": "202"
+                }
+              }
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "17ba8710-5006-ec30-3f2e-22a445db6cf1",
+            "name": {
+              "value": "Internet"
+            },
+            "vrf_rd": {
+              "value": "65000:100"
+            },
+            "import_rt": {
+              "node": {
+                "name": {
+                  "value": "65000:100"
+                }
+              }
+            },
+            "export_rt": {
+              "node": {
+                "name": {
+                  "value": "65000:100"
+                }
+              }
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "17ba8710-5007-8c58-3f22-22a4a49b1137",
+            "name": {
+              "value": "Management"
+            },
+            "vrf_rd": {
+              "value": "65000:199"
+            },
+            "import_rt": {
+              "node": {
+                "name": {
+                  "value": "65000:199"
+                }
+              }
+            },
+            "export_rt": {
+              "node": {
+                "name": {
+                  "value": "65000:199"
+                }
+              }
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "17ba8710-5008-b920-3f25-22a494dae6d5",
+            "name": {
+              "value": "Production"
+            },
+            "vrf_rd": {
+              "value": "200"
+            },
+            "import_rt": {
+              "node": {
+                "name": {
+                  "value": "200"
+                }
+              }
+            },
+            "export_rt": {
+              "node": {
+                "name": {
+                  "value": "200"
+                }
+              }
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "17ba8710-5006-4c08-3f2e-22a4304040a7",
+            "name": {
+              "value": "Staging"
+            },
+            "vrf_rd": {
+              "value": "201"
+            },
+            "import_rt": {
+              "node": {
+                "name": {
+                  "value": "201"
+                }
+              }
+            },
+            "export_rt": {
+              "node": {
+                "name": {
+                  "value": "201"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

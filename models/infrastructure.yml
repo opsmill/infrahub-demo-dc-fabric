@@ -1,58 +1,7 @@
-# yaml-language-server: $schema=https://schema.infrahub.app/develop/schema.schema.json
+# yaml-language-server: $schema=https://schema.infrahub.app/infrahub/schema/latest.json
 ---
 version: '1.0'
 generics:
-  - name: Generic
-    namespace: Location
-    description: "Generic Location Interface."
-    label: "Location"
-    icon: "mingcute:location-line"
-    include_in_menu: true
-    hierarchical: True
-    default_filter: shortname__value
-    order_by:
-      - name__value
-    display_labels:
-      - name__value
-    attributes:
-      - name: name
-        kind: Text
-        unique: true
-        order_weight: 1000
-      - name: shortname
-        kind: Text
-        unique: true
-        order_weight: 1100
-      - name: description
-        kind: Text
-        optional: true
-        order_weight: 1200
-      - name: timezone
-        kind: Text
-        optional: true
-        order_weight: 1300
-    relationships:
-      - name: prefixes
-        label: Prefixes
-        peer: InfraPrefix
-        cardinality: many
-        optional: true
-      - name: vlans
-        label: VLANs
-        peer: InfraVLAN
-        cardinality: many
-        optional: true
-      - name: devices
-        label: Devices
-        peer: InfraDevice
-        cardinality: many
-        optional: true
-      - name: network_management_servers
-        label: "Network Management Servers"
-        peer: NetworkMangementServer
-        optional: true
-        cardinality: many
-        kind: Component
   - name: Interface
     namespace: Infra
     description: "Generic Network Interface."
@@ -61,7 +10,10 @@ generics:
     display_labels:
       - name__value
     order_by:
+      - device__name__value
       - name__value
+    uniqueness_constraints:
+        - [ "device", "name__value"]
     attributes:
       - name: name
         kind: Text
@@ -90,7 +42,7 @@ generics:
             label: Active
             description: "Fully operational and currently in service."
             color: "#7fbf7f"
-          - name: provisionning
+          - name: provisioning
             label: Provisioning
             description: "In the process of being set up and configured."
             color: "#ffff7f"
@@ -171,142 +123,8 @@ generics:
         cardinality: one
         kind: Attribute
         identifier: connected__endpoint
-  - name: MangementServer
-    namespace: Network
-    description: "Generic model for network management server (dns, ntp, and dhcp)."
-    label: "Network Management Servers"
-    default_filter: name__value
-    display_labels: [name__value]
-    order_by: [name__value]
-    include_in_menu: true
-    attributes:
-      - name: name
-        kind: Text
-        order_weight: 1000
-      - name: description
-        kind: Text
-        order_weight: 1100
-        optional: true
-      - name: status
-        kind: Dropdown
-        choices:
-          - name: active
-            label: Active
-            description: "Fully operational and currently in service."
-            color: "#7fbf7f"
-          - name: provisionning
-            label: Provisioning
-            description: "In the process of being set up and configured."
-            color: "#ffff7f"
-          - name: maintenance
-            label: Maintenance
-            description: "Undergoing routine maintenance or repairs."
-            color: "#ffd27f"
-          - name: drained
-            label: Drained
-            description: "Temporarily taken out of service."
-            color: "#bfbfbf"
-    relationships:
-      - name: location
-        peer: LocationGeneric
-        optional: true
-        cardinality: many
-      - name: ip_addresses
-        peer: InfraIPAddress
-        optional: true
-        cardinality: many
-        kind: Component
-nodes:
-  # --------------------  Locations  --------------------
-  - name: Continent
-    namespace: Location
-    inherit_from: ["LocationGeneric"]
-    include_in_menu: true
-    menu_placement: "LocationGeneric"
-    label: Continent
-    display_labels:
-      - name__value
-    parent: ""
-    children: "LocationCountry"
-    icon: "jam:world"
-  - name: Country
-    namespace: Location
-    inherit_from: ["LocationGeneric"]
-    include_in_menu: true
-    menu_placement: "LocationGeneric"
-    label: Country
-    display_labels:
-      - name__value
-    parent: "LocationContinent"
-    children: "LocationRegion"
-    icon: "gis:search-country"
-  - name: Region
-    namespace: Location
-    inherit_from: ["LocationGeneric"]
-    include_in_menu: true
-    menu_placement: "LocationGeneric"
-    label: Region
-    display_labels:
-      - name__value
-    parent: "LocationCountry"
-    children: "LocationMetro"
-    icon: "carbon:cics-region-target"
-  - name: Metro
-    namespace: Location
-    inherit_from: ["LocationGeneric"]
-    include_in_menu: true
-    menu_placement: "LocationGeneric"
-    label: Metro
-    display_labels:
-      - name__value
-    parent: "LocationRegion"
-    children: "LocationBuilding"
-    icon: "healthicons:city"
-  - name: Building
-    namespace: Location
-    inherit_from: ["LocationGeneric"]
-    include_in_menu: true
-    menu_placement: "LocationGeneric"
-    label: Building
-    display_labels:
-      - name__value
-    parent: "LocationMetro"
-    children: "LocationFloor"
-    icon: "ri:building-line"
-  - name: Floor
-    namespace: Location
-    inherit_from: ["LocationGeneric"]
-    include_in_menu: true
-    menu_placement: "LocationGeneric"
-    label: Floor
-    display_labels:
-      - name__value
-    parent: "LocationBuilding"
-    icon: "mdi:home-floor-0"
-    children: "LocationSuite"
-  - name: Suite
-    namespace: Location
-    inherit_from: ["LocationGeneric"]
-    include_in_menu: true
-    menu_placement: "LocationGeneric"
-    label: Suite
-    display_labels:
-      - name__value
-    parent: "LocationFloor"
-    children: "LocationRack"
-    icon: "game-icons:cage"
-  - name: Rack
-    namespace: Location
-    inherit_from: ["LocationGeneric"]
-    include_in_menu: true
-    label: Rack
-    display_labels:
-      - name__value
-    menu_placement: "LocationGeneric"
-    parent: "LocationSuite"
-    children: ""
-    icon: "clarity:rack-server-line"
 
+nodes:
   # --------------------  Device (Models, Platforms, Device, Interfaces )  --------------------
   - name: DeviceType
     namespace: Infra
@@ -318,7 +136,10 @@ nodes:
     display_labels:
       - name__value
     order_by:
+      - manufacturer__name__value
       - name__value
+    uniqueness_constraints:
+        - [ "manufacturer", "name__value"]
     attributes:
       - name: name
         kind: Text
@@ -354,6 +175,11 @@ nodes:
         cardinality: one
         kind: Attribute
         order_weight: 1300
+      - name: manufacturer
+        peer: OrganizationManufacturer
+        cardinality: one
+        kind: Attribute
+        order_weight: 1250
       - name: tags
         peer: BuiltinTag
         optional: true
@@ -367,34 +193,49 @@ nodes:
     icon: "mdi:application-cog-outline"
     menu_placement: "InfraDevice"
     default_filter: name__value
-    order_by:
-      - name__value
     display_labels:
       - name__value
+    order_by:
+      - manufacturer__name__value
+      - name__value
+    uniqueness_constraints:
+        - [ "manufacturer", "name__value"]
     attributes:
       - name: name
         kind: Text
         unique: true
+        order_weight: 1000
       - name: description
         kind: Text
         optional: true
+        order_weight: 1200
       - name: nornir_platform
         kind: Text
         optional: true
+        order_weight: 1500
       - name: napalm_driver
         kind: Text
         optional: true
+        order_weight: 1600
       - name: netmiko_device_type
         kind: Text
         optional: true
+        order_weight: 1700
       - name: ansible_network_os
         kind: Text
         optional: true
+        order_weight: 1800
     relationships:
       - name: devices
         peer: InfraDevice
         optional: true
         cardinality: many
+        order_weight: 1350
+      - name: manufacturer
+        peer: OrganizationManufacturer
+        cardinality: one
+        kind: Attribute
+        order_weight: 1300
   - name: Device
     namespace: Infra
     description: "Generic Device object."
@@ -411,9 +252,11 @@ nodes:
       - name: name
         kind: Text
         unique: true
+        order_weight: 1000
       - name: description
         kind: Text
         optional: true
+        order_weight: 1100
       - name: status
         kind: Dropdown
         optional: true
@@ -422,7 +265,7 @@ nodes:
             label: Active
             description: "Fully operational and currently in service."
             color: "#7fbf7f"
-          - name: provisionning
+          - name: provisioning
             label: Provisioning
             description: "In the process of being set up and configured."
             color: "#ffff7f"
@@ -434,6 +277,7 @@ nodes:
             label: Drained
             description: "Temporarily taken out of service."
             color: "#bfbfbf"
+        order_weight: 1300
       - name: role
         kind: Dropdown
         optional: true
@@ -462,13 +306,15 @@ nodes:
             label: Leaf Switch
             description: "Top of Rack part of a Fabric."
             color: "#e6e6fa"
+        order_weight: 1400
     relationships:
       - name: location
-        label: location
+        label: Location
         peer: LocationGeneric
         optional: false
         cardinality: one
         kind: Attribute
+        order_weight: 1500
       - name: interfaces
         peer: InfraInterface
         optional: true
@@ -479,22 +325,36 @@ nodes:
         optional: true
         cardinality: one
         kind: Attribute
+        order_weight: 1600
       - name: tags
         peer: BuiltinTag
         optional: true
         cardinality: many
         kind: Attribute
+        order_weight: 2000
       - name: primary_address
         peer: InfraIPAddress
         label: Primary IP Address
         optional: true
         cardinality: one
         kind: Attribute
+        order_weight: 1700
       - name: device_type
         peer: InfraDeviceType
         optional: true
         cardinality: one
         kind: Attribute
+        order_weight: 1200
+      - name: platform
+        peer: InfraPlatform
+        optional: true
+        cardinality: one
+        kind: Attribute
+        order_weight: 1250
+      - name: topology
+        peer: TopologyTopology
+        optional: true
+        cardinality: one
   - name: InterfaceL3
     namespace: Infra
     description: "Network Layer 3 Interface"
@@ -536,6 +396,7 @@ nodes:
         label: Layer2 Mode
         kind: Text
         enum: ["Access", "Trunk"]
+        order_weight: 1250
     relationships:
       - name: untagged_vlan
         label: Untagged VLAN
@@ -548,9 +409,10 @@ nodes:
         label: Tagged VLANs
         peer: InfraVLAN
         optional: true
-        cardinality: one
+        cardinality: many
         kind: Component
         identifier: interface_l2__tagged_vlan
+
   # --------------------  Circuits  --------------------
   - name: Circuit
     namespace: Infra
@@ -580,7 +442,7 @@ nodes:
             label: Active
             description: "Fully operational and currently in service."
             color: "#7fbf7f"
-          - name: provisionning
+          - name: provisioning
             label: Provisioning
             description: "In the process of being set up and configured."
             color: "#ffff7f"
@@ -609,8 +471,13 @@ nodes:
             color: "#85db9b"
     relationships:
       - name: provider
-        label: "Provider (Organization)"
-        peer: CoreOrganization
+        peer: OrganizationProvider
+        optional: false
+        cardinality: one
+        kind: Attribute
+      - name: circuit_type
+        label: Circuit Type
+        peer: InfraCircuitType
         optional: false
         cardinality: one
         kind: Attribute
@@ -619,6 +486,31 @@ nodes:
         optional: true
         cardinality: many
         kind: Component
+  - name: CircuitType
+    namespace: Infra
+    description: "A type of Circuit"
+    label: "Circuit Type"
+    icon: "mdi:poll"
+    menu_placement: "InfraCircuit"
+    display_labels:
+      - name__value
+    order_by:
+      - name__value
+    attributes:
+      - name: name
+        kind: Text
+        unique: true
+        order_weight: 1000
+      - name: description
+        kind: Text
+        optional: true
+        order_weight: 1100
+    relationships:
+      - name: circuits
+        label: Circuits
+        peer: InfraCircuit
+        optional: true
+        cardinality: many
   - name: CircuitEndpoint
     namespace: Infra
     description: "A Circuit endpoint is attached to each end of a circuit"
@@ -634,7 +526,7 @@ nodes:
       - "InfraEndpoint"
     relationships:
       - name: location
-        label: location
+        label: Location
         peer: LocationGeneric
         optional: false
         cardinality: one
@@ -644,13 +536,14 @@ nodes:
         optional: false
         cardinality: one
         kind: Parent
+
   # --------------------  BGP (ASN, BGP Groups, BGP Sessions)  --------------------
   - name: AutonomousSystem
     namespace: Infra
     description: "An Autonomous System (AS) is a set of Internet routable IP prefixes belonging to a network"
     label: "Autonomous System"
     icon: "mdi:bank-circle-outline"
-    # menu_placement: InfraBGPSession
+    menu_placement: InfraBGPSession
     default_filter: name__value
     order_by: ["asn__value"]
     display_labels:
@@ -668,9 +561,19 @@ nodes:
         optional: true
     relationships:
       - name: organization
-        peer: CoreOrganization
+        peer: OrganizationGeneric
         optional: false
         cardinality: one
+        kind: Attribute
+      - name: location
+        peer: LocationGeneric
+        optional: true
+        cardinality: one
+        kind: Attribute
+      - name: devices
+        peer: InfraDevice
+        optional: true
+        cardinality: many
         kind: Attribute
   - name: BGPPeerGroup
     namespace: Infra
@@ -678,7 +581,7 @@ nodes:
     label: "BGP Peer Group"
     icon: "mdi:view-grid-plus-outline"
     menu_placement: InfraBGPSession
-    include_in_menu: false
+    include_in_menu: true
     default_filter: name__value
     order_by:
       - name__value
@@ -695,6 +598,12 @@ nodes:
         optional: true
       - name: export_policies
         kind: Text
+        optional: true
+      - name: maximum_routes
+        kind: Number
+        optional: true
+      - name: send_community
+        kind: Checkbox
         optional: true
     relationships:
       - name: local_as
@@ -719,7 +628,9 @@ nodes:
     order_by:
       - device__name__value
       - remote_as__asn__value
-    include_in_menu: false
+    display_labels:
+      - description__value
+    include_in_menu: true
     attributes:
       - name: type
         kind: Text
@@ -740,7 +651,7 @@ nodes:
             label: Active
             description: "Fully operational and currently in service."
             color: "#7fbf7f"
-          - name: provisionning
+          - name: provisioning
             label: Provisioning
             description: "In the process of being set up and configured."
             color: "#ffff7f"
@@ -807,35 +718,6 @@ nodes:
         cardinality: one
         kind: Attribute
 
-  # --------------------  Organization  --------------------
-  - name: Organization
-    namespace: Core
-    label: Organization
-    description: An organization represent a legal entity, a company.
-    default_filter: name__value
-    display_labels: [label__value]
-    order_by: [name__value]
-    icon: mdi:domain
-    include_in_menu: true
-
-    attributes:
-      - kind: Text
-        name: name
-        unique: true
-      - kind: Text
-        name: label
-        optional: true
-      - kind: Text
-        name: description
-        optional: true
-
-    relationships:
-      - cardinality: many
-        kind: Attribute
-        name: tags
-        optional: true
-        peer: BuiltinTag
-
   # --------------------  IPAM (VLAN, Prefix, IP Address)  --------------------
   - name: IPAddress
     namespace: Infra
@@ -859,7 +741,6 @@ nodes:
         peer: InfraInterfaceL3
         optional: true
         cardinality: one
-        kind: Parent
       - name: prefix
         peer: InfraPrefix
         optional: true
@@ -868,7 +749,8 @@ nodes:
     namespace: Infra
     description: "A VLAN is isolated layer two domain"
     label: "VLAN"
-    icon: "mdi:lan-pending"   # mdi:lan
+    icon: "mdi:lan-pending"
+    menu_placement: "TopologyNetworkService"
     default_filter: name__value
     order_by:
       - name__value
@@ -889,7 +771,7 @@ nodes:
             label: Active
             description: "Fully operational and currently in service."
             color: "#7fbf7f"
-          - name: provisionning
+          - name: provisioning
             label: Provisioning
             description: "In the process of being set up and configured."
             color: "#ffff7f"
@@ -922,22 +804,20 @@ nodes:
         optional: true
         cardinality: one
         kind: Attribute
-      - name: gateway
-        label: L3 Gateway
-        peer: InfraInterfaceL3
-        optional: true
-        cardinality: one
-        kind: Attribute
   - name: Prefix
     namespace: Infra
     description: "IPv4 or IPv6 network (with mask)"
     icon: "mdi:ip-network"
+    menu_placement: "TopologyNetworkService"
     label: "Prefix"
     default_filter: prefix__value
     order_by:
+      - vrf__name__value
       - prefix__value
     display_labels:
       - prefix__value
+    uniqueness_constraints:
+        - [ "vrf", "prefix__value"]
     attributes:
       - name: prefix
         kind: IPNetwork
@@ -957,22 +837,39 @@ nodes:
             label: Reserved
       - name: role
         kind: Dropdown
+        optional: true
         choices:
           - name: loopback
             label: Loopback
+            description: "Represents internal communications."
+            color: "#B0A8B9"
           - name: management
             label: Management
+            description: "Handles administrative operations."
+            color: "#AEC6CF"
           - name: public
             label: Public
+            description: "Public facing network."
+            color: "#FDFD96"
           - name: server
             label: Server
+            description: "Dedicated to server functions."
+            color: "#77DD77"
           - name: supernet
             label: Supernet
+            description: "Covers multiple networks"
+            color: "#FFB347"
           - name: technical
             label: Technical
+            description: "Focused on technical aspects."
+            color: "#9678B6"
+          - name: loopback-vtep
+            label: Loopback VTEP
+            description: "Facilitates virtualized network communications within loopback configurations."
+            color: "#CDB4DB"
     relationships:
       - name: organization
-        peer: CoreOrganization
+        peer: OrganizationGeneric
         optional: true
         cardinality: one
         kind: Attribute
@@ -985,89 +882,96 @@ nodes:
         order_weight: 1300
       - name: gateway
         label: L3 Gateway
-        peer: InfraInterfaceL3
+        identifier: "prefix__gateway"
+        peer: InfraIPAddress
         optional: true
         cardinality: one
         kind: Attribute
         order_weight: 1500
-      - name: vlan
-        peer: InfraVLAN
+      - name: vrf
+        peer: InfraVRF
         optional: true
         cardinality: one
         kind: Attribute
-        order_weight: 1500
+        order_weight: 1450
+      # - name: vlan
+      #   peer: InfraVLAN
+      #   optional: true
+      #   cardinality: one
+      #   kind: Attribute
+      #   order_weight: 1400
+      - name: network_service
+        label: Network Service
+        peer: TopologyNetworkService
+        optional: true
+        cardinality: one
+        order_weight: 1400
       - name: ip_addresses
         peer: InfraIPAddress
         cardinality: many
         kind: Component
         order_weight: 1600
-
-  # --------------------  Network Management  --------------------
-  - name: DHCPOption
-    namespace: Network
-    description: "Represents a configurable option within a DHCP server."
-    label: "DHCP Option"
-    icon: "gis:globe-options"
-    menu_placement: "NetworkMangementServer"
-    include_in_menu: false
+  - name: VRF
+    namespace: Infra
+    description: "A VRF is isolated layer three domain"
+    label: "VRF"
+    icon: "mdi:router"
     default_filter: name__value
-    display_labels: [name__value]
-    order_by: [name__value]
+    order_by:
+      - name__value
+    display_labels:
+      - name__value
     attributes:
       - name: name
         kind: Text
-        order_weight: 1000
       - name: description
         kind: Text
         optional: true
-        order_weight: 1100
-      - name: option_code
-        kind: Number
-        order_weight: 2000
-      - name: content
+      - name: vrf_rd
+        label: Route Distinguisher
         kind: Text
-        order_weight: 2100
-  - name: DHCPServer
-    namespace: Network
-    description: "Represents a DHCP server in the network."
-    label: "DHCP Server"
-    icon: "eos-icons:ip"
-    menu_placement: "NetworkMangementServer"
-    include_in_menu: false
-    default_filter: name__value
-    display_labels: [name__value]
-    order_by: [name__value]
-    inherit_from:
-      - NetworkMangementServer
-    attributes:
-      - name: lease_time
-        kind: Text
-        order_weight: 2100
+        optional: true
     relationships:
-      - name: dhcp_options
-        peer: NetworkDHCPOption
+      - name: prefix
+        label: Prefix
+        peer: InfraPrefix
         optional: true
         cardinality: many
-        kind: Component
-  - name: NameServer
-    namespace: Network
-    description: "Represents a DNS server in the network."
-    label: "DNS Server"
-    icon: "eos-icons:dns"
-    menu_placement: "NetworkMangementServer"
+        kind: Generic
+      - name: import_rt
+        identifier: "vrf__import"
+        label: "Import Targets"
+        peer: InfraRouteTarget
+        optional: true
+        cardinality: one
+        kind: Attribute
+      - name: export_rt
+        identifier: "vrf__export"
+        label: "Export Targets"
+        peer: InfraRouteTarget
+        optional: true
+        cardinality: one
+        kind: Attribute
+  - name: RouteTarget
+    namespace: Infra
+    description: "Route Target (RFC 4360)"
+    label: "Route Target"
+    icon: "mdi:target"
+    menu_placement: "InfraVRF"
     default_filter: name__value
-    display_labels: [name__value]
-    order_by: [name__value]
-    inherit_from:
-      - NetworkMangementServer
-  - name: NTPServer
-    namespace: Network
-    description: "Represents a NTP server in the network."
-    label: "NTP Server"
-    icon: "iconoir:time-zone"
-    menu_placement: "NetworkMangementServer"
-    default_filter: name__value
-    display_labels: [name__value]
-    order_by: [name__value]
-    inherit_from:
-      - NetworkMangementServer
+    order_by:
+      - name__value
+    display_labels:
+      - name__value
+    attributes:
+      - name: name
+        kind: Text
+        unique: true
+      - name: description
+        kind: Text
+        optional: true
+    relationships:
+      - name: vrf
+        peer: InfraVRF
+        optional: true
+        cardinality: many
