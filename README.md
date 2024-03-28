@@ -77,7 +77,7 @@ mutation {
 }
 ```
 
-### 5. Generate a Topology (Device, Interfaces, Caling, BGP Sessions, ...)
+### 5. Generate a Topology (Device, Interfaces, Cabling, BGP Sessions, ...)
 
 > [!NOTE]
 > The example below creates the topology fra05-pod1
@@ -86,19 +86,19 @@ mutation {
 poetry run infrahubctl run generators/generate_topology.py topology=fra05-pod1
 ```
 
-### 5. Generate a nerwotk service in a Topology
+### 5. Generate a network service in a Topology
 
 > [!NOTE]
 > The example below creates the Layer2 network service and a another Layer3 on topology fra05-pod1
 
 ```shell
 poetry run infrahubctl run generators/generate_network-services.py topology=fra05-pod1 type=layer2
-poetry run infrahubctl run generators/generate_network-services.py topology=fra05-pod1 type=layer2 vrf=production
+poetry run infrahubctl run generators/generate_network-services.py topology=fra05-pod1 type=layer3 vrf=production
 ```
 
 ### 6. Render Artifacts
 
-Artifact Generation is presen in the UI but it's posisble to try it out locally :
+Artifact Generation is not currently present in the UI but it's possible to try it out locally :
 
 > [!NOTE]
 > This command will render the artifact define with `device_arista` Transformation, for `fra05-pod1-leaf1` device
@@ -107,11 +107,12 @@ Artifact Generation is presen in the UI but it's posisble to try it out locally 
 poetry run infrahubctl render device_arista device=fra05-pod1-leaf1
 ```
 
-### 7. Try out our pytest plugin :
+### 7. Try out our pytest plugin
 
 > [!NOTE]
-> The command will use our infrahub pytest plugin. It will run the differents test in the `tests` folder. Those tests included :
-> - Syntax checks for all the Grahpqlql Queries
+> The command will use our infrahub pytest plugin. It will run the different test in the `tests` folder. Those tests included :
+>
+> - Syntax checks for all the GraphQL Queries
 > - Syntax checks for the Checks
 > - Syntax checks for all the jinja files used in `templates`
 > - will use the input/output file to try out the rendering and confirm there is no unexpected missing piece
@@ -134,13 +135,11 @@ poetry run infrahubctl branch create test --sync-with-git
 > You will be able to see the Diff in the Branch not only about the Data but about the Artifact as well
 > You can go back in time to see the Diff on the branch before you create the new services (you can do it `main` after merging the proposed changes too)
 
-
 ### 10. Create a proposed change
 
 Using your new branch `test` you will be able to see the Diff in the Proposed Change and you will see the checks / tests in the CI pipeline
 
-
 ### 11. Try out  the topology check
 
-- Modify an Elements in a Topology (example: increase or decresde the quantity of leafs in fra05-pod1)
+- Modify an Elements in a Topology (example: increase or decrease the quantity of leaf switches in fra05-pod1)
 - The checks will run in the Proposed Changes -> check_device_topology will fail.
