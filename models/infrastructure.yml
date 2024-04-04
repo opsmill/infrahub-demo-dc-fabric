@@ -812,12 +812,12 @@ nodes:
     label: "Prefix"
     default_filter: prefix__value
     order_by:
-      - vrf__name__value
+      # - vrf__name__value
       - prefix__value
     display_labels:
       - prefix__value
-    uniqueness_constraints:
-        - [ "vrf", "prefix__value"]
+    # uniqueness_constraints:
+    #     - [ "vrf", "prefix__value"]
     attributes:
       - name: prefix
         kind: IPNetwork
