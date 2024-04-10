@@ -338,7 +338,7 @@ nodes:
       - NetworkManagementServer
 
   # --------------------  Network Services --------------------
-  - name: NetworkServiceIdentifier
+  - name: NetSvcIdentifier
     namespace: Topology
     description: "Generic model for different types of identifiers used in network services."
     label: Network Service Identifier
@@ -382,7 +382,7 @@ nodes:
         order_weight: 1200
     relationships:
       - name: identifier
-        peer: TopologyNetworkServiceIdentifier
+        peer: TopologyNetSvcIdentifier
         cardinality: one
         kind: Attribute
         optional: false

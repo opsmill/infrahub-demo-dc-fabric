@@ -227,10 +227,13 @@ async def upsert_ip_address(
         ) -> None:
     if prefix_obj:
         prefix_id = prefix_obj.id
+        namespace_id = prefix_obj.ip_namespace.id
     else:
         prefix_id = None
+        namespace_id = None
     data = {
-        "prefix": {"id": prefix_id, "source": account_pop_id},
+        "ip_prefix": {"id": prefix_id, "source": account_pop_id},
+        "ip_namespace": {"id": namespace_id, "source": account_pop_id},
         "interface": {"id": interface_obj.id, "source": account_pop_id},
         "description": {"value": description},
         "address": {"value": address, "source": account_pop_id},
@@ -746,7 +749,7 @@ async def generate_topology(client: InfrahubClient, log: logging.Logger, branch:
                     "location": {"id": location_id },
                     "status": {"value": "active" },
                     "role": {"value": "technical" },
-                    "vrf": { "id": backbone_vrf_obj_id }
+                    "ip_namespace": { "id": backbone_vrf_obj_id }
                 }
                 prefix_obj = await upsert_object(
                     client=client,
@@ -945,7 +948,7 @@ async def generate_topology(client: InfrahubClient, log: logging.Logger, branch:
                         "location": {"id": location_id },
                         "status": {"value": "active"},
                         "role": {"value": "technical"},
-                        "vrf": { "id": backbone_vrf_obj_id }
+                        "ip_namespace": { "id": backbone_vrf_obj_id }
                     }
                     prefix_obj = await upsert_object(
                         client=client,

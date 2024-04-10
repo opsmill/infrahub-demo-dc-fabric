@@ -96,7 +96,7 @@ async def generate_network_services(
     locations_vlans = await client.filters(kind="InfraVLAN", location__ids=[location_id], branch=branch, populate_store=True)
     vlan_prefix_to_match = int(f"1{vrf_index}")
     existing_vlans = [location_vlan for location_vlan in locations_vlans if location_vlan.role.value == "server" and location_vlan.vlan_id.value // 100 == vlan_prefix_to_match ]
-    service_identifiers = await client.filters(kind="TopologyNetworkServiceIdentifier", branch=branch, populate_store=True)
+    service_identifiers = await client.filters(kind="TopologyNetSvcIdentifier", branch=branch, populate_store=True)
     identifier_prefix_to_match = int(f"{topology_index}{vrf_index}")
     existing_services = [identifier for identifier in service_identifiers if int(identifier.identifier.value) // 100 == identifier_prefix_to_match]
 
@@ -168,7 +168,7 @@ async def generate_network_services(
                 "location": { "id": location_id },
                 "status": { "value": "active" },
                 "role": { "value": "server" },
-                "vrf": { "id": vrf_id },
+                "ip_namespace": { "id": vrf_id },
             }
             prefix_obj = await upsert_object(
                 client=client,
@@ -189,7 +189,7 @@ async def generate_network_services(
             log=log,
             branch=branch,
             object_name=new_service_id,
-            kind_name="TopologyNetworkServiceIdentifier",
+            kind_name="TopologyNetSvcIdentifier",
             data=identifier_data,
             store=store,
             retrieved_on_failure=True

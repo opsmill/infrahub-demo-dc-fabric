@@ -658,7 +658,7 @@ async def create_location(client: InfrahubClient, log: logging.Logger, branch: s
                 "location": {"id": location_id },
                 "status": {"value": prefix_status },
                 "role": {"value": prefix_role },
-                "vrf": { "id": vrf_id },
+                "ip_namespace": { "id": vrf_id },
             }
 
             prefix_obj = await upsert_object(
