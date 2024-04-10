@@ -79,6 +79,7 @@ mutation {
 
 ### 5. Generate a Topology (Device, Interfaces, Cabling, BGP Sessions, ...)
 
+
 > [!NOTE]
 > The example below creates the topology fra05-pod1
 
@@ -142,4 +143,5 @@ Using your new branch `test` you will be able to see the Diff in the Proposed Ch
 ### 11. Try out  the topology check
 
 - Modify an Elements in a Topology (example: increase or decrease the quantity of leaf switches in fra05-pod1)
+
 - The checks will run in the Proposed Changes -> check_device_topology will fail.
