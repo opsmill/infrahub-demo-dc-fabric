@@ -6,3 +6,6 @@ __pycache__
 playbooks/reports
 playbooks/documentation
 playbooks/intended
+.python-version
+.envrc
+pyrightconfig.json

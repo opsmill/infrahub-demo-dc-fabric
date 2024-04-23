@@ -43,7 +43,7 @@ generics:
         optional: true
       - name: devices
         label: Devices
-        peer: InfraDevice
+        peer: InfraGenericDevice
         cardinality: many
         optional: true
       - name: network_management_servers
