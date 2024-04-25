@@ -13,7 +13,7 @@ nodes:
     include:
       - id
       - name
-      - site
+      - location
       - role
       - device_type
       - primary_address
@@ -25,7 +25,7 @@ compose:
 keyed_groups:
   - prefix: role
     key: role
-  - prefix: site
-    key: site.name
+  - prefix: location
+    key: location.name
   - prefix: device_type
     key: device_type.platform.ansible_network_os
