@@ -7,7 +7,6 @@ generics:
     description: "Generic Device object."
     label: "Device"
     icon: "mdi:server"
-    include_in_menu: false
     default_filter: name__value
     order_by:
       - name__value
@@ -24,7 +23,8 @@ generics:
         order_weight: 1100
       - name: status
         kind: Dropdown
-        optional: true
+        optional: false
+        default_value: provisioning
         choices:
           - name: active
             label: Active
@@ -220,7 +220,7 @@ nodes:
     description: "A model of device"
     label: "Device Type"
     icon: "mdi:poll"
-    menu_placement: "InfraDevice"
+    menu_placement: "InfraGenericDevice"
     default_filter: name__value
     display_labels:
       - name__value
@@ -280,7 +280,7 @@ nodes:
     description: "A Platform represent the type of software running on a device."
     label: "Platform"
     icon: "mdi:application-cog-outline"
-    menu_placement: "InfraDevice"
+    menu_placement: "InfraGenericDevice"
     default_filter: name__value
     display_labels:
       - name__value
@@ -316,7 +316,7 @@ nodes:
         order_weight: 1800
     relationships:
       - name: devices
-        peer: InfraDevice
+        peer: InfraGenericDevice
         optional: true
         cardinality: many
         order_weight: 1350
@@ -326,6 +326,9 @@ nodes:
         kind: Attribute
         order_weight: 1300
   - name: Device
+    label: "Network Device"
+    menu_placement: "InfraGenericDevice"
+    icon: clarity:network-switch-solid
     namespace: Infra
     inherit_from:
       - "CoreArtifactTarget"
@@ -361,7 +364,7 @@ nodes:
     description: "Network Layer 3 Interface"
     label: "Interface L3"
     icon: "mdi:ethernet"
-    menu_placement: "InfraDevice"
+    menu_placement: "InfraGenericDevice"
     include_in_menu: true
     display_labels:
       - name__value
@@ -382,7 +385,7 @@ nodes:
     description: "Network Layer 2 Interface"
     label: "Interface L2"
     icon: "mdi:ethernet"
-    menu_placement: "InfraDevice"
+    menu_placement: "InfraGenericDevice"
     include_in_menu: true
     display_labels:
       - name__value
@@ -572,7 +575,7 @@ nodes:
         cardinality: one
         kind: Attribute
       - name: devices
-        peer: InfraDevice
+        peer: InfraGenericDevice
         optional: true
         cardinality: many
         kind: Attribute
@@ -705,7 +708,7 @@ nodes:
         cardinality: one
         kind: Attribute
       - name: device
-        peer: InfraDevice
+        peer: InfraGenericDevice
         optional: true
         cardinality: one
       - name: peer_group

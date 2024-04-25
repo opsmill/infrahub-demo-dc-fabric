@@ -50,7 +50,6 @@ generics:
         label: Address Groups
         peer: SecurityGenericAddressGroup
         cardinality: many
-        kind: Parent
         optional: true
   - name: GenericServiceGroup
     namespace: Security
@@ -93,7 +92,6 @@ generics:
         label: Service Groups
         peer: SecurityGenericServiceGroup
         cardinality: many
-        kind: Parent
         optional: true
 
 nodes:
@@ -492,7 +490,7 @@ nodes:
     icon: "mdi:firewall"
     include_in_menu: true
     default_filter: name__value
-    menu_placement: InfraDevice
+    menu_placement: "InfraGenericDevice"
     attributes:
       - name: role
         kind: Dropdown
@@ -610,7 +608,7 @@ nodes:
   - name: FirewallInterface
     namespace: Security
     label: Firewall Interface
-    menu_placement: InfraDevice
+    menu_placement: "InfraGenericDevice"
     icon: "mdi:ethernet"
     display_labels:
       - name__value

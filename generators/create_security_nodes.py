@@ -172,7 +172,7 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
         proto = client.store.get(key=service.ip_protocol.name)
         obj = await client.create(kind="SecurityService", name=service.name, description=service.description, ip_protocol=proto, port=service.port)
         await obj.save(allow_upsert=True)
-        client.store.set(key=obj.name.value, node=obj) 
+        client.store.set(key=obj.name.value, node=obj)
 
     for service_group in SERVICE_GROUPS:
         services = [client.store.get(service.name) for service in service_group.services]
@@ -211,7 +211,7 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
             return client.store.get(key=key)
         except NodeNotFoundError:
             return None
-    
+
     for rule in RULES:
         policy = store_get_or_none(rule.policy.name)
         source_zone = store_get_or_none(rule.source_zone.name)
@@ -270,6 +270,3 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
 
     device.policy = store_get_or_none(FRA_FW1_POLICY.name)
     await device.save()
-
-
-        

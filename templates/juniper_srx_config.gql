@@ -9,9 +9,9 @@ query firewall_config($device: String!) {
           rules {
             edges {
               node {
-		name {
-		  value
-		}
+                name {
+                  value
+                  }
                 action {
                   value
                 }

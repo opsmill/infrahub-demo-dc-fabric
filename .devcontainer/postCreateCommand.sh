@@ -7,7 +7,4 @@ poetry run infrahubctl schema load models/*.yml
 sleep 30
 
 # Load infra-data
-poetry run infrahubctl run generators/create_basic.py
-poetry run infrahubctl run generators/create_location.py
-poetry run infrahubctl run generators/create_topology.py
-poetry run infrahubctl run generators/create_security_nodes.py
+./scripts/create_demo_data.sh

@@ -20,7 +20,7 @@
 {% endfor %}
 system {
     root-authentication {
-        encrypted-password "YOUR_ROOT_PASSWORD"; 
+        encrypted-password "YOUR_ROOT_PASSWORD";
     }
     services {
         ssh;
@@ -45,7 +45,7 @@ system {
     }
 }
 interfaces {
-{%- for interface in data.InfraGenericDevice.edges[0].node.interfaces.edges %} 
+{%- for interface in data.InfraGenericDevice.edges[0].node.interfaces.edges %}
     {{ interface.node.name.value }} {
         unit 0 {
             family inet {
@@ -104,29 +104,29 @@ security {
         {% for (source_zone, destination_zone), rules in ns.zone_pairs.items() %}
         from-zone {{ source_zone }} to-zone {{ destination_zone }} {
         {% for rule in rules %}
-            policy {{ rule.node.name.value }} { 
-                match { 
-                    {% for address in rule.node.source_address.edges %} 
-                    source-address {{ address.node.name.value }}; {%- endfor -%}  
-                    {% for group in rule.node.source_groups.edges %}  
-                    source-address {{ group.node.name.value }}; {%- endfor -%}  
-                    {% for address in rule.node.destination_address.edges %}  
-                    destination-address {{ address.node.name.value }}; {%- endfor -%}  
-                    {% for group in rule.node.destination_groups.edges %}  
-                    destination-address {{ group.node.name.value }}; {%- endfor -%}  
-                    {% for srv in rule.node.destination_services.edges %} 
-                    application {{ srv.node.name.value }}; {%- endfor -%}  
-                    {% for srv in rule.node.destination_service_groups.edges %}  
-                    application-set {{ srv.node.name.value }}; {%- endfor %} 
-                } 
+            policy {{ rule.node.name.value }} {
+                match {
+                    {% for address in rule.node.source_address.edges %}
+                    source-address {{ address.node.name.value }}; {%- endfor -%}
+                    {% for group in rule.node.source_groups.edges %}
+                    source-address {{ group.node.name.value }}; {%- endfor -%}
+                    {% for address in rule.node.destination_address.edges %}
+                    destination-address {{ address.node.name.value }}; {%- endfor -%}
+                    {% for group in rule.node.destination_groups.edges %}
+                    destination-address {{ group.node.name.value }}; {%- endfor -%}
+                    {% for srv in rule.node.destination_services.edges %}
+                    application {{ srv.node.name.value }}; {%- endfor -%}
+                    {% for srv in rule.node.destination_service_groups.edges %}
+                    application-set {{ srv.node.name.value }}; {%- endfor %}
+                }
                 then {
-                    {{ rule.node.action.value }}; 
-                    {% if rule.node.log.value %} 
+                    {{ rule.node.action.value }};
+                    {% if rule.node.log.value %}
                     log {
                         session-init;
                         session-close;
                     }
-                    {% endif %} 
+                    {% endif %}
                 }
             }
         {% endfor %}

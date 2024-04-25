@@ -58,9 +58,9 @@ ip name-server {{ name_server }}
 {%      if network_services.node.vlan %}
 vlan {{ network_services.node.vlan.node.vlan_id.value }}
    name {{ network_services.node.vlan.node.name.value }}
+!
 {%      endif %}
 {%   endfor %}
-!
 vlan 4093
    name LEAF_PEER_L3
    trunk group LEAF_PEER_L3

@@ -8,4 +8,5 @@ playbooks/documentation
 playbooks/intended
 .python-version
 .envrc
+.env
 pyrightconfig.json
