@@ -14,21 +14,11 @@ nodes:
       - address__value
     inherit_from:
       - BuiltinIPAddress
-    # attributes:
-    #   - name: address  # --> replace by address inherited from BuiltinIPAddress
-    #     kind: IPHost
-    #   - name: description  # --> replace by description inherited from BuiltinIPAddress
-    #     kind: Text
-    #     optional: true
     relationships:
       - name: interface
         peer: InfraInterfaceL3
         optional: true
         cardinality: one
-      # - name: prefix  # --> replace by ip_prefix inherited from BuiltinIPAddress
-      #   peer: InfraPrefix
-      #   optional: true
-      #   cardinality: one
   - name: VLAN
     namespace: Infra
     description: "A VLAN is isolated layer two domain"
@@ -96,22 +86,12 @@ nodes:
     label: "Prefix"
     default_filter: prefix__value
     order_by:
-      # - vrf__name__value
       - prefix__value
     display_labels:
       - prefix__value
-    # uniqueness_constraints:
-    #     - [ "vrf", "prefix__value"]
     inherit_from:
       - BuiltinIPPrefix
     attributes:
-      # - name: prefix  # --> replace by prefix inherited from BuiltinIPPrefix
-      #   kind: IPNetwork
-      #   order_weight: 1000
-      # - name: description  # --> replace by description inherited from BuiltinIPPrefix
-      #   kind: Text
-      #   optional: true
-      #   order_weight: 1100
       - name: status
         kind: Dropdown
         choices:
@@ -174,29 +154,12 @@ nodes:
         cardinality: one
         kind: Attribute
         order_weight: 1500
-      # - name: vrf # --> replace by ip_namespace inherited from BuiltinIPPrefix
-      #   peer: InfraVRF
-      #   optional: true
-      #   cardinality: one
-      #   kind: Attribute
-      #   order_weight: 1450
-      # - name: vlan
-      #   peer: InfraVLAN
-      #   optional: true
-      #   cardinality: one
-      #   kind: Attribute
-      #   order_weight: 1400
       - name: network_service
         label: Network Service
         peer: TopologyNetworkService
         optional: true
         cardinality: one
         order_weight: 1400
-      # - name: ip_addresses  # --> replace by ip_addresses inherited from BuiltinIPPrefix
-      #   peer: InfraIPAddress
-      #   cardinality: many
-      #   kind: Component
-      #   order_weight: 1600
   - name: VRF
     namespace: Infra
     description: "A VRF is isolated layer three domain"
@@ -210,22 +173,11 @@ nodes:
     inherit_from:
       - BuiltinIPNamespace
     attributes:
-      # - name: name  # --> replace by name inherited from BuiltinIPNamespace
-      #   kind: Text
-      # - name: description # --> replace by description inherited from BuiltinIPNamespace
-      #   kind: Text
-      #   optional: true
       - name: vrf_rd
         label: Route Distinguisher
         kind: Text
         optional: true
     relationships:
-      # - name: prefix # --> replace by ip_prefixes inherited from BuiltinIPNamespace
-      #   label: Prefix
-      #   peer: InfraPrefix
-      #   optional: true
-      #   cardinality: many
-      #   kind: Generic
       - name: import_rt
         identifier: "vrf__import"
         label: "Import Targets"
