@@ -526,13 +526,13 @@ files = [
 
 [[package]]
 name = "infrahub-sdk"
-version = "0.10.0"
+version = "0.10.1"
 description = "Python Client to interact with Infrahub"
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "infrahub_sdk-0.10.0-py3-none-any.whl", hash = "sha256:16dbabc4c63f8beb2fe287578e06e55a82fc250d9c2033f6b17e65a86e4a699f"},
-    {file = "infrahub_sdk-0.10.0.tar.gz", hash = "sha256:e5329d4b02e75defea21e2f19482d8d2bd53e2d75dbdc45505fdbc95e6fe1235"},
+    {file = "infrahub_sdk-0.10.1-py3-none-any.whl", hash = "sha256:eb85bfe249f5d7eeb73590f9ac8eae158e4c887aa389798161e2710fb889e259"},
+    {file = "infrahub_sdk-0.10.1.tar.gz", hash = "sha256:7373001b5c7bf95cdab30fe2107db562f7d07718779bc7a3a927e78f872c3a6e"},
 ]
 
 [package.dependencies]
@@ -552,11 +552,11 @@ pyyaml = {version = ">=6,<7", optional = true, markers = "extra == \"ctl\" or ex
 rich = {version = ">=13,<14", optional = true, markers = "extra == \"ctl\" or extra == \"tests\" or extra == \"all\""}
 toml = {version = ">=0.10,<0.11", optional = true, markers = "extra == \"ctl\" or extra == \"all\""}
 typer = {version = ">=0,<1", optional = true, markers = "extra == \"ctl\" or extra == \"all\""}
-ujson = {version = ">=5,<6", optional = true, markers = "extra == \"ctl\" or extra == \"all\""}
+ujson = ">=5,<6"
 
 [package.extras]
-all = ["Jinja2 (>=3,<4)", "numpy (>=1.24.2,<2.0.0)", "numpy (>=1.26.2,<2.0.0)", "pyarrow (>=14,<15)", "pytest", "pyyaml (>=6,<7)", "rich (>=13,<14)", "toml (>=0.10,<0.11)", "typer (>=0,<1)", "ujson (>=5,<6)"]
-ctl = ["Jinja2 (>=3,<4)", "numpy (>=1.24.2,<2.0.0)", "numpy (>=1.26.2,<2.0.0)", "pyarrow (>=14,<15)", "pyyaml (>=6,<7)", "rich (>=13,<14)", "toml (>=0.10,<0.11)", "typer (>=0,<1)", "ujson (>=5,<6)"]
+all = ["Jinja2 (>=3,<4)", "numpy (>=1.24.2,<2.0.0)", "numpy (>=1.26.2,<2.0.0)", "pyarrow (>=14,<15)", "pytest", "pyyaml (>=6,<7)", "rich (>=13,<14)", "toml (>=0.10,<0.11)", "typer (>=0,<1)"]
+ctl = ["Jinja2 (>=3,<4)", "numpy (>=1.24.2,<2.0.0)", "numpy (>=1.26.2,<2.0.0)", "pyarrow (>=14,<15)", "pyyaml (>=6,<7)", "rich (>=13,<14)", "toml (>=0.10,<0.11)", "typer (>=0,<1)"]
 tests = ["Jinja2 (>=3,<4)", "pytest", "pyyaml (>=6,<7)", "rich (>=13,<14)"]
 
 [[package]]
