@@ -16,7 +16,7 @@ The infrahub-demo-dc-fabric repository demonstrates the capabilities to use Infr
 export INFRAHUB_API="http://localhost:8000"
 export INFRAHUB_TOKEN="06438eb2-8019-4776-878c-0941b1f1d1ec"
 export INFRAHUB_SDK_API_TOKEN="06438eb2-8019-4776-878c-0941b1f1d1ec"
-export INFRAHUB_DOCKER_IMAGE="9r2s1098.c1.gra9.container-registry.ovh.net/opsmill/infrahub:0.12.1"
+export INFRAHUB_DOCKER_IMAGE="9r2s1098.c1.gra9.container-registry.ovh.net/opsmill/infrahub:0.13.0"
 export DATABASE_DOCKER_IMAGE="neo4j:5.16-community"
 export INFRAHUB_SECURITY_SECRET_KEY="327f747f-efac-42be-9e73-999f08f86b92"
 export CACHE_DOCKER_IMAGE="redis:7.2"
@@ -49,6 +49,7 @@ This will create :
 - Basics data (Account, organization, ASN, Device Type, and Tags)
 - Locations data (Locations, VLANs, and Prefixes)
 - Topology data (Topology, Topology Elements)
+- Security data (Policies, rules, objects)
 
 ```shell
 ./.devcontainer/postCreateCommand.sh
@@ -78,6 +79,7 @@ mutation {
 ```
 
 ### 5. Generate a Topology (Device, Interfaces, Cabling, BGP Sessions, ...)
+
 
 > [!NOTE]
 > The example below creates the topology fra05-pod1
@@ -142,4 +144,5 @@ Using your new branch `test` you will be able to see the Diff in the Proposed Ch
 ### 11. Try out  the topology check
 
 - Modify an Elements in a Topology (example: increase or decrease the quantity of leaf switches in fra05-pod1)
+
 - The checks will run in the Proposed Changes -> check_device_topology will fail.

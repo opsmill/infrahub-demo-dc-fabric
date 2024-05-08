@@ -166,7 +166,7 @@ async def generate_network_services(
                 "location": { "id": location_id },
                 "status": { "value": "active" },
                 "role": { "value": "server" },
-                "vrf": { "id": vrf_id },
+                "ip_namespace": { "id": vrf_id },
             }
             prefix_obj = await upsert_object(
                 client=client,

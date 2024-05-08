@@ -55,9 +55,11 @@ query device_info($device: String!) {
                       prefix {
                         value
                       }
-                      vrf {
+                      ip_namespace {
                         node {
-                          vrf_rd {value}
+                          ... on InfraVRF {
+                            vrf_rd {value}
+                          }
                         }
                       }
                     }
@@ -144,10 +146,10 @@ query device_info($device: String!) {
                 ip_addresses {
                   edges {
                     node {
-                      prefix {
+                      ip_prefix {
                         node {
-                          prefix {
-                            broadcast_address
+                          broadcast_address {
+                            value
                           }
                         }
                       }
