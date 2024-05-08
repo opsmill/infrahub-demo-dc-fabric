@@ -49,6 +49,7 @@ This will create :
 - Basics data (Account, organization, ASN, Device Type, and Tags)
 - Locations data (Locations, VLANs, and Prefixes)
 - Topology data (Topology, Topology Elements)
+- Security data (Policies, rules, objects)
 
 ```shell
 ./.devcontainer/postCreateCommand.sh
