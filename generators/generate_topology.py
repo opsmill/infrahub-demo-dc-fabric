@@ -232,7 +232,6 @@ async def upsert_ip_address(
         prefix_id = None
         namespace_id = None
     data = {
-        "ip_prefix": {"id": prefix_id, "source": account_pop_id},
         "ip_namespace": {"id": namespace_id, "source": account_pop_id},
         "interface": {"id": interface_obj.id, "source": account_pop_id},
         "description": {"value": description},
