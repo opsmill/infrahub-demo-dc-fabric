@@ -13,9 +13,8 @@ The infrahub-demo-dc-fabric repository demonstrates the capabilities to use Infr
 - If you are not using devcontainer, you will need to export those variables before the `docker-compose` :
 
 ```shell
-export INFRAHUB_API="http://localhost:8000"
-export INFRAHUB_TOKEN="06438eb2-8019-4776-878c-0941b1f1d1ec"
-export INFRAHUB_SDK_API_TOKEN="06438eb2-8019-4776-878c-0941b1f1d1ec"
+export INFRAHUB_ADDRESS="http://localhost:8000"
+export INFRAHUB_API_TOKEN="06438eb2-8019-4776-878c-0941b1f1d1ec"
 export INFRAHUB_DOCKER_IMAGE="9r2s1098.c1.gra9.container-registry.ovh.net/opsmill/infrahub:0.13.0"
 export DATABASE_DOCKER_IMAGE="neo4j:5.19-community"
 export INFRAHUB_SECURITY_SECRET_KEY="327f747f-efac-42be-9e73-999f08f86b92"
