@@ -1,13 +1,11 @@
 import logging
-import uuid
-from collections import defaultdict
+
 from ipaddress import IPv4Network
 from typing import Any, Dict, List, Optional
 
-from infrahub_sdk import InfrahubBatch, UUIDT, InfrahubClient, InfrahubNode, NodeStore
+from infrahub_sdk import InfrahubBatch, InfrahubClient, InfrahubNode, NodeStore
 
-from create_location import LOCATION_SUPERNETS, LOCATION_MGMTS, EXTERNAL_NETWORKS
-from utils import add_relationships, group_add_member, populate_local_store, upsert_object
+from utils import populate_local_store, upsert_object
 
 
 # flake8: noqa
@@ -168,7 +166,7 @@ async def generate_network_services(
                 "location": { "id": location_id },
                 "status": { "value": "active" },
                 "role": { "value": "server" },
-                "vrf": { "id": vrf_id },
+                "ip_namespace": { "id": vrf_id },
             }
             prefix_obj = await upsert_object(
                 client=client,
@@ -249,15 +247,9 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str, **kwargs
         # Organizations
         tenants=await client.all("OrganizationTenant")
         populate_local_store(objects=tenants, key_type="name", store=store)
-        # ASN
-        autonomous_systems=await client.all("InfraAutonomousSystem")
-        populate_local_store(objects=autonomous_systems, key_type="name", store=store)
-        # Topologies + Network Strategies
-        topologies=await client.all("TopologyTopology")
+        # Topologies + Related informations
+        topologies=await client.all("TopologyTopology", populate_store=True, prefetch_relationships=True)
         populate_local_store(objects=topologies, key_type="name", store=store)
-        # Locations
-        locations=await client.all("LocationGeneric", populate_store=True)
-        populate_local_store(objects=locations, key_type="name", store=store)
         # VRF
         vrfs=await client.all("InfraVRF")
         populate_local_store(objects=vrfs, key_type="name", store=store)

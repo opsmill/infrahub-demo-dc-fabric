@@ -43,7 +43,7 @@ generics:
         optional: true
       - name: devices
         label: Devices
-        peer: InfraDevice
+        peer: InfraGenericDevice
         cardinality: many
         optional: true
       - name: network_management_servers
@@ -172,7 +172,6 @@ nodes:
     default_filter: shortname__value
     display_labels:
       - name__value
-    
     menu_placement: "LocationGeneric"
     parent: "LocationSuite"
     children: ""

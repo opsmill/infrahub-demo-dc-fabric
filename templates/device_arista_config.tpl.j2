@@ -19,7 +19,7 @@
 {%         set ns.management_intf_name = intf.node.name.value %}
 {%         if intf.node.ip_addresses.edges %}
 {%            set ns.management_ip = intf.node.ip_addresses.edges[0].node.address.ip %}
-{%            set broadcast_address = intf.node.ip_addresses.edges[0].node.prefix.node.prefix.broadcast_address %}
+{%            set broadcast_address = intf.node.ip_addresses.edges[0].node.ip_prefix.node.broadcast_address.value %}
 {%            set octets = broadcast_address.split('.') %}
 {%            set last_octet = octets[3] | int - 1 %}
 {%            set ns.mangement_gw_ip = octets[0] ~ '.' ~ octets[1] ~ '.' ~ octets[2] ~ '.' ~ last_octet | string %}
@@ -58,9 +58,9 @@ ip name-server {{ name_server }}
 {%      if network_services.node.vlan %}
 vlan {{ network_services.node.vlan.node.vlan_id.value }}
    name {{ network_services.node.vlan.node.name.value }}
+!
 {%      endif %}
 {%   endfor %}
-!
 vlan 4093
    name LEAF_PEER_L3
    trunk group LEAF_PEER_L3
@@ -121,7 +121,7 @@ interface Vxlan1
    vxlan vlan {{ network_services.node.vlan.node.vlan_id.value }} vni 201{{ network_services.node.vlan.node.vlan_id.value }}
 {%         elif network_services.node.service_type.value == "Layer3" %}
 {%            if network_services.node.prefix.node %}
-   vxlan vlan {{ network_services.node.vlan.node.vlan_id.value }} vni {{ network_services.node.prefix.node.vrf.node.vrf_rd.value }}{{ network_services.node.vlan.node.vlan_id.value }}
+   vxlan vlan {{ network_services.node.vlan.node.vlan_id.value }} vni {{ network_services.node.prefix.node.ip_namespace.node.vrf_rd.value }}{{ network_services.node.vlan.node.vlan_id.value }}
 {%            endif %}
 {%         endif %}
 {%      endif %}
