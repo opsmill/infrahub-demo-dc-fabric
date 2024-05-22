@@ -2,7 +2,7 @@ import logging
 from typing import Dict, Optional
 from infrahub_sdk import InfrahubBatch, InfrahubClient, NodeStore
 
-from utils import upsert_object
+from utils import create_and_add_to_batch
 
 # flake8: noqa
 # pylint: skip-file
@@ -153,7 +153,7 @@ async def create_basics(
             "type": account[1],
             "role": account[3],
         }
-        await upsert_object(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
@@ -172,7 +172,7 @@ async def create_basics(
            "name": group[0],
            "label": group[1],
         }
-       await upsert_object(
+       await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
@@ -199,7 +199,7 @@ async def create_basics(
         data_org={
             "name": {"value": org[0], "is_protected": True},
         }
-        await upsert_object(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
@@ -228,7 +228,7 @@ async def create_basics(
             data_asn["organization"] = {"id": store.get(kind=f"Organization{organization_type.title()}", key=asn[1]).id, "source": account.id}
         else:
             data_asn["description"] = {"value": f"{asn_name}", "source": account.id, "owner": account2.id}
-        await upsert_object(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
@@ -246,7 +246,7 @@ async def create_basics(
             "description": {"value": f"Private ASN {asn_name} for Duff", "source": account.id, "owner": account2.id},
             "organization": {"id": store.get(kind="OrganizationTenant", key="Duff").id, "source": account.id},
         }
-        await upsert_object(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
@@ -270,7 +270,7 @@ async def create_basics(
         data={
             "name": {"value": tag, "source": account.id},
         }
-        await upsert_object(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
@@ -300,7 +300,7 @@ async def create_basics(
         }
        if manufacturer:
            data["manufacturer"] = {"id": manufacturer.id }
-       await upsert_object(
+       await create_and_add_to_batch(
            client=client,
            log=log,
            branch=branch,
@@ -332,7 +332,7 @@ async def create_basics(
         }
        if manufacturer:
            data["manufacturer"] = {"id": manufacturer.id }
-       await upsert_object(
+       await create_and_add_to_batch(
            client=client,
            log=log,
            branch=branch,
@@ -369,7 +369,7 @@ async def create_basics(
             "local_as": local_as_id,
             "remote_as": remote_as_id,
         }
-        await upsert_object(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
@@ -392,7 +392,7 @@ async def create_basics(
             "name": { "value": rt_name, "source": account.id},
             "description": { "value": rt_description, "source": account.id},
         }
-        await upsert_object(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
@@ -424,7 +424,7 @@ async def create_basics(
             "import_rt": { "id": vrf_rt_import_obj.id, "source": account.id},
             "export_rt": { "id": vrf_rt_export_obj.id, "source": account.id},
         }
-        await upsert_object(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
