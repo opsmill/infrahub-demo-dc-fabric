@@ -52,24 +52,24 @@ ORGANIZATIONS = (
 
 ASNS = (
     # asn, organization
-    (1299,  "Arelion"),
-    (8220,  "Colt Technology Services"),
-    (701,  "Verizon Business"),
-    (3257,  "GTT Communications"),
-    (6939,  "Hurricane Electric"),
-    (3356,  "Lumen"),
-    (6461,  "Zayo"),
-    (24115,  "Equinix"),
-    (20710,  "Interxion"),
-    (3491,  "PCCW Global"),
-    (5511,  "Orange S.A"),
-    (6453,  "Tata Communications"),
-    (1239,  "Sprint"),
-    (2914,  "NTT America"),
-    (174,  "Cogent Communications"),
-    (7922,  "Comcast Cable Communication"),
-    (6762,  "Telecom Italia Sparkle"),
-    (7018,  "AT&T Services")
+    (1299, "Arelion"),
+    (8220, "Colt Technology Services"),
+    (701, "Verizon Business"),
+    (3257, "GTT Communications"),
+    (6939, "Hurricane Electric"),
+    (3356, "Lumen"),
+    (6461, "Zayo"),
+    (24115, "Equinix"),
+    (20710, "Interxion"),
+    (3491, "PCCW Global"),
+    (5511, "Orange S.A"),
+    (6453, "Tata Communications"),
+    (1239, "Sprint"),
+    (2914, "NTT America"),
+    (174, "Cogent Communications"),
+    (7922, "Comcast Cable Communication"),
+    (6762, "Telecom Italia Sparkle"),
+    (7018, "AT&T Services")
 )
 
 VRF = {
@@ -127,11 +127,11 @@ GROUPS = (
 
 BGP_PEER_GROUPS = (
     # name, import policy, export policy, local AS, remote AS
-    ("POP_INTERNAL", "IMPORT_INTRA_POP", "EXPORT_INTRA_POP", "Duff", "Duff"),
-    ("POP_GLOBAL", "IMPORT_POP_GLOBAL", "EXPORT_POP_GLOBLA", "Duff", None),
-    ("UPSTREAM_DEFAULT", "IMPORT_UPSTREAM", "EXPORT_PUBLIC_PREFIX", "Duff", None),
-    ("UPSTREAM_ARELION", "IMPORT_UPSTREAM", "EXPORT_PUBLIC_PREFIX", "Duff", "Arelion"),
-    ("IX_DEFAULT", "IMPORT_IX", "EXPORT_PUBLIC_PREFIX", "Duff", None),
+    ("POP_INTERNAL", "IMPORT_INTRA_POP", "EXPORT_INTRA_POP", "AS65000", "AS65000"),
+    ("POP_GLOBAL", "IMPORT_POP_GLOBAL", "EXPORT_POP_GLOBLA", "AS65000", None),
+    ("UPSTREAM_DEFAULT", "IMPORT_UPSTREAM", "EXPORT_PUBLIC_PREFIX", "AS65000", None),
+    ("UPSTREAM_ARELION", "IMPORT_UPSTREAM", "EXPORT_PUBLIC_PREFIX", "AS65000", "AS1299"),
+    ("IX_DEFAULT", "IMPORT_IX", "EXPORT_PUBLIC_PREFIX", "AS65000", None),
 )
 
 store = NodeStore()
