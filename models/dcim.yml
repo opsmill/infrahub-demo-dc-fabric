@@ -95,6 +95,7 @@ generics:
     namespace: Infra
     description: "Generic Network Interface."
     label: "Interface"
+    icon: "mdi:ethernet"
     menu_placement: "InfraGenericDevice"
     include_in_menu: true
     display_labels:
