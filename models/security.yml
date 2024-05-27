@@ -196,9 +196,7 @@ nodes:
       - name: prefix
         kind: IPNetwork
         optional: false
-      - name: name
-        kind: Text
-        optional: false
+        unique: true
       - name: description
         kind: Text
         optional: true
