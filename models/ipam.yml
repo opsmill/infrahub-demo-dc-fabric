@@ -6,7 +6,7 @@ nodes:
     description: "IP Address"
     label: "IP Address"
     icon: "mdi:ip"
-    menu_placement: "InfraPrefix"
+    include_in_menu: false
     default_filter: address__value
     order_by:
       - "address__value"
@@ -82,7 +82,7 @@ nodes:
     namespace: Infra
     description: "IPv4 or IPv6 network (with mask)"
     icon: "mdi:ip-network"
-    menu_placement: "TopologyNetworkService"
+    include_in_menu: false
     label: "Prefix"
     default_filter: prefix__value
     order_by:
@@ -177,9 +177,11 @@ nodes:
       - name__value
     display_labels:
       - name__value
-    inherit_from:
-      - BuiltinIPNamespace
     attributes:
+      - name: name
+        kind: Text
+        optional: false
+        unique: true
       - name: vrf_rd
         label: Route Distinguisher
         kind: Text

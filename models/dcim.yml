@@ -95,6 +95,7 @@ generics:
     namespace: Infra
     description: "Generic Network Interface."
     label: "Interface"
+    menu_placement: "InfraGenericDevice"
     include_in_menu: false
     display_labels:
       - name__value
@@ -370,7 +371,7 @@ nodes:
     label: "Interface L3"
     icon: "mdi:ethernet"
     menu_placement: "InfraGenericDevice"
-    include_in_menu: true
+    include_in_menu: false
     display_labels:
       - name__value
     order_by:
@@ -391,7 +392,7 @@ nodes:
     label: "Interface L2"
     icon: "mdi:ethernet"
     menu_placement: "InfraGenericDevice"
-    include_in_menu: true
+    include_in_menu: false
     display_labels:
       - name__value
     order_by:
