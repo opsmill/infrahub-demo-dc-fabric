@@ -96,7 +96,7 @@ generics:
     description: "Generic Network Interface."
     label: "Interface"
     menu_placement: "InfraGenericDevice"
-    include_in_menu: false
+    include_in_menu: true
     display_labels:
       - name__value
     order_by:

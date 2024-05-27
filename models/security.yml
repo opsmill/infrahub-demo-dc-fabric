@@ -607,6 +607,7 @@ nodes:
     namespace: Security
     label: Firewall Interface
     menu_placement: "InfraGenericDevice"
+    include_in_menu: false
     icon: "mdi:ethernet"
     display_labels:
       - name__value
