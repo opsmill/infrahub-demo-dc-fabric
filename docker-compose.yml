@@ -1,5 +1,4 @@
 ---
-version: "3.4"
 
 services:
   message-queue:
@@ -16,7 +15,7 @@ services:
   cache:
     image: "${CACHE_DOCKER_IMAGE:-redis:latest}"
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      test: [ "CMD-SHELL", "redis-cli ping | grep PONG" ]
       interval: 5s
       timeout: 5s
       retries: 3
@@ -51,7 +50,7 @@ services:
       - "INFRAHUB_CONFIG=/source/development/infrahub.toml"
       - "INFRAHUB_PRODUCTION=false"
       - "INFRAHUB_LOG_LEVEL=INFO"
-      - "INFRAHUB_SECURITY_INITIAL_ADMIN_TOKEN=${INFRAHUB_SDK_API_TOKEN}"
+      - "INFRAHUB_SECURITY_INITIAL_ADMIN_TOKEN=${INFRAHUB_API_TOKEN}"
       - "INFRAHUB_SECURITY_SECRET_KEY=${INFRAHUB_SECURITY_SECRET_KEY}"
       - "INFRAHUB_ALLOW_ANONYMOUS_ACCESS=true"
       - "PROMETHEUS_MULTIPROC_DIR=/prom_shared"
@@ -83,8 +82,9 @@ services:
       - "INFRAHUB_ADDRESS=http://infrahub-server:8000"
       - "INFRAHUB_PRODUCTION=false"
       - "INFRAHUB_LOG_LEVEL=DEBUG"
-      - "INFRAHUB_SDK_API_TOKEN=${INFRAHUB_SDK_API_TOKEN}"
-      - "INFRAHUB_SDK_TIMEOUT=20"
+      - "INFRAHUB_API_TOKEN=${INFRAHUB_API_TOKEN}"
+      - "INFRAHUB_SDK_API_TOKEN=${INFRAHUB_API_TOKEN}"
+      - "INFRAHUB_TIMEOUT=20"
       - "INFRAHUB_DB_TYPE=neo4j"
     volumes:
       - "git_data:/opt/infrahub/git"

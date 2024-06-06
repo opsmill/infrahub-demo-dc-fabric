@@ -20,3 +20,22 @@ infrahub_tests:
         spec:
           kind: "jinja2-transform-unit-render"
           directory: device_arista/missing_interfaces
+
+  - resource: Jinja2Transform
+    resource_name: clab_topology
+    tests:
+      - name: syntax_check
+        spec:
+          kind: jinja2-transform-smoke
+
+      - name: baseline
+        expect: PASS
+        spec:
+          kind: "jinja2-transform-unit-render"
+          directory: clab_topology/baseline
+
+      - name: missing_mgmt_ip
+        expect: FAIL
+        spec:
+          kind: "jinja2-transform-unit-render"
+          directory: clab_topology/missing_mgmt_ip

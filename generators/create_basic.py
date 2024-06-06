@@ -2,7 +2,7 @@ import logging
 from typing import Dict, Optional
 from infrahub_sdk import InfrahubBatch, InfrahubClient, NodeStore
 
-from utils import upsert_object
+from utils import create_and_add_to_batch
 
 # flake8: noqa
 # pylint: skip-file
@@ -52,24 +52,24 @@ ORGANIZATIONS = (
 
 ASNS = (
     # asn, organization
-    (1299,  "Arelion"),
-    (8220,  "Colt Technology Services"),
-    (701,  "Verizon Business"),
-    (3257,  "GTT Communications"),
-    (6939,  "Hurricane Electric"),
-    (3356,  "Lumen"),
-    (6461,  "Zayo"),
-    (24115,  "Equinix"),
-    (20710,  "Interxion"),
-    (3491,  "PCCW Global"),
-    (5511,  "Orange S.A"),
-    (6453,  "Tata Communications"),
-    (1239,  "Sprint"),
-    (2914,  "NTT America"),
-    (174,  "Cogent Communications"),
-    (7922,  "Comcast Cable Communication"),
-    (6762,  "Telecom Italia Sparkle"),
-    (7018,  "AT&T Services")
+    (1299, "Arelion"),
+    (8220, "Colt Technology Services"),
+    (701, "Verizon Business"),
+    (3257, "GTT Communications"),
+    (6939, "Hurricane Electric"),
+    (3356, "Lumen"),
+    (6461, "Zayo"),
+    (24115, "Equinix"),
+    (20710, "Interxion"),
+    (3491, "PCCW Global"),
+    (5511, "Orange S.A"),
+    (6453, "Tata Communications"),
+    (1239, "Sprint"),
+    (2914, "NTT America"),
+    (174, "Cogent Communications"),
+    (7922, "Comcast Cable Communication"),
+    (6762, "Telecom Italia Sparkle"),
+    (7018, "AT&T Services")
 )
 
 VRF = {
@@ -95,13 +95,13 @@ ROUTE_TARGETS = {
 }
 
 PLATFORMS = (
-    # name, nornir_platform, napalm_driver, netmiko_device_type, ansible_network_os
-    ("Cisco IOS-XE", "ios", "ios", "cisco_ios", "ios"),
-    ("Cisco IOS-XR", "iosxr", "iosxr", "cisco_xr", "cisco.iosxr.iosxr"),
-    ("Cisco NXOS SSH", "nxos_ssh", "nxos_ssh", "cisco_nxos", "nxos"),
-    ("Juniper JunOS", "junos", "junos", "juniper_junos", "junos"),
-    ("Arista EOS", "eos", "eos", "arista_eos", "eos"),
-    ("Linux", "linux", "linux", "linux", "linux")
+    # name, nornir_platform, napalm_driver, netmiko_device_type, ansible_network_os, containerlab_os
+    ("Cisco IOS-XE", "ios", "ios", "cisco_ios", "ios", "ios"),
+    ("Cisco IOS-XR", "iosxr", "iosxr", "cisco_xr", "cisco.iosxr.iosxr", "cisco_xrv"),
+    ("Cisco NXOS SSH", "nxos_ssh", "nxos_ssh", "cisco_nxos", "nxos", "cisco_n9kv"),
+    ("Juniper JunOS", "junos", "junos", "juniper_junos", "junos", "juniper_vjunosswitch"),
+    ("Arista EOS", "eos", "eos", "arista_eos", "eos", "ceos"),
+    ("Linux", "linux", "linux", "linux", "linux", "linux")
 )
 
 DEVICE_TYPES = (
@@ -122,15 +122,16 @@ GROUPS = (
     ("juniper_devices", "Juniper Devices"),
     ("upstream_interfaces", "Upstream Interface"),
     ("core_interfaces", "Core Interface"),
+    ("all_topologies", "All Topologies")
 )
 
 BGP_PEER_GROUPS = (
     # name, import policy, export policy, local AS, remote AS
-    ("POP_INTERNAL", "IMPORT_INTRA_POP", "EXPORT_INTRA_POP", "Duff", "Duff"),
-    ("POP_GLOBAL", "IMPORT_POP_GLOBAL", "EXPORT_POP_GLOBLA", "Duff", None),
-    ("UPSTREAM_DEFAULT", "IMPORT_UPSTREAM", "EXPORT_PUBLIC_PREFIX", "Duff", None),
-    ("UPSTREAM_ARELION", "IMPORT_UPSTREAM", "EXPORT_PUBLIC_PREFIX", "Duff", "Arelion"),
-    ("IX_DEFAULT", "IMPORT_IX", "EXPORT_PUBLIC_PREFIX", "Duff", None),
+    ("POP_INTERNAL", "IMPORT_INTRA_POP", "EXPORT_INTRA_POP", "AS65000", "AS65000"),
+    ("POP_GLOBAL", "IMPORT_POP_GLOBAL", "EXPORT_POP_GLOBLA", "AS65000", None),
+    ("UPSTREAM_DEFAULT", "IMPORT_UPSTREAM", "EXPORT_PUBLIC_PREFIX", "AS65000", None),
+    ("UPSTREAM_ARELION", "IMPORT_UPSTREAM", "EXPORT_PUBLIC_PREFIX", "AS65000", "AS1299"),
+    ("IX_DEFAULT", "IMPORT_IX", "EXPORT_PUBLIC_PREFIX", "AS65000", None),
 )
 
 store = NodeStore()
@@ -153,7 +154,7 @@ async def create_basics(
             "type": account[1],
             "role": account[3],
         }
-        await upsert_object(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
@@ -172,7 +173,7 @@ async def create_basics(
            "name": group[0],
            "label": group[1],
         }
-       await upsert_object(
+       await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
@@ -199,7 +200,7 @@ async def create_basics(
         data_org={
             "name": {"value": org[0], "is_protected": True},
         }
-        await upsert_object(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
@@ -228,7 +229,7 @@ async def create_basics(
             data_asn["organization"] = {"id": store.get(kind=f"Organization{organization_type.title()}", key=asn[1]).id, "source": account.id}
         else:
             data_asn["description"] = {"value": f"{asn_name}", "source": account.id, "owner": account2.id}
-        await upsert_object(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
@@ -246,7 +247,7 @@ async def create_basics(
             "description": {"value": f"Private ASN {asn_name} for Duff", "source": account.id, "owner": account2.id},
             "organization": {"id": store.get(kind="OrganizationTenant", key="Duff").id, "source": account.id},
         }
-        await upsert_object(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
@@ -270,7 +271,7 @@ async def create_basics(
         data={
             "name": {"value": tag, "source": account.id},
         }
-        await upsert_object(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
@@ -297,10 +298,11 @@ async def create_basics(
             "napalm_driver": platform[2],
             "netmiko_device_type": platform[3],
             "ansible_network_os": platform[4],
+            "containerlab_os": platform[5],
         }
        if manufacturer:
            data["manufacturer"] = {"id": manufacturer.id }
-       await upsert_object(
+       await create_and_add_to_batch(
            client=client,
            log=log,
            branch=branch,
@@ -332,7 +334,7 @@ async def create_basics(
         }
        if manufacturer:
            data["manufacturer"] = {"id": manufacturer.id }
-       await upsert_object(
+       await create_and_add_to_batch(
            client=client,
            log=log,
            branch=branch,
@@ -369,7 +371,7 @@ async def create_basics(
             "local_as": local_as_id,
             "remote_as": remote_as_id,
         }
-        await upsert_object(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
@@ -392,7 +394,7 @@ async def create_basics(
             "name": { "value": rt_name, "source": account.id},
             "description": { "value": rt_description, "source": account.id},
         }
-        await upsert_object(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
@@ -424,7 +426,7 @@ async def create_basics(
             "import_rt": { "id": vrf_rt_import_obj.id, "source": account.id},
             "export_rt": { "id": vrf_rt_export_obj.id, "source": account.id},
         }
-        await upsert_object(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,

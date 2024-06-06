@@ -1,0 +1,1440 @@
+{
+    "data": {
+        "InfraDevice": {
+            "edges": [
+                {
+                    "node": {
+                        "name": {
+                            "value": "fra05-pod1-spine1"
+                        },
+                        "interfaces": {
+                            "edges": [
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet1"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "10.0.254.0/31"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": {
+                                                "id": "17d263a2-8c84-9fc3-2cea-2c9aaac5eca5",
+                                                "name": {
+                                                    "value": "Ethernet10"
+                                                },
+                                                "device": {
+                                                    "node": {
+                                                        "name": {
+                                                            "value": "fra05-pod1-leaf1"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet10"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet11"
+                                        },
+                                        "role": {
+                                            "value": "uplink"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet12"
+                                        },
+                                        "role": {
+                                            "value": "uplink"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet13"
+                                        },
+                                        "role": {
+                                            "value": "spare"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet14"
+                                        },
+                                        "role": {
+                                            "value": "spare"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet2"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "10.0.254.4/31"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": {
+                                                "id": "17d263a2-fb66-186e-2ce0-2c9ad1e1a32a",
+                                                "name": {
+                                                    "value": "Ethernet10"
+                                                },
+                                                "device": {
+                                                    "node": {
+                                                        "name": {
+                                                            "value": "fra05-pod1-leaf2"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet3"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet4"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet5"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet6"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet7"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet8"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet9"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Loopback0"
+                                        },
+                                        "role": {
+                                            "value": "loopback"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "10.0.255.1/32"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Loopback1"
+                                        },
+                                        "role": {
+                                            "value": "loopback"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "10.0.253.1/32"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Management0"
+                                        },
+                                        "role": {
+                                            "value": "management"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "172.16.0.1/24"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "device_type": {
+                            "node": {
+                                "platform": {
+                                    "node": {
+                                        "containerlab_os": {
+                                            "value": "ceos"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "node": {
+                        "name": {
+                            "value": "fra05-pod1-spine2"
+                        },
+                        "interfaces": {
+                            "edges": [
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet1"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "10.0.254.2/31"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": {
+                                                "id": "17d263a2-8c85-f404-2ce7-2c9ad764b173",
+                                                "name": {
+                                                    "value": "Ethernet11"
+                                                },
+                                                "device": {
+                                                    "node": {
+                                                        "name": {
+                                                            "value": "fra05-pod1-leaf1"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet10"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet11"
+                                        },
+                                        "role": {
+                                            "value": "uplink"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet12"
+                                        },
+                                        "role": {
+                                            "value": "uplink"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet13"
+                                        },
+                                        "role": {
+                                            "value": "spare"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet14"
+                                        },
+                                        "role": {
+                                            "value": "spare"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet2"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "10.0.254.6/31"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": {
+                                                "id": "17d263a2-fb67-45a2-2ce4-2c9a18b7c21b",
+                                                "name": {
+                                                    "value": "Ethernet11"
+                                                },
+                                                "device": {
+                                                    "node": {
+                                                        "name": {
+                                                            "value": "fra05-pod1-leaf2"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet3"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet4"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet5"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet6"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet7"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet8"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet9"
+                                        },
+                                        "role": {
+                                            "value": "leaf"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Loopback0"
+                                        },
+                                        "role": {
+                                            "value": "loopback"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "10.0.255.2/32"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Loopback1"
+                                        },
+                                        "role": {
+                                            "value": "loopback"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "10.0.253.2/32"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Management0"
+                                        },
+                                        "role": {
+                                            "value": "management"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "172.16.0.2/24"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "device_type": {
+                            "node": {
+                                "platform": {
+                                    "node": {
+                                        "containerlab_os": {
+                                            "value": "ceos"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "node": {
+                        "name": {
+                            "value": "fra05-pod1-leaf1"
+                        },
+                        "interfaces": {
+                            "edges": [
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet1"
+                                        },
+                                        "role": {
+                                            "value": "server"
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet10"
+                                        },
+                                        "role": {
+                                            "value": "uplink"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "10.0.254.1/31"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": {
+                                                "id": "17d263a1-e68e-3acf-2ceb-2c9afb78b644",
+                                                "name": {
+                                                    "value": "Ethernet1"
+                                                },
+                                                "device": {
+                                                    "node": {
+                                                        "name": {
+                                                            "value": "fra05-pod1-spine1"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet11"
+                                        },
+                                        "role": {
+                                            "value": "uplink"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "10.0.254.3/31"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": {
+                                                "id": "17d263a2-301c-677a-2cea-2c9aa0b52f0f",
+                                                "name": {
+                                                    "value": "Ethernet1"
+                                                },
+                                                "device": {
+                                                    "node": {
+                                                        "name": {
+                                                            "value": "fra05-pod1-spine2"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet12"
+                                        },
+                                        "role": {
+                                            "value": "uplink"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet13"
+                                        },
+                                        "role": {
+                                            "value": "uplink"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet14"
+                                        },
+                                        "role": {
+                                            "value": "spare"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet2"
+                                        },
+                                        "role": {
+                                            "value": "server"
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet3"
+                                        },
+                                        "role": {
+                                            "value": "server"
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet4"
+                                        },
+                                        "role": {
+                                            "value": "server"
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet5"
+                                        },
+                                        "role": {
+                                            "value": "server"
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet6"
+                                        },
+                                        "role": {
+                                            "value": "server"
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet7"
+                                        },
+                                        "role": {
+                                            "value": "spare"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet8"
+                                        },
+                                        "role": {
+                                            "value": "peer"
+                                        },
+                                        "connected_endpoint": {
+                                            "node": {
+                                                "id": "17d263a2-fb64-c98b-2ce8-2c9a314e4a9c",
+                                                "name": {
+                                                    "value": "Ethernet8"
+                                                },
+                                                "device": {
+                                                    "node": {
+                                                        "name": {
+                                                            "value": "fra05-pod1-leaf2"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet9"
+                                        },
+                                        "role": {
+                                            "value": "peer"
+                                        },
+                                        "connected_endpoint": {
+                                            "node": {
+                                                "id": "17d263a2-fb65-729d-2ce0-2c9a67e9b08c",
+                                                "name": {
+                                                    "value": "Ethernet9"
+                                                },
+                                                "device": {
+                                                    "node": {
+                                                        "name": {
+                                                            "value": "fra05-pod1-leaf2"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Loopback0"
+                                        },
+                                        "role": {
+                                            "value": "loopback"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "10.0.255.3/32"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Loopback1"
+                                        },
+                                        "role": {
+                                            "value": "loopback"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "10.0.253.3/32"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Management0"
+                                        },
+                                        "role": {
+                                            "value": "management"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "172.16.0.3/24"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "device_type": {
+                            "node": {
+                                "platform": {
+                                    "node": {
+                                        "containerlab_os": {
+                                            "value": "ceos"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "node": {
+                        "name": {
+                            "value": "fra05-pod1-leaf2"
+                        },
+                        "interfaces": {
+                            "edges": [
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet1"
+                                        },
+                                        "role": {
+                                            "value": "server"
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet10"
+                                        },
+                                        "role": {
+                                            "value": "uplink"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "10.0.254.5/31"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": {
+                                                "id": "17d263a1-e68f-c1ac-2ce6-2c9ac59d81f6",
+                                                "name": {
+                                                    "value": "Ethernet2"
+                                                },
+                                                "device": {
+                                                    "node": {
+                                                        "name": {
+                                                            "value": "fra05-pod1-spine1"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet11"
+                                        },
+                                        "role": {
+                                            "value": "uplink"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "10.0.254.7/31"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": {
+                                                "id": "17d263a2-301d-cbd8-2cec-2c9adab7386f",
+                                                "name": {
+                                                    "value": "Ethernet2"
+                                                },
+                                                "device": {
+                                                    "node": {
+                                                        "name": {
+                                                            "value": "fra05-pod1-spine2"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet12"
+                                        },
+                                        "role": {
+                                            "value": "uplink"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet13"
+                                        },
+                                        "role": {
+                                            "value": "uplink"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet14"
+                                        },
+                                        "role": {
+                                            "value": "spare"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet2"
+                                        },
+                                        "role": {
+                                            "value": "server"
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet3"
+                                        },
+                                        "role": {
+                                            "value": "server"
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet4"
+                                        },
+                                        "role": {
+                                            "value": "server"
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet5"
+                                        },
+                                        "role": {
+                                            "value": "server"
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet6"
+                                        },
+                                        "role": {
+                                            "value": "server"
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet7"
+                                        },
+                                        "role": {
+                                            "value": "spare"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": []
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet8"
+                                        },
+                                        "role": {
+                                            "value": "peer"
+                                        },
+                                        "connected_endpoint": {
+                                            "node": {
+                                                "id": "17d263a2-8c83-59d4-2ce2-2c9a914ef924",
+                                                "name": {
+                                                    "value": "Ethernet8"
+                                                },
+                                                "device": {
+                                                    "node": {
+                                                        "name": {
+                                                            "value": "fra05-pod1-leaf1"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Ethernet9"
+                                        },
+                                        "role": {
+                                            "value": "peer"
+                                        },
+                                        "connected_endpoint": {
+                                            "node": {
+                                                "id": "17d263a2-8c83-fbbc-2ce1-2c9afebd7ad1",
+                                                "name": {
+                                                    "value": "Ethernet9"
+                                                },
+                                                "device": {
+                                                    "node": {
+                                                        "name": {
+                                                            "value": "fra05-pod1-leaf1"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Loopback0"
+                                        },
+                                        "role": {
+                                            "value": "loopback"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "10.0.255.4/32"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Loopback1"
+                                        },
+                                        "role": {
+                                            "value": "loopback"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "10.0.253.4/32"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                },
+                                {
+                                    "node": {
+                                        "name": {
+                                            "value": "Management0"
+                                        },
+                                        "role": {
+                                            "value": "management"
+                                        },
+                                        "ip_addresses": {
+                                            "edges": [
+                                                {
+                                                    "node": {
+                                                        "address": {
+                                                            "value": "172.16.0.4/24"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "connected_endpoint": {
+                                            "node": null
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "device_type": {
+                            "node": {
+                                "platform": {
+                                    "node": {
+                                        "containerlab_os": {
+                                            "value": "ceos"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -55,7 +55,7 @@ query device_info($device: String!) {
                       prefix {
                         value
                       }
-                      ip_namespace {
+                      vrf {
                         node {
                           ... on InfraVRF {
                             vrf_rd {value}
