@@ -25,11 +25,11 @@ This repository is demoing the key Infrahub features for an example data center 
 ```shell
 export INFRAHUB_ADDRESS="http://localhost:8000"
 export INFRAHUB_API_TOKEN="06438eb2-8019-4776-878c-0941b1f1d1ec"
-export INFRAHUB_DOCKER_IMAGE="registry.opsmill.io/opsmill/infrahub:0.14.1","
-export DATABASE_DOCKER_IMAGE="neo4j:5.19-community"
+export INFRAHUB_DOCKER_IMAGE="registry.opsmill.io/opsmill/infrahub:0.15.0","
+export DATABASE_DOCKER_IMAGE="neo4j:5.20-community"
 export INFRAHUB_SECURITY_SECRET_KEY="327f747f-efac-42be-9e73-999f08f86b92"
 export CACHE_DOCKER_IMAGE="redis:7.2"
-export MESSAGE_QUEUE_IMAGE="rabbitmq:3.12-management"
+export MESSAGE_QUEUE_IMAGE="rabbitmq:3.13-management"
 export CEOS_DOCKER_IMAGE="9r2s1098.c1.gra9.container-registry.ovh.net/external/ceos-image:4.29.0.2F"
 export LINUX_HOST_DOCKER_IMAGE="9r2s1098.c1.gra9.container-registry.ovh.net/external/alpine-host:v3.1.1"
 ```
