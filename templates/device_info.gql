@@ -148,8 +148,8 @@ query device_info($device: String!) {
                     node {
                       ip_prefix {
                         node {
-                          broadcast_address {
-                            value
+                          prefix {
+                            broadcast_address
                           }
                         }
                       }
