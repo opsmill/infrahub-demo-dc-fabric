@@ -51,7 +51,7 @@
     }
   },
   "hostRequirements": {
-    "cpus": 16,
+    "cpus": 8,
     "memory": "16gb"
   }
 }
