@@ -11,21 +11,26 @@ strict: false
 nodes:
   InfraDevice:
     include:
-      - id
       - name
-      - location
+      - location.name
       - role
-      - device_type
-      - primary_address
+      - device_type.name
+      - device_type.platform.ansible_network_os
+      - primary_address.address
 
 compose:
   hostname: name
   ansible_host: primary_address.address | ansible.utils.ipaddr('address')
+  device_type : device_type.name
+  platform : device_type.platform.ansible_network_os
+  location: location.name
 
 keyed_groups:
   - prefix: role
     key: role
   - prefix: location
-    key: location.name
+    key: location | lower
   - prefix: device_type
-    key: device_type.platform.ansible_network_os
+    key: device_type | lower
+  - prefix: platform
+    key: platform

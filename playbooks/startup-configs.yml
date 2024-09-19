@@ -16,3 +16,4 @@
     - name: Push configuration to device
       arista.eos.eos_config:
         src: "{{ local_config_path }}"
+      when: inventory_hostname in groups['platform_eos']

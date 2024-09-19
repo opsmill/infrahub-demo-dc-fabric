@@ -35,7 +35,7 @@ export LINUX_HOST_DOCKER_IMAGE="9r2s1098.c1.gra9.container-registry.ovh.net/exte
 poetry install --no-interaction --no-ansi --no-root
 ```
 
-### Start Infrahub 
+### Start Infrahub
 
 ```shell
 poetry run inv start
@@ -66,13 +66,29 @@ poetry run inv load-schema load-data
 > Reference the [Infrahub documentation](https://docs.infrahub.app/guides/repository) for the multiple ways this can be done.
 
 ```graphql
-mutation {
+mutation AddCredential {
+  CorePasswordCredentialCreate(
+    data: {
+      name: {value: "my-git-credential"},
+      username: {value: "<GITHUB_USERNAME>"},
+      password: {value: "<GITHUB_TOKEN>"}
+    }
+  ) {
+    ok
+    object {
+      hfid
+    }
+  }
+}
+
+
+mutation AddRepository{
   CoreRepositoryCreate(
     data: {
-      name: { value: "infrahub-demo-dc-fabric" }
-      location: { value: "https://github.com/GITHUB_USER/infrahub-demo-dc-fabric.git" }
-      username: { value: "GITHUB_USER" }
-      password: { value: "GITHUB_TOKEN" }
+      name: { value: "infrahub-demo-dc-fabric-develop" }
+      location: { value: "https://github.com/opsmill/infrahub-demo-dc-fabric.git" }
+      # The HFID return from the previous mutation. Will be the name of the credentials
+      credential: { hfid: "my-git-credential" }
     }
   ) {
     ok

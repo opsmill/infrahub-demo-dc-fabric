@@ -11,8 +11,9 @@ DATA_GENERATORS = [
     "create_security_nodes.py"
 ]
 
-VERSION = os.getenv("INFRAHUB_VERSION", "0.15.2")
-COMPOSE_COMMAND = f"curl https://infrahub.opsmill.io/{VERSION} | docker compose -f -"
+# If no version is indicated, we will take the latest
+VERSION = os.getenv("INFRAHUB_VERSION", None)
+COMPOSE_COMMAND = f"curl https://infrahub.opsmill.io/{VERSION if VERSION else ''} | docker compose -f -"
 
 @task
 def start(context: Context) -> None:
