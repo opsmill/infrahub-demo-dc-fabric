@@ -1,11 +1,14 @@
 ---
 - name: Validate device state with AVD
-  hosts: role_leaf,role_spine
+  hosts: platform_eos
   gather_facts: false
+
   vars:
     use_anta: false
+
   collections:
     - arista.avd
+
   tasks:
     - name: Query Artifact from Infrahub
       opsmill.infrahub.artifact_fetch:

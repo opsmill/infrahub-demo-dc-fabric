@@ -1,7 +1,9 @@
 - name: Query Interfaces information with the query_graphql module
   hosts: platform_eos
   gather_facts: false
+
   vars_files: "{{ playbook_dir }}/group_vars/all.yaml"
+
   vars:
     local_config_path: "/tmp/{{ inventory_hostname }}.conf"
 

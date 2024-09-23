@@ -1,7 +1,8 @@
 ---
 - name: Generate Configuration using AVD
-  hosts: role_leaf,role_spine
+  hosts: platform_eos
   gather_facts: false
+
   tasks:
     - name: Query Artifact from Infrahub
       opsmill.infrahub.artifact_fetch:

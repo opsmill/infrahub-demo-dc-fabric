@@ -528,13 +528,13 @@ files = [
 
 [[package]]
 name = "infrahub-sdk"
-version = "0.12.1"
+version = "0.13.0"
 description = "Python Client to interact with Infrahub"
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "infrahub_sdk-0.12.1-py3-none-any.whl", hash = "sha256:815d2acbc94117b3c4b505df068a4f7bda67f5732c005c23f6b99268fb4ea934"},
-    {file = "infrahub_sdk-0.12.1.tar.gz", hash = "sha256:21bc631bc9480fb6e8555e287b5a17340b25868a9619326b320da011a2c0f4e9"},
+    {file = "infrahub_sdk-0.13.0-py3-none-any.whl", hash = "sha256:c974462d207c47477cf47876a8d6b47b3b939a6e29b88510cffda8b66f7d7bbf"},
+    {file = "infrahub_sdk-0.13.0.tar.gz", hash = "sha256:5be70ca95ee63bd7db4c2fc120e9e5129e9eb2c7f37690be7f0170c488d113b2"},
 ]
 
 [package.dependencies]
@@ -545,8 +545,14 @@ httpx = [
     {version = ">=0.23", markers = "python_version >= \"3.11\""},
 ]
 Jinja2 = {version = ">=3,<4", optional = true, markers = "extra == \"ctl\" or extra == \"tests\" or extra == \"all\""}
-numpy = {version = ">=1.24.2,<2.0.0", optional = true, markers = "python_version >= \"3.9\" and python_version < \"3.12\" and (extra == \"ctl\" or extra == \"all\")"}
-pendulum = {version = ">=2", markers = "python_version >= \"3.9\" and python_version < \"3.12\""}
+numpy = [
+    {version = ">=1.24.2,<2.0.0", optional = true, markers = "python_version >= \"3.9\" and python_version < \"3.12\" and extra == \"ctl\" or python_version >= \"3.9\" and python_version < \"3.12\" and extra == \"all\""},
+    {version = ">=1.26.2,<2.0.0", optional = true, markers = "python_version >= \"3.12\" and extra == \"ctl\" or python_version >= \"3.12\" and extra == \"all\""},
+]
+pendulum = [
+    {version = ">=2", markers = "python_version >= \"3.9\" and python_version < \"3.12\""},
+    {version = ">=3", markers = "python_version >= \"3.12\""},
+]
 pyarrow = {version = ">=14,<15", optional = true, markers = "extra == \"ctl\" or extra == \"all\""}
 pydantic = ">=2.0.0,<2.0.1 || >2.0.1,<2.1.0 || >2.1.0,<3.0.0"
 pydantic-settings = ">=2.0"
@@ -554,12 +560,12 @@ pytest = {version = "*", optional = true, markers = "extra == \"tests\" or extra
 pyyaml = {version = ">=6,<7", optional = true, markers = "extra == \"ctl\" or extra == \"tests\" or extra == \"all\""}
 rich = {version = ">=13,<14", optional = true, markers = "extra == \"ctl\" or extra == \"tests\" or extra == \"all\""}
 toml = {version = ">=0.10,<0.11", optional = true, markers = "extra == \"ctl\" or extra == \"all\""}
-typer = {version = ">=0,<1", optional = true, markers = "extra == \"ctl\" or extra == \"all\""}
+typer = {version = ">=0.12.3,<0.13.0", optional = true, markers = "extra == \"ctl\" or extra == \"all\""}
 ujson = ">=5,<6"
 
 [package.extras]
-all = ["Jinja2 (>=3,<4)", "numpy (>=1.24.2,<2.0.0)", "numpy (>=1.26.2,<2.0.0)", "pyarrow (>=14,<15)", "pytest", "pyyaml (>=6,<7)", "rich (>=13,<14)", "toml (>=0.10,<0.11)", "typer (>=0,<1)"]
-ctl = ["Jinja2 (>=3,<4)", "numpy (>=1.24.2,<2.0.0)", "numpy (>=1.26.2,<2.0.0)", "pyarrow (>=14,<15)", "pyyaml (>=6,<7)", "rich (>=13,<14)", "toml (>=0.10,<0.11)", "typer (>=0,<1)"]
+all = ["Jinja2 (>=3,<4)", "numpy (>=1.24.2,<2.0.0)", "numpy (>=1.26.2,<2.0.0)", "pyarrow (>=14,<15)", "pytest", "pyyaml (>=6,<7)", "rich (>=13,<14)", "toml (>=0.10,<0.11)", "typer (>=0.12.3,<0.13.0)"]
+ctl = ["Jinja2 (>=3,<4)", "numpy (>=1.24.2,<2.0.0)", "numpy (>=1.26.2,<2.0.0)", "pyarrow (>=14,<15)", "pyyaml (>=6,<7)", "rich (>=13,<14)", "toml (>=0.10,<0.11)", "typer (>=0.12.3,<0.13.0)"]
 tests = ["Jinja2 (>=3,<4)", "pytest", "pyyaml (>=6,<7)", "rich (>=13,<14)"]
 
 [[package]]
@@ -1383,6 +1389,7 @@ files = [
     {file = "PyYAML-6.0.1-cp311-cp311-win_amd64.whl", hash = "sha256:bf07ee2fef7014951eeb99f56f39c9bb4af143d8aa3c21b1677805985307da34"},
     {file = "PyYAML-6.0.1-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:855fb52b0dc35af121542a76b9a84f8d1cd886ea97c84703eaa6d88e37a2ad28"},
     {file = "PyYAML-6.0.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:40df9b996c2b73138957fe23a16a4f0ba614f4c0efce1e9406a184b6d07fa3a9"},
+    {file = "PyYAML-6.0.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:a08c6f0fe150303c1c6b71ebcd7213c2858041a7e01975da3a99aed1e7a378ef"},
     {file = "PyYAML-6.0.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6c22bec3fbe2524cde73d7ada88f6566758a8f7227bfbf93a408a9d86bcc12a0"},
     {file = "PyYAML-6.0.1-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:8d4e9c88387b0f5c7d5f281e55304de64cf7f9c0021a3525bd3b1c542da3b0e4"},
     {file = "PyYAML-6.0.1-cp312-cp312-win32.whl", hash = "sha256:d483d2cdf104e7c9fa60c544d92981f12ad66a457afae824d146093b8c294c54"},
@@ -1787,5 +1794,5 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.10, < 3.12"
-content-hash = "7e7c3e46f78befe5b89d4210e905bcc2ecdf92a792a27e49ebb2f550f39cfe92"
+python-versions = "^3.10, < 3.13"
+content-hash = "613093f0fabf4d13641f60e1ba442e81c4b239dafac2d85707c7dc3555a0705e"

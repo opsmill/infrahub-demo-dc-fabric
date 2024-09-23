@@ -1,4 +1,4 @@
-query firewall_config($device: String!) {
+query juniper_srx_config($device: String!) {
   InfraGenericDevice(name__value: $device) {
     edges {
       node {
