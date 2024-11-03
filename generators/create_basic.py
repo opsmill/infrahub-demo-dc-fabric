@@ -1,6 +1,10 @@
 import logging
 from typing import Dict, Optional
-from infrahub_sdk import InfrahubBatch, InfrahubClient, NodeStore
+from infrahub_sdk.batch import InfrahubBatch
+from infrahub_sdk.node import InfrahubNode
+from infrahub_sdk.store import NodeStore
+from infrahub_sdk import InfrahubClient
+from infrahub_sdk.uuidt import UUIDT
 
 from utils import create_and_add_to_batch
 
