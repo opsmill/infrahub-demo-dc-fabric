@@ -66,29 +66,11 @@ poetry run inv load-schema load-data
 > Reference the [Infrahub documentation](https://docs.infrahub.app/guides/repository) for the multiple ways this can be done.
 
 ```graphql
-mutation AddCredential {
-  CorePasswordCredentialCreate(
-    data: {
-      name: {value: "my-git-credential"},
-      username: {value: "<GITHUB_USERNAME>"},
-      password: {value: "<GITHUB_TOKEN>"}
-    }
-  ) {
-    ok
-    object {
-      hfid
-    }
-  }
-}
-
-
 mutation AddRepository{
-  CoreRepositoryCreate(
+  CoreReadOnlyRepositoryCreate(
     data: {
       name: { value: "infrahub-demo-dc-fabric" }
       location: { value: "https://github.com/opsmill/infrahub-demo-dc-fabric.git" }
-      # The HFID return from the previous mutation. Will be the name of the credentials
-      credential: { hfid: "my-git-credential" }
     }
   ) {
     ok
@@ -149,7 +131,7 @@ pytest -v ./tests
 Create directly a new branch `test` in the UI, or if you prefer to use our SDK in CLI :
 
 ```shell
-poetry run infrahubctl branch create test --sync-with-git
+poetry run infrahubctl branch create test
 ```
 
 ### 7. Create new Network Services and Regenerate Artifacts in your branch
