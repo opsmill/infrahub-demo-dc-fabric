@@ -18,6 +18,7 @@ VERSION = os.getenv("INFRAHUB_VERSION", None)
 COMPOSE_COMMAND = f"curl https://infrahub.opsmill.io/{VERSION if VERSION else ''} | docker compose -f -"
 COMPOSE_COMMAND_LOCAL = "docker compose"
 
+
 def has_local_docker_file() -> bool:
     file_path = Path(MAIN_DIRECTORY_PATH, "docker-compose.yml")
     return file_path.is_file()
