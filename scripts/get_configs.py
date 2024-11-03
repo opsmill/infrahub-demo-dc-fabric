@@ -9,7 +9,7 @@ def get_containerlab_topology():
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
 
-    client = InfrahubClientSync.init()
+    client = InfrahubClientSync()
     topologies = client.all(kind="TopologyTopology")
 
     for topology in topologies:
@@ -22,7 +22,7 @@ def get_device_configs():
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
 
-    client = InfrahubClientSync.init()
+    client = InfrahubClientSync()
     devices = client.all(kind="InfraDevice")
 
     for device in devices:
