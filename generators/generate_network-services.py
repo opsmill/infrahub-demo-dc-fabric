@@ -3,7 +3,11 @@ import logging
 from ipaddress import IPv4Network
 from typing import Any, Dict, List, Optional
 
-from infrahub_sdk import InfrahubBatch, InfrahubClient, InfrahubNode, NodeStore
+from infrahub_sdk.batch import InfrahubBatch
+from infrahub_sdk.node import InfrahubNode
+from infrahub_sdk.store import NodeStore
+from infrahub_sdk import InfrahubClient
+from infrahub_sdk.uuidt import UUIDT
 
 from utils import create_and_save, populate_local_store
 

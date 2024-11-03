@@ -4,8 +4,11 @@ from collections import defaultdict
 from ipaddress import IPv4Network
 from typing import Any, Dict, List, Optional
 
-from infrahub_sdk import InfrahubBatch, UUIDT, InfrahubClient, InfrahubNode, NodeStore
-
+from infrahub_sdk.batch import InfrahubBatch
+from infrahub_sdk.node import InfrahubNode
+from infrahub_sdk.store import NodeStore
+from infrahub_sdk import InfrahubClient
+from infrahub_sdk.uuidt import UUIDT
 from create_location import LOCATION_SUPERNETS, LOCATION_MGMTS, EXTERNAL_NETWORKS
 from utils import populate_local_store, create_and_save, create_and_add_to_batch
 

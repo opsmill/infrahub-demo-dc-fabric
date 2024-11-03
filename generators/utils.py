@@ -2,7 +2,12 @@ import logging
 
 from typing import Dict, List, Optional
 
-from infrahub_sdk import InfrahubClient, InfrahubNode, NodeStore
+from infrahub_sdk import InfrahubClient
+from infrahub_sdk.batch import InfrahubBatch
+from infrahub_sdk.node import InfrahubNode
+from infrahub_sdk.store import NodeStore
+from infrahub_sdk import InfrahubClient
+from infrahub_sdk.uuidt import UUIDT
 from infrahub_sdk.batch import InfrahubBatch
 from infrahub_sdk.exceptions import GraphQLError
 

@@ -3,12 +3,13 @@ name = "infrahub-demo-dc-fabric"
 version = "0.1.0"
 description = ""
 authors = ["OpsMill <info@opsmill.com>"]
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.10, < 3.13"
-infrahub-sdk = {version = "^0,>=0.9.1", extras = ["all"]}
+infrahub-sdk = {version = "^1.0.0", extras = ["all"]}
 invoke = "^2.1.2"
-nornir-infrahub = "^0, >=0.2.2"
+# nornir-infrahub = "^0, >=0.2.2"
 ansible-core = "2.14"
 netaddr = "^0.9.0"
 paramiko = "^3.3.1"
@@ -19,6 +20,11 @@ treelib = "^1.7.0"
 jsonschema = "4.17"
 # anta = "^0.11.0"
 pytest = "^7.4.4"
+
+[tool.poetry.group.dev.dependencies]
+yamllint = "^1.35.1"
+ruff = "^0.7.2"
+mypy = "^1.13.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
