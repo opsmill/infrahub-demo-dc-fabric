@@ -12,3 +12,4 @@ playbooks/intended
 pyrightconfig.json
 docker-compose.override.yml
 docker-compose.yml
+generated-configs/**

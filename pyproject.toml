@@ -19,7 +19,7 @@ md-toc = "^8.2.2"
 treelib = "^1.7.0"
 jsonschema = "4.17"
 # anta = "^0.11.0"
-pytest = "^7.4.4"
+pytest = "^8.3.3"
 
 [tool.poetry.group.dev.dependencies]
 yamllint = "^1.35.1"
