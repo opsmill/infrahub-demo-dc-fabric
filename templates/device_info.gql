@@ -28,37 +28,54 @@ query device_info($device: String!) {
             network_services {
               edges {
                 node {
+                  __typename
                   name {
                     value
                   }
-                  service_type {
-                    value
-                  }
-                  vlan {
-                    node {
-                      name {
-                        value
-                      }
-                      role {
-                        value
-                      }
-                      vlan_id {
-                        value
+                  ... on TopologyLayer2NetworkService {
+                    vlan {
+                      node {
+                        name {
+                          value
+                        }
+                        role {
+                          value
+                        }
+                        vlan_id {
+                          value
+                        }
                       }
                     }
                   }
-                  prefix {
-                    node {
-                      role {
-                        value
+                  ... on TopologyLayer3NetworkService {
+                    vlan {
+                      node {
+                        name {
+                          value
+                        }
+                        role {
+                          value
+                        }
+                        vlan_id {
+                          value
+                        }
                       }
-                      prefix {
-                        value
-                      }
-                      vrf {
-                        node {
-                          ... on InfraVRF {
-                            vrf_rd {value}
+                    }
+                    prefix {
+                      node {
+                        role {
+                          value
+                        }
+                        prefix {
+                          value
+                        }
+                        vrf {
+                          node {
+                            ... on InfraVRF {
+                              vrf_rd {
+                                value
+                              }
+                            }
                           }
                         }
                       }

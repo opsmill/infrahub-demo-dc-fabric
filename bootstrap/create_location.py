@@ -1,17 +1,14 @@
 import logging
-import uuid
 import random
+import uuid
 from collections import defaultdict
 from ipaddress import IPv4Network
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from infrahub_sdk.batch import InfrahubBatch
-from infrahub_sdk.node import InfrahubNode
-from infrahub_sdk.store import NodeStore
 from infrahub_sdk import InfrahubClient
-from infrahub_sdk.uuidt import UUIDT
 
-from utils import create_and_save, create_and_add_to_batch, populate_local_store
+from utils import create_and_save, create_and_add_to_batch, create_ipam_pool, execute_batch, extract_common_prefix, populate_local_store
 
 # flake8: noqa
 # pylint: skip-file
@@ -275,51 +272,22 @@ for continent_name, continent_data in LOCATIONS.items():
                         {"name": building_name, "shortname": building_data["shortname"]}
                     )
 
-# We assigned a /16 per Location for "data" (257 Site possibles)
-INTERNAL_POOL = IPv4Network("10.0.0.0/8").subnets(new_prefix=16)
-LOCATION_SUPERNETS = {
-    location["shortname"]: next(INTERNAL_POOL) for location in site_locations
-}
 
-# We assigned a /24 per Location for "management" (257 Site possibles) <- Out of Band Access (out of /16)
-MANAGEMENT_POOL = IPv4Network("172.16.0.0/16").subnets(new_prefix=24)
-LOCATION_MGMTS = {
-    location["shortname"]: next(MANAGEMENT_POOL) for location in site_locations
-}
-
-# Using RFC5735 TEST-NETs as external networks
-EXTERNAL_NETWORKS = [
-    IPv4Network("203.0.113.0/24"),
-    IPv4Network("192.0.2.0/24"),
-    IPv4Network("198.51.100.0/24"),
+VLANS = [
+    "server-pxe",
+    "management-inband",
 ]
-# We assigned one /28 per Location (48 Sites possibles)
-NETWORKS_POOL_EXTERNAL = [
-    subnet for network in EXTERNAL_NETWORKS for subnet in network.subnets(new_prefix=28)
-]
-NETWORKS_POOL_ITER = iter(NETWORKS_POOL_EXTERNAL)
-LOCATION_EXTERNAL_NETS = {
-    location["shortname"]: next(NETWORKS_POOL_ITER) for location in site_locations
-}
-
-VLANS = {
-    ("100", "server-pxe"),
-    ("4000", "management-ooba"),
-}
 
 # Mapping Dropdown Role and Status here
 ACTIVE_STATUS = "active"
 
-store = NodeStore()
-
-
 async def create_location_hierarchy(
     client: InfrahubClient, log: logging.Logger, branch: str
 ):
-    orga_duff_obj = store.get(key="Duff", kind="OrganizationTenant")
-    orga_eqx_obj = store.get(key="Equinix", kind="OrganizationProvider")
-    orga_itx_obj = store.get(key="Interxion", kind="OrganizationProvider")
-    account_crm = store.get(key="CRM Synchronization", kind="CoreAccount")
+    orga_duff_obj = client.store.get(key="Duff", kind="OrganizationTenant")
+    orga_eqx_obj = client.store.get(key="Equinix", kind="OrganizationProvider")
+    orga_itx_obj = client.store.get(key="Interxion", kind="OrganizationProvider")
+    account_crm = client.store.get(key="CRM Synchronization", kind="CoreAccount")
 
     batch_racks = await client.create_batch()
 
@@ -343,7 +311,6 @@ async def create_location_hierarchy(
             object_name=continent_name,
             kind_name="LocationContinent",
             data=data,
-            store=store,
             retrieved_on_failure=True,
         )
 
@@ -368,7 +335,6 @@ async def create_location_hierarchy(
                 object_name=country_name,
                 kind_name="LocationCountry",
                 data=data,
-                store=store,
                 retrieved_on_failure=True,
             )
 
@@ -393,7 +359,6 @@ async def create_location_hierarchy(
                     object_name=region_name,
                     kind_name="LocationRegion",
                     data=data,
-                    store=store,
                     retrieved_on_failure=True,
                 )
                 name_servers = [
@@ -406,10 +371,10 @@ async def create_location_hierarchy(
                 ]
                 random_ntp_server = random.choice(ntp_servers)
 
-                time_server_obj = store.get(
+                time_server_obj = client.store.get(
                     key=random_ntp_server, kind="NetworkNTPServer"
                 )
-                name_server_obj = store.get(
+                name_server_obj = client.store.get(
                     key=random_name_server, kind="NetworkNameServer"
                 )
 
@@ -444,7 +409,6 @@ async def create_location_hierarchy(
                         object_name=metro_name,
                         kind_name="LocationMetro",
                         data=data,
-                        store=store,
                         retrieved_on_failure=True,
                     )
 
@@ -480,7 +444,6 @@ async def create_location_hierarchy(
                             object_name=building_name,
                             kind_name="LocationBuilding",
                             data=data,
-                            store=store,
                             retrieved_on_failure=True,
                         )
 
@@ -507,7 +470,6 @@ async def create_location_hierarchy(
                                 object_name=floor_name,
                                 kind_name="LocationFloor",
                                 data=data,
-                                store=store,
                                 retrieved_on_failure=True,
                             )
 
@@ -545,7 +507,6 @@ async def create_location_hierarchy(
                                     object_name=suite_name,
                                     kind_name="LocationSuite",
                                     data=data,
-                                    store=store,
                                     retrieved_on_failure=True,
                                 )
 
@@ -578,7 +539,6 @@ async def create_location_hierarchy(
                                         object_name=rack_name,
                                         kind_name="LocationRack",
                                         data=data,
-                                        store=store,
                                         batch=batch_racks,
                                     )
 
@@ -586,16 +546,142 @@ async def create_location_hierarchy(
         accessor = f"{node._schema.default_filter.split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
+async def create_location_public_and_supernet(
+        client: InfrahubClient,
+        log: logging.Logger,
+        branch: str,
+        supernet_container_pool,
+        public_container_pool,
+        organisation,
+):
+    batch = await client.create_batch()
+    for location in site_locations:
+        location_name = location["name"]
+        location_shortname = location["shortname"]
+        location_obj = client.store.get(key=location_name, kind="LocationBuilding")
+        supernet_description = f"{location_shortname.lower()}-supernet"
+
+        # Get next supernet (/16) from container pool
+        data_prefix = {
+            "description": {"value": supernet_description},
+            "organization": {"id": organisation.id},
+            "location": {"id": location_obj.id},
+            "status": {"value": "active"},
+            "role": {"value": "supernet"},
+        }
+        location_supernet = await client.allocate_next_ip_prefix(
+            resource_pool=supernet_container_pool,
+            kind="InfraPrefix",
+            branch=branch,
+            data=data_prefix,
+            identifier=supernet_description
+        )
+        await location_supernet.save()
+        await create_ipam_pool(
+            client=client,
+            log=log,
+            branch=branch,
+            prefix=str(location_supernet.prefix.value),
+            role="supernet",
+            location=location_shortname,
+            default_prefix_length=24,
+            batch=batch
+        )
+        public_description = f"{location_shortname.lower()}-public"
+        # Get next public (/28) from container pool
+        data_prefix = {
+            "description": {"value": public_description},
+            "organization": {"id": organisation.id},
+            "location": {"id": location_obj.id},
+            "status": {"value": "active"},
+            "role": {"value": "public"},
+        }
+        location_public = await client.allocate_next_ip_prefix(
+            resource_pool=public_container_pool,
+            kind="InfraPrefix",
+            branch=branch,
+            data=data_prefix,
+            identifier=public_description
+        )
+        await location_public.save()
+        await create_ipam_pool(
+            client=client,
+            log=log,
+            branch=branch,
+            prefix=str(location_public.prefix.value),
+            role="public",
+            location=location_shortname,
+            default_prefix_length=32,
+            batch=batch
+        )
+
+    # Execute Supernet Pool batch
+    await execute_batch(batch=batch, log=log)
+
+async def create_location_vlans(
+        client: InfrahubClient,
+        log: logging.Logger,
+        branch: str,
+        organisation,
+):
+    batch = await client.create_batch()
+    for idx, location in enumerate(site_locations):
+        location_shortname = location["shortname"]
+        start_index = (idx+1) * 100
+        end_index = start_index + 99
+        pool_data = {
+            "name": f"vlans-{location_shortname.lower()}",
+            "description": f"VLANs Range for {location_shortname}",
+            "node": "InfraVLAN",
+            "node_attribute": "vlan_id",
+            "start_range": start_index,
+            "end_range": end_index
+        }
+        pool = await create_and_add_to_batch(
+            client=client,
+            log=log,
+            branch=branch,
+            object_name=f"vlans-{location_shortname}",
+            kind_name="CoreNumberPool",
+            data=pool_data,
+            batch=batch,
+        )
+    await execute_batch(batch=batch, log=log)
+
+    # FIXME: Can't batch with a CoreNumberPool assigning the IDs
+    for location in site_locations:
+        location_name = location["name"]
+        location_shortname = location["shortname"]
+        location_obj = client.store.get(key=location_name, kind="LocationBuilding")
+        location_vlan_pool = await client.get(kind="CoreNumberPool", name__value=f"vlans-{location_shortname.lower()}", raise_when_missing=True)
+        for vlan in VLANS:
+            vlan_data = {
+                "name": f"{location_shortname.lower()}_{vlan}",
+                "descriptiion": f"{vlan.upper()} for {location_shortname.upper()}",
+                "vlan_id": location_vlan_pool,
+                "status": "active",
+                "role": vlan.split("-")[0],
+                "location": {"id": location_obj.id}
+            }
+            obj = await create_and_save(
+                client=client,
+                log=log,
+                branch=branch,
+                object_name=f"{location_shortname.lower()}_{vlan}",
+                kind_name="InfraVLAN",
+                data=vlan_data,
+            )
+
 
 async def create_location(client: InfrahubClient, log: logging.Logger, branch: str):
     # --------------------------------------------------
     # Preparing some variables for the Location
     # --------------------------------------------------
-    account_pop = store.get(key="pop-builder", kind="CoreAccount")
-    account_eng = store.get(key="Engineering Team", kind="CoreAccount")
-    account_ops = store.get(key="Operation Team", kind="CoreAccount")
+    account_pop = client.store.get(key="pop-builder", kind="CoreAccount")
+    account_eng = client.store.get(key="Engineering Team", kind="CoreAccount")
+    account_ops = client.store.get(key="Operation Team", kind="CoreAccount")
 
-    orga_duff_obj = store.get(key="Duff", kind="OrganizationTenant")
+    orga_duff_obj = client.store.get(key="Duff", kind="OrganizationTenant")
 
     for mgmt_server in MGMT_SERVERS:
         mgmt_server_name = mgmt_server[0]
@@ -629,156 +715,69 @@ async def create_location(client: InfrahubClient, log: logging.Logger, branch: s
             object_name=mgmt_server_name,
             kind_name=mgmt_server_kind,
             data=data,
-            store=store,
             retrieved_on_failure=True,
         )
 
     await create_location_hierarchy(client=client, branch=branch, log=log)
-
+    supernet_container_pool = await client.get(kind="CoreIPPrefixPool", name__value="container-10/8", raise_when_missing=True)
+    public_container_pool = await client.get(kind="CoreIPPrefixPool", name__value="container-203.0.113/24", raise_when_missing=True)
+    log.info("Creating the Locations Public & Private Supernets")
+    await create_location_public_and_supernet(
+        client=client,
+        log=log,
+        branch=branch,
+        supernet_container_pool=supernet_container_pool,
+        public_container_pool=public_container_pool,
+        organisation=orga_duff_obj
+    )
+    log.info("Creating the Locations VLANs")
+    await create_location_vlans(
+        client=client,
+        log=log,
+        branch=branch,
+        organisation=orga_duff_obj
+    )
+    log.info("Creating the Locations Prefixes")
+    # Create prefixes from supernets
+    #   - XX.XX.00.0/24 -> Management
+    #   - XX.XX.01.0/24 -> Technical
+    #   - XX.XX.02.0/24 -> Loopback
+    #   - XX.XX.03.0/24 -> Loopback VTEP
+    batch = await client.create_batch()
     for location in site_locations:
         location_name = location["name"]
         location_shortname = location["shortname"]
-
-        # We cut the prefixes attributed to the Location
-        location_supernet = LOCATION_SUPERNETS[location_shortname]
-        location_loopback_pool = list(location_supernet.subnets(new_prefix=24))[-1]
-        location_p2p_pool = list(location_supernet.subnets(new_prefix=24))[-2]
-        location_vtep_pool = list(location_supernet.subnets(new_prefix=24))[-3]
-
-        location_mgmt_pool = LOCATION_MGMTS[location_shortname]
-        # mgmt_address_pool = location_mgmt.hosts()
-
-        location_external_net = LOCATION_EXTERNAL_NETS[location_shortname]
-        location_prefixes = [
-            location_external_net,
-            location_loopback_pool,
-            location_p2p_pool,
-            location_vtep_pool,
-            location_mgmt_pool,
-        ]
-        # --------------------------------------------------
-        # Create VLANs
-        # --------------------------------------------------
-        location_obj = store.get(key=location_name, kind="LocationBuilding")
-        batch = await client.create_batch()
-        location_id = location_obj.id
-        for vlan in VLANS:
-            role = vlan[1].split("-")[0]
-            vlan_name = f"{location_shortname.lower()}_{vlan[1]}"
-
-            data = {
-                "name": {
-                    "value": vlan_name,
-                    "is_protected": True,
-                    "source": account_pop.id,
-                },
-                "vlan_id": {
-                    "value": int(vlan[0]),
-                    "is_protected": True,
-                    "owner": account_eng.id,
-                    "source": account_pop.id,
-                },
-                "description": {
-                    "value": f"{location_name.upper()} - {vlan[1].lower()} VLAN"
-                },
-                "status": {"value": ACTIVE_STATUS, "owner": account_ops.id},
-                "role": {
-                    "value": role,
-                    "source": account_pop.id,
-                    "is_protected": True,
-                    "owner": account_eng.id,
-                },
-                "location": {"id": location_id},
-            }
-            await create_and_add_to_batch(
-                client=client,
-                log=log,
-                branch=branch,
-                object_name=vlan_name,
-                kind_name="InfraVLAN",
-                data=data,
-                store=store,
-                batch=batch,
-            )
-        async for node, _ in batch.execute():
-            accessor = f"{node._schema.default_filter.split('__')[0]}"
-            log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
-
-        # --------------------------------------------------
-        # Create Prefix
-        # --------------------------------------------------
-        # TODO Add a relation between the supernets and the smaller prefixes
-        batch = await client.create_batch()
-        # Create Supernet
-        supernet_description = f"{location_shortname.lower()}-supernet-{IPv4Network(location_supernet).network_address}"
-        data = {
-            "prefix": {"value": location_supernet},
-            "description": {"value": supernet_description},
-            "organization": {"id": orga_duff_obj.id},
-            "location": {"id": location_id},
-            "status": {"value": "active"},
-            "role": {"value": "supernet"},
-        }
-        supernet_obj = await create_and_save(
-            client=client,
-            log=log,
-            branch=branch,
-            object_name=location_supernet,
-            kind_name="InfraPrefix",
-            data=data,
-            store=store,
-        )
-        # Create /24 specifics subnets Pool
-        for prefix in location_prefixes:
-            # vlan_id = None
-            if any(
-                prefix.subnet_of(external_net) for external_net in EXTERNAL_NETWORKS
-            ):
-                prefix_status = "active"
-                prefix_description = f"{location_shortname.lower()}-ext-{IPv4Network(prefix).network_address}"
-                prefix_role = "public"
-                vrf_id = store.get(key="Internet", kind="InfraVRF").id
-            elif prefix.subnet_of(location_mgmt_pool):
-                prefix_status = "active"
-                prefix_description = f"{location_shortname.lower()}-mgmt-{IPv4Network(prefix).network_address}"
-                prefix_role = "management"
-                vrf_id = store.get(key="Management", kind="InfraVRF").id
-            else:
-                prefix_status = "reserved"
-                prefix_role = "technical"
-                vrf_id = store.get(key="Backbone", kind="InfraVRF").id
-                if prefix.subnet_of(location_p2p_pool):
-                    prefix_description = f"{location_shortname.lower()}-p2p-{IPv4Network(prefix).network_address}"
-                elif prefix.subnet_of(location_vtep_pool):
-                    prefix_description = f"{location_shortname.lower()}-vtep-{IPv4Network(prefix).network_address}"
-                    prefix_role = "loopback-vtep"
-                if prefix.subnet_of(location_loopback_pool):
-                    prefix_description = f"{location_shortname.lower()}-loop-{IPv4Network(prefix).network_address}"
-                    prefix_role = "loopback"
-            data = {
-                "prefix": {"value": prefix},
+        location_obj = client.store.get(key=location_name, kind="LocationBuilding")
+        location_supernet_pool = await client.get(kind="CoreIPPrefixPool", name__value=f"supernet-{location_shortname.lower()}", raise_when_missing=True)
+        for role in ("management", "technical", "loopback", "loopback-vtep"):
+            prefix_description = f"{location_shortname.lower()}-{role}"
+            data_prefix = {
                 "description": {"value": prefix_description},
                 "organization": {"id": orga_duff_obj.id},
-                "location": {"id": location_id},
-                "status": {"value": prefix_status},
-                "role": {"value": prefix_role},
-                "vrf": {"id": vrf_id},
+                "location": {"id": location_obj.id},
+                "role": role,
             }
+            member_type = "prefix"
+            if role == "management":
+                data_prefix["vrf"] = client.store.get(key="Management", kind="InfraVRF").id
+                data_prefix["status"] = "active"
+                member_type = "address"
+            elif role in ("technical", "loopback", "loopback-vtep"):
+                data_prefix["vrf"] = client.store.get(key="Backbone", kind="InfraVRF").id
+                data_prefix["status"] = "reserved"
+                if role != "technical":
+                    member_type = "address"
 
-            prefix_obj = await create_and_add_to_batch(
-                client=client,
-                log=log,
+            prefix = await client.allocate_next_ip_prefix(
+                resource_pool=location_supernet_pool,
+                kind="InfraPrefix",
                 branch=branch,
-                object_name=prefix,
-                kind_name="InfraPrefix",
-                data=data,
-                store=store,
-                batch=batch,
+                data=data_prefix,
+                identifier=prefix_description,
+                member_type=member_type
             )
-        async for node, _ in batch.execute():
-            accessor = f"{node._schema.default_filter.split('__')[0]}"
-            log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
-
+            batch.add(task=prefix.save, node=prefix)
+    await execute_batch(batch=batch, log=log)
 
 # ---------------------------------------------------------------
 # Use the `infrahubctl run` command line to execute this script
@@ -795,21 +794,21 @@ async def run(
     log.info("Retrieving objects from Infrahub")
     try:
         accounts = await client.all("CoreAccount")
-        populate_local_store(objects=accounts, key_type="name", store=store)
+        populate_local_store(objects=accounts, key_type="name", store=client.store)
         tenants = await client.all("OrganizationTenant")
-        populate_local_store(objects=tenants, key_type="name", store=store)
+        populate_local_store(objects=tenants, key_type="name", store=client.store)
         providers = await client.all("OrganizationProvider")
-        populate_local_store(objects=providers, key_type="name", store=store)
+        populate_local_store(objects=providers, key_type="name", store=client.store)
         autonomous_systems = await client.all("InfraAutonomousSystem")
-        populate_local_store(objects=autonomous_systems, key_type="name", store=store)
+        populate_local_store(objects=autonomous_systems, key_type="name", store=client.store)
         groups = await client.all("CoreStandardGroup")
-        populate_local_store(objects=groups, key_type="name", store=store)
+        populate_local_store(objects=groups, key_type="name", store=client.store)
         vrfs = await client.all("InfraVRF")
-        populate_local_store(objects=vrfs, key_type="name", store=store)
+        populate_local_store(objects=vrfs, key_type="name", store=client.store)
 
     except Exception as e:
         log.info(f"Fail to populate due to {e}")
         exit(1)
 
-    log.info("Generation Location")
+    log.info("Generating Locations")
     await create_location(client=client, branch=branch, log=log)
