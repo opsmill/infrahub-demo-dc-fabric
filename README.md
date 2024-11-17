@@ -56,7 +56,7 @@ poetry run inv load-schema load-data
 
 ## Running the demo in Github Codespaces
 
-[Spin up in Github codespace](https://codespaces.new/opsmill/infrahub-demo-dc-fabric-develop)
+[Spin up in Github Codespaces](https://codespaces.new/opsmill/infrahub-demo-dc-fabric-develop)
 
 ## Demo flow
 
@@ -82,7 +82,6 @@ mutation AddRepository{
 ```
 
 ### 2. Generate a Topology (Device, Interfaces, Cabling, BGP Sessions, ...)
-
 
 > [!NOTE]
 > The example below creates the topology fra05-pod1
@@ -150,7 +149,7 @@ Using your new branch `test` you will be able to see the Diff in the Proposed Ch
 
 - The checks will run in the Proposed Changes -> check_device_topology will fail.
 
-### 10. Deploy your environment to containerlabs
+### 10. Deploy your environment to ContainerLabs
 
 The containerlab generator automatically generates a containerlab topology artifact for every topology. Every device has its startup config as an artifact.
 
