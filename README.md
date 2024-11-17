@@ -88,7 +88,7 @@ mutation AddRepository{
 > The example below creates the topology fra05-pod1
 
 ```shell
-poetry run infrahubctl run generators/generate_topology.py topology=fra05-pod1
+poetry run infrahubctl run bootstrap/generate_topology.py topology=fra05-pod1
 ```
 
 ### 3. Generate a network service in a Topology
@@ -97,8 +97,8 @@ poetry run infrahubctl run generators/generate_topology.py topology=fra05-pod1
 > The example below creates the Layer2 network service and a another Layer3 on topology fra05-pod1
 
 ```shell
-poetry run infrahubctl run generators/generate_network-services.py topology=fra05-pod1 type=layer2
-poetry run infrahubctl run generators/generate_network-services.py topology=fra05-pod1 type=layer3 vrf=production
+poetry run infrahubctl run bootstrap/generate_network-services.py topology=fra05-pod1 type=layer2
+poetry run infrahubctl run bootstrap/generate_network-services.py topology=fra05-pod1 type=layer3 vrf=production
 ```
 
 ### 4. Render Artifacts
