@@ -45,7 +45,7 @@ def load_schema(context: Context, schema: Path = Path("./models/*.yml")) -> None
 def load_data(context: Context) -> None:
     with context.cd(MAIN_DIRECTORY_PATH):
         for generator in DATA_GENERATORS:
-            context.run(f"infrahubctl run generators/{generator}")
+            context.run(f"infrahubctl run bootstrap/{generator}")
 
 
 @task

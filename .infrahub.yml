@@ -70,6 +70,15 @@ python_transforms:
     class_name: OCInterfaces
     file_path: "transforms/openconfig.py"
 
+generator_definitions:
+  - name: generate_network_services
+    file_path: "generators/network_services.py"
+    targets: network_services
+    query: generate_network_services
+    class_name: NetworkServicesGenerator
+    parameters:
+      network_service_name: "name__value"
+
 queries:
   - name: topology_info
     file_path: "topology/topology_info.gql"
@@ -85,3 +94,6 @@ queries:
 
   - name: check_device_topology
     file_path: "checks/check_device_topology.gql"
+
+  - name: generate_network_services
+    file_path: "generators/network_services.gql"

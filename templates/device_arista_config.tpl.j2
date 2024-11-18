@@ -103,7 +103,7 @@ interface {{ intf.node.name.value }}
    switchport trunk native vlan {{ intf.node.untagged_vlan.node.vlan_id.value }}
 {%         endif %}
 {%         if intf.node.tagged_vlan %}
-   switchport trunk allowed vlan {% for tagged_vlan in intf.node.tagged_vlan.edges %} {{ tagged_vlan["node"]["vlan_id"]["value"] }}{% if not loop.last %}, {% endif %}{% endfor %}
+   switchport trunk allowed vlan {% for tagged_vlan in intf.node.tagged_vlan.edges %} {{ tagged_vlan.node.vlan_id.value }}{% if not loop.last %}, {% endif %}{% endfor %}
 
 {%         endif %}
 {%         if intf.node.role.value == "server" %}
@@ -118,10 +118,10 @@ interface Vxlan1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
 {%   for network_services in data.InfraDevice.edges[0].node.topology.node.network_services.edges %}
-{%      if network_services.node.vlan %}
-{%         if network_services.node.service_type.value == "Layer2" %}
+{%      if network_services.node.vlan.node %}
+{%         if network_services.node.__typename == "TopologyLayer2NetworkService" %}
    vxlan vlan {{ network_services.node.vlan.node.vlan_id.value }} vni 201{{ network_services.node.vlan.node.vlan_id.value }}
-{%         elif network_services.node.service_type.value == "Layer3" %}
+{%         elif network_services.node.__typename == "TopologyLayer3NetworkService" %}
 {%            if network_services.node.prefix.node %}
    vxlan vlan {{ network_services.node.vlan.node.vlan_id.value }} vni {{ network_services.node.prefix.node.vrf.node.vrf_rd.value }}{{ network_services.node.vlan.node.vlan_id.value }}
 {%            endif %}

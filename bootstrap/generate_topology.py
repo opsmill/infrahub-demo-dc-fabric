@@ -6,10 +6,8 @@ from typing import Any, Dict, List, Optional
 
 from infrahub_sdk.batch import InfrahubBatch
 from infrahub_sdk.node import InfrahubNode
-from infrahub_sdk.store import NodeStore
 from infrahub_sdk import InfrahubClient
 from infrahub_sdk.uuidt import UUIDT
-from create_location import LOCATION_SUPERNETS, LOCATION_MGMTS, EXTERNAL_NETWORKS
 from utils import populate_local_store, create_and_save, create_and_add_to_batch
 
 
@@ -40,7 +38,6 @@ INTERFACE_VTEP_NAME = {
     "linux": "lo1",
 }
 
-# TODO replace name by real name
 DEVICES_INTERFACES = {
     # Device Type [ Interfaces ]
     "QFX5110-48S-S": [
@@ -159,9 +156,6 @@ PROVISIONING_STATUS = "provisioning"
 LOOPBACK_ROLE = "loopback"
 MGMT_ROLE = "management"
 
-store = NodeStore()
-
-
 def get_interface_names(
     device_type: str, device_role: str, interface_role: str
 ) -> Optional[List]:
@@ -190,7 +184,6 @@ async def upsert_interface(
     device_name: str,
     intf_name: str,
     data: Dict[str, Any],
-    store: NodeStore,
     batch: Optional[InfrahubBatch] = None,
 ) -> InfrahubNode:
     kind_name = data["kind_name"]
@@ -211,7 +204,6 @@ async def upsert_interface(
             object_name=f"{device_name}-{intf_name}",
             kind_name=kind_name,
             data=data,
-            store=store,
             batch=batch,
         )
     else:
@@ -222,7 +214,6 @@ async def upsert_interface(
             object_name=f"{device_name}-{intf_name}",
             kind_name=kind_name,
             data=data,
-            store=store,
         )
     return interface_obj
 
@@ -237,7 +228,6 @@ async def upsert_ip_address(
     description: str,
     account_pop_id: str,
     address: str,
-    store: NodeStore,
     batch: Optional[InfrahubBatch] = None,
 ) -> None:
     if prefix_obj:
@@ -266,7 +256,6 @@ async def upsert_ip_address(
             object_name=f"{device_name}-{interface_obj.name.value}-address",
             kind_name="InfraIPAddress",
             data=data,
-            store=store,
             batch=batch,
         )
     else:
@@ -277,7 +266,6 @@ async def upsert_ip_address(
             object_name=f"{device_name}-{interface_obj.name.value}-address",
             kind_name="InfraIPAddress",
             data=data,
-            store=store,
         )
     return ip_obj
 
@@ -375,22 +363,22 @@ async def generate_topology(
         # --------------------------------------------------
         # Preparating some variables for the Location
         # --------------------------------------------------
-        account_pop = store.get(key="pop-builder", kind="CoreAccount")
-        account_crm = store.get("CRM Synchronization", kind="CoreAccount")
-        account_eng = store.get(key="Engineering Team", kind="CoreAccount")
-        account_ops = store.get(key="Operation Team", kind="CoreAccount")
-        orga_duff = store.get(key="Duff", kind="OrganizationTenant")
+        account_pop = client.store.get(key="pop-builder", kind="CoreAccount")
+        account_crm = client.store.get("CRM Synchronization", kind="CoreAccount")
+        account_eng = client.store.get(key="Engineering Team", kind="CoreAccount")
+        account_ops = client.store.get(key="Operation Team", kind="CoreAccount")
+        orga_duff = client.store.get(key="Duff", kind="OrganizationTenant")
 
         # We are using DUFF Oragnization ASN as "internal" (AS65000)
-        internal_as = store.get(key="AS65000", kind="InfraAutonomousSystem")
+        internal_as = client.store.get(key="AS65000", kind="InfraAutonomousSystem")
 
         locations_vlans = await client.filters(
             kind="InfraVLAN",
             location__shortname__value=location_shortname,
             branch=branch,
         )
-        populate_local_store(objects=locations_vlans, key_type="name", store=store)
-        vlan_pxe = store.get(
+        populate_local_store(objects=locations_vlans, key_type="name", store=client.store)
+        vlan_pxe = client.store.get(
             key=f"{location_shortname.lower()}_server-pxe", kind="InfraVLAN"
         )
         vlans = await client.filters(
@@ -511,7 +499,6 @@ async def generate_topology(
                         object_name=asn_name,
                         kind_name="InfraAutonomousSystem",
                         data=data_asn,
-                        store=store,
                         retrieved_on_failure=True,
                     )
                     device_asn_id = asn_obj.id
@@ -558,7 +545,6 @@ async def generate_topology(
                     object_name=device_name,
                     kind_name="InfraDevice",
                     data=data_device,
-                    store=store,
                     retrieved_on_failure=True,
                 )
 
@@ -617,7 +603,6 @@ async def generate_topology(
                     device_name=device_name,
                     intf_name=loopback_name,
                     data=loopback_data,
-                    store=store,
                 )
                 ip_loop = f"{str(next(loopback_address_pool))}/32"
                 await upsert_ip_address(
@@ -630,7 +615,6 @@ async def generate_topology(
                     description=loopback_description,
                     account_pop_id=account_pop.id,
                     address=ip_loop,
-                    store=store,
                     batch=batch,
                 )
 
@@ -654,7 +638,6 @@ async def generate_topology(
                     device_name=device_name,
                     intf_name=loopback_vtep_name,
                     data=loopback_vtep_data,
-                    store=store,
                 )
                 ip_loop = f"{str(next(loopback_vtep_address_pool))}/32"
                 await upsert_ip_address(
@@ -667,7 +650,6 @@ async def generate_topology(
                     description=loopback_vtep_description,
                     account_pop_id=account_pop.id,
                     address=ip_loop,
-                    store=store,
                     batch=batch,
                 )
 
@@ -693,7 +675,6 @@ async def generate_topology(
                     device_name=device_name,
                     intf_name=mgmt_name,
                     data=mgmt_data,
-                    store=store,
                 )
                 ip_mgmt = f"{str(next(mgmt_address_pool))}/24"
                 ip_mgmt_obj = await upsert_ip_address(
@@ -706,13 +687,12 @@ async def generate_topology(
                     description=mgmt_description,
                     account_pop_id=account_pop.id,
                     address=ip_mgmt,
-                    store=store,
                 )
 
                 # Set Mgmt IP as Primary IP
                 device_obj.primary_address = ip_mgmt_obj
                 await device_obj.save()
-                store.set(key=f"{device_name}", node=device_obj)
+                client.store.set(key=f"{device_name}", node=device_obj)
                 log.info(f"- Set {ip_mgmt} as {device_name} Primary IP")
 
                 if device_role_name.lower() not in ["spine", "leaf"]:
@@ -762,7 +742,6 @@ async def generate_topology(
                         device_name=device_name,
                         intf_name=intf_name,
                         data=interface_data,
-                        store=store,
                         batch=batch,
                     )
         async for node, _ in batch.execute():
@@ -862,7 +841,7 @@ async def generate_topology(
         ).subnets(new_prefix=31)
 
         # Cabling Leaf
-        backbone_vrf_obj_id = store.get(key="Backbone", kind="InfraVRF").id
+        backbone_vrf_obj_id = client.store.get(key="Backbone", kind="InfraVRF").id
         for leaf_idx in range(1, leaf_quantity + 1):
             if leaf_idx > len(spine_leaf_interfaces):
                 log.error(
@@ -959,7 +938,6 @@ async def generate_topology(
                     object_name=str(interconnection_subnet),
                     kind_name="InfraPrefix",
                     data=data,
-                    store=store,
                 )
 
                 spine_ip_obj = await upsert_ip_address(
@@ -972,7 +950,6 @@ async def generate_topology(
                     description=spine_ico_ip_description,
                     account_pop_id=account_pop.id,
                     address=spine_ip,
-                    store=store,
                 )
                 leaf_ip_obj = await upsert_ip_address(
                     client=client,
@@ -984,7 +961,6 @@ async def generate_topology(
                     description=leaf_ico_ip_description,
                     account_pop_id=account_pop.id,
                     address=leaf_ip,
-                    store=store,
                 )
 
                 # Delete the other interface.connected_endpoint
@@ -1042,7 +1018,6 @@ async def generate_topology(
                         object_name=f"bgpgroup-underlay-{spine_obj.name.value}-{leaf_obj.name.value}",
                         kind_name="InfraBGPPeerGroup",
                         data=data_spine_bgp_group,
-                        store=store,
                     )
                     data_leaf_bgp_group = {
                         "name": {"value": leaf_bgp_group_name},
@@ -1059,7 +1034,6 @@ async def generate_topology(
                         object_name=f"bgpgroup-underlay-{leaf_obj.name.value}-{spine_obj.name.value}",
                         kind_name="InfraBGPPeerGroup",
                         data=data_leaf_bgp_group,
-                        store=store,
                     )
                     data_spine_session = {
                         "local_as": {"id": spine_asn_obj.id},
@@ -1084,7 +1058,6 @@ async def generate_topology(
                         object_name=f"spine-{str(interconnection_subnet)}",
                         kind_name="InfraBGPSession",
                         data=data_spine_session,
-                        store=store,
                     )
                     data_leaf_session = {
                         "remote_as": {"id": spine_asn_obj.id},
@@ -1110,7 +1083,6 @@ async def generate_topology(
                         object_name=f"leaf-{str(interconnection_subnet)}",
                         kind_name="InfraBGPSession",
                         data=data_leaf_session,
-                        store=store,
                         batch=batch,
                     )
 
@@ -1212,7 +1184,6 @@ async def generate_topology(
                         object_name=str(interconnection_subnet),
                         kind_name="InfraPrefix",
                         data=data,
-                        store=store,
                     )
 
                     spine_ip_obj = await upsert_ip_address(
@@ -1225,7 +1196,6 @@ async def generate_topology(
                         description=spine_ico_ip_description,
                         account_pop_id=account_pop.id,
                         address=spine_ip,
-                        store=store,
                     )
                     leaf_ip_obj = await upsert_ip_address(
                         client=client,
@@ -1237,7 +1207,6 @@ async def generate_topology(
                         description=leaf_ico_ip_description,
                         account_pop_id=account_pop.id,
                         address=leaf_ip,
-                        store=store,
                     )
 
                     # Delete the other interface.connected_endpoint
@@ -1295,7 +1264,6 @@ async def generate_topology(
                             object_name=f"bgpgroup-underlay-{spine_obj.name.value}-{leaf_obj.name.value}",
                             kind_name="InfraBGPPeerGroup",
                             data=data_spine_bgp_group,
-                            store=store,
                         )
                         data_leaf_bgp_group = {
                             "name": {"value": leaf_bgp_group_name},
@@ -1312,7 +1280,6 @@ async def generate_topology(
                             object_name=f"bgpgroup-underlay-{leaf_obj.name.value}-{spine_obj.name.value}",
                             kind_name="InfraBGPPeerGroup",
                             data=data_leaf_bgp_group,
-                            store=store,
                         )
                         data_spine_session = {
                             "local_as": {"id": spine_asn_obj.id},
@@ -1337,7 +1304,6 @@ async def generate_topology(
                             object_name=f"spine-{str(interconnection_subnet)}",
                             kind_name="InfraBGPSession",
                             data=data_spine_session,
-                            store=store,
                         )
                         data_leaf_session = {
                             "remote_as": {"id": spine_asn_obj.id},
@@ -1363,7 +1329,6 @@ async def generate_topology(
                             object_name=f"borderleaf-{str(interconnection_subnet)}",
                             kind_name="InfraBGPSession",
                             data=data_leaf_session,
-                            store=store,
                             batch=batch,
                         )
 
@@ -1380,10 +1345,10 @@ async def generate_topology(
             leaf1_name = f"{topology_name}-leaf{leaf_idx}"
             leaf2_name = f"{topology_name}-leaf{leaf_idx + 1}"
             for leaf_peer_interface in leaf_peer_interfaces:
-                intf_leaf1_obj = store.get(
+                intf_leaf1_obj = client.store.get(
                     kind="InfraInterfaceL3", key=f"{leaf1_name}-{leaf_peer_interface}"
                 )
-                intf_leaf2_obj = store.get(
+                intf_leaf2_obj = client.store.get(
                     kind="InfraInterfaceL3", key=f"{leaf2_name}-{leaf_peer_interface}"
                 )
 
@@ -1448,39 +1413,39 @@ async def run(
     try:
         # CoreAccount
         accounts = await client.all("CoreAccount")
-        populate_local_store(objects=accounts, key_type="name", store=store)
+        populate_local_store(objects=accounts, key_type="name", store=client.store)
         # Organizations
         tenants = await client.all("OrganizationTenant")
-        populate_local_store(objects=tenants, key_type="name", store=store)
+        populate_local_store(objects=tenants, key_type="name", store=client.store)
         providers = await client.all("OrganizationProvider")
-        populate_local_store(objects=providers, key_type="name", store=store)
+        populate_local_store(objects=providers, key_type="name", store=client.store)
         manufacturers = await client.all("OrganizationManufacturer")
-        populate_local_store(objects=manufacturers, key_type="name", store=store)
+        populate_local_store(objects=manufacturers, key_type="name", store=client.store)
         # ASN
         autonomous_systems = await client.all("InfraAutonomousSystem")
-        populate_local_store(objects=autonomous_systems, key_type="name", store=store)
+        populate_local_store(objects=autonomous_systems, key_type="name", store=client.store)
         # Platforms + Device Types
         platforms = await client.all("InfraPlatform")
-        populate_local_store(objects=platforms, key_type="name", store=store)
+        populate_local_store(objects=platforms, key_type="name", store=client.store)
         device_types = await client.all("InfraDeviceType")
-        populate_local_store(objects=device_types, key_type="name", store=store)
+        populate_local_store(objects=device_types, key_type="name", store=client.store)
         # Topologies + Network Strategies
         topologies = await client.all("TopologyTopology")
-        populate_local_store(objects=topologies, key_type="name", store=store)
+        populate_local_store(objects=topologies, key_type="name", store=client.store)
         evpn_strategies = await client.all("TopologyEVPNStrategy", populate_store=True)
-        populate_local_store(objects=evpn_strategies, key_type="name", store=store)
+        populate_local_store(objects=evpn_strategies, key_type="name", store=client.store)
         # Locations
         locations = await client.all("LocationGeneric", populate_store=True)
-        populate_local_store(objects=locations, key_type="name", store=store)
+        populate_local_store(objects=locations, key_type="name", store=client.store)
         # Groups
         groups = await client.all("CoreStandardGroup")
-        populate_local_store(objects=groups, key_type="name", store=store)
+        populate_local_store(objects=groups, key_type="name", store=client.store)
         # Prefixes
         prefixes = await client.all("InfraPrefix")
-        populate_local_store(objects=prefixes, key_type="prefix", store=store)
+        populate_local_store(objects=prefixes, key_type="prefix", store=client.store)
         # VRF
         vrfs = await client.all("InfraVRF")
-        populate_local_store(objects=vrfs, key_type="name", store=store)
+        populate_local_store(objects=vrfs, key_type="name", store=client.store)
 
     except Exception as e:
         log.error(f"Fail to populate due to {e}")
