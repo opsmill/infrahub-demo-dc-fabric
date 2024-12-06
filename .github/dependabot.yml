@@ -1,0 +1,45 @@
+---
+# yamllint disable rule:truthy
+version: 2
+
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    target-branch: main
+    labels:
+      - "changes/patch"
+    groups:
+      all:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    target-branch: main
+    labels:
+      - "changes/patch"
+    groups:
+      all:
+        patterns:
+          - "*"
+  
+  - package-ecosystem: "pip"
+    directory: "/"
+    target-branch: develop
+    labels:
+      - "changes/patch"
+    groups:
+      infrahub-sdk:
+        patterns:
+          - "infrahub-sdk"
+    schedule:
+      cron: "0 8-16/4 * * 1-5"  
