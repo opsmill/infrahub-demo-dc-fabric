@@ -18,58 +18,19 @@ updates:
         patterns:
           - "*"
 
+  # Group all pip updates except infrahub-sdk
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "monday"
-      time: "09:00"
+      time: "12:00"
     target-branch: main
     labels:
       - "changes/patch"
     groups:
       all:
         patterns:
-          - "*"
-  
-  # Updates for infrahub-sdk at 8 AM
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "daily"
-      time: "08:00"
-    target-branch: develop
-    labels:
-      - "changes/patch"
-    groups:
-      infrahub-sdk:
-        patterns:
-          - "infrahub-sdk"
-
-  # Updates for infrahub-sdk at 12 PM
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "daily"
-      time: "12:00"
-    target-branch: develop
-    labels:
-      - "changes/patch"
-    groups:
-      infrahub-sdk:
-        patterns:
-          - "infrahub-sdk"
-
-  # Updates for infrahub-sdk at 4 PM
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "daily"
-      time: "16:00"
-    target-branch: develop
-    labels:
-      - "changes/patch"
-    groups:
+          - "^(?!infrahub-sdk$).*"  # Regex to exclude infrahub-sdk
       infrahub-sdk:
         patterns:
           - "infrahub-sdk"
