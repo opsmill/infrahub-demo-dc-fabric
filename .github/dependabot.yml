@@ -22,7 +22,7 @@ updates:
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
       time: "12:00"
     target-branch: main
     labels:
