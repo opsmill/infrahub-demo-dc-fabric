@@ -44,7 +44,7 @@ poetry run invoke load-schema load-data
 
 ## Demo flow
 
-### 1. Add the repository into Infrahub (Replace GITHUB_USER and GITHUB_TOKEN)
+### 1. Add the repository into Infrahub (replace GITHUB_USER and GITHUB_TOKEN)
 
 > [!NOTE]
 > Reference the [Infrahub documentation](https://docs.infrahub.app/guides/repository) for the multiple ways this can be done.
@@ -65,7 +65,7 @@ mutation AddRepository{
 }
 ```
 
-### 2. Generate a Topology (Device, Interfaces, Cabling, BGP Sessions, ...)
+### 2. Generate a topology (devices, interfaces, cabling, BGP sessions, ...)
 
 > [!NOTE]
 > The example below creates the topology fra05-pod1
@@ -84,7 +84,7 @@ poetry run infrahubctl run generators/generate_network-services.py topology=fra0
 poetry run infrahubctl run generators/generate_network-services.py topology=fra05-pod1 type=layer3 vrf=production
 ```
 
-### 4. Render Artifacts
+### 4. Render artifacts
 
 Artifact Generation is not currently present in the UI but it's possible to try it out locally :
 
@@ -98,7 +98,7 @@ poetry run infrahubctl render device_arista device=fra05-pod1-leaf1
 ### 5. Try out our pytest plugin
 
 > [!NOTE]
-> The command will use our infrahub pytest plugin. It will run the different test in the `tests` folder. Those tests included :
+> The command will use our Infrahub pytest plugin. It will run the different test in the `tests` folder. Those tests included :
 >
 > - Syntax checks for all the GraphQL Queries
 > - Syntax checks for the Checks
@@ -117,7 +117,7 @@ Create directly a new branch `test` in the UI, or if you prefer to use our SDK i
 poetry run infrahubctl branch create test
 ```
 
-### 7. Create new Network Services and Regenerate Artifacts in your branch
+### 7. Create new network services and regenerate artifacts in your branch
 
 > [!NOTE]
 > You will be able to see the Diff in the Branch not only about the Data but about the Artifact as well
@@ -131,11 +131,11 @@ Using your new branch `test` you will be able to see the Diff in the Proposed Ch
 
 - Modify an Elements in a Topology (example: increase or decrease the quantity of leaf switches in fra05-pod1)
 
-- The checks will run in the Proposed Changes -> check_device_topology will fail.
+- The checks will run in the `Proposed Changes` -> `check_device_topology` will fail.
 
 ### 10. Deploy your environment to Containerlab
 
-The Containerlab generator automatically generates a Containerlab topology artifact for every topology. Every device has its startup config as an artifact.
+The Containerlab generator automatically generates a Containerlab topology artifact for every topology. Every device has its startup configuration as an artifact.
 
 ```shell
 # Download all artifacts automatically to ./generated-configs/

@@ -87,8 +87,8 @@ jobs:
         run: npm install
       - name: "Setup Python environment"
         run: "pip install invoke toml"
-      - name: "Build website"
-        run: "invoke docs_build"
+      - name: "Build docs website"
+        run: "invoke docs"
 
 
   validate-documentation-style:
