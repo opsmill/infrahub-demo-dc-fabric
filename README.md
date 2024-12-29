@@ -56,11 +56,20 @@ poetry run inv load-schema load-data
 
 ## Running the demo in Github Codespaces
 
-[Spin up in Github codespace](https://codespaces.new/opsmill/infrahub-demo-dc-fabric-develop)
+[Spin up in Github Codespaces](https://codespaces.new/opsmill/infrahub-demo-dc-fabric-develop)
 
 ## Demo flow
 
-### 1. Add the repository into Infrahub (Replace GITHUB_USER and GITHUB_TOKEN)
+### 1. Generate a Topology (Device, Interfaces, Cabling, BGP Sessions, ...)
+
+> [!NOTE]
+> The example below creates the topology fra05-pod1
+
+```shell
+poetry run infrahubctl run bootstrap/generate_topology.py topology=fra05-pod1
+```
+
+### 2. Add the repository into Infrahub
 
 > [!NOTE]
 > Reference the [Infrahub documentation](https://docs.infrahub.app/guides/repository) for the multiple ways this can be done.
@@ -81,38 +90,38 @@ mutation AddRepository{
 }
 ```
 
-### 2. Generate a Topology (Device, Interfaces, Cabling, BGP Sessions, ...)
+### 3. Create a branch
+
+#### Via the UI
+
+<img width="403" alt="image" src="https://github.com/user-attachments/assets/8e763b89-da51-4a3c-80d1-799db55b6499">
 
 
-> [!NOTE]
-> The example below creates the topology fra05-pod1
+### 4. Create a new l2 or l3 service
 
-```shell
-poetry run infrahubctl run generators/generate_topology.py topology=fra05-pod1
-```
+### Via the UI
 
-### 3. Generate a network service in a Topology
+http://localhost:8000/objects/TopologyNetworkService
+
+<img width="393" alt="image" src="https://github.com/user-attachments/assets/745bf1cb-3840-4832-a988-bb0569d784a7">
 
 > [!NOTE]
 > The example below creates the Layer2 network service and a another Layer3 on topology fra05-pod1
 
-```shell
-poetry run infrahubctl run generators/generate_network-services.py topology=fra05-pod1 type=layer2
-poetry run infrahubctl run generators/generate_network-services.py topology=fra05-pod1 type=layer3 vrf=production
-```
 
-### 4. Render Artifacts
+### 5. Create a Proposed Changes
 
-Artifact Generation is not currently present in the UI but it's possible to try it out locally :
+### Via the UI
+<img width="1242" alt="image" src="https://github.com/user-attachments/assets/7308b090-a577-405f-8d00-840b1b4fa4ad">
 
 > [!NOTE]
-> This command will render the artifact define with `device_arista` Transformation, for `fra05-pod1-leaf1` device
+> This command will run the generator and render the artifacts
 
-```shell
-poetry run infrahubctl render device_arista device=fra05-pod1-leaf1
-```
+![image](https://github.com/user-attachments/assets/13dbad20-274a-4a23-9c71-fc56cb81789a)
+![image](https://github.com/user-attachments/assets/706b7cf8-bfa6-436a-ad98-75e887470f3c)
 
-### 5. Try out our pytest plugin
+
+### 6. Try out our pytest plugin
 
 > [!NOTE]
 > The command will use our infrahub pytest plugin. It will run the different test in the `tests` folder. Those tests included :
@@ -126,23 +135,13 @@ poetry run infrahubctl render device_arista device=fra05-pod1-leaf1
 pytest -v ./tests
 ```
 
-### 6. Create a new Branch
+### 7. Create a new Branch
 
-Create directly a new branch `test` in the UI, or if you prefer to use our SDK in CLI :
+Create directly a new branch `test2` in the UI, or if you prefer to use our SDK in CLI :
 
 ```shell
-poetry run infrahubctl branch create test
+poetry run infrahubctl branch create test2
 ```
-
-### 7. Create new Network Services and Regenerate Artifacts in your branch
-
-> [!NOTE]
-> You will be able to see the Diff in the Branch not only about the Data but about the Artifact as well
-> You can go back in time to see the Diff on the branch before you create the new services (you can do it `main` after merging the proposed changes too)
-
-### 8. Create a proposed change
-
-Using your new branch `test` you will be able to see the Diff in the Proposed Change and you will see the checks / tests in the CI pipeline
 
 ### 9. Try out  the topology check
 
@@ -150,7 +149,7 @@ Using your new branch `test` you will be able to see the Diff in the Proposed Ch
 
 - The checks will run in the Proposed Changes -> check_device_topology will fail.
 
-### 10. Deploy your environment to containerlabs
+### 10. Deploy your environment to ContainerLabs
 
 The containerlab generator automatically generates a containerlab topology artifact for every topology. Every device has its startup config as an artifact.
 

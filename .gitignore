@@ -2,7 +2,10 @@
 clab-*
 avd-cEOS-Lab
 *.clab.yml.bak
-__pycache__
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+**/.benchmarks
 playbooks/reports
 playbooks/documentation
 playbooks/intended
@@ -12,3 +15,4 @@ playbooks/intended
 pyrightconfig.json
 docker-compose.override.yml
 docker-compose.yml
+generated-configs/**

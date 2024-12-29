@@ -1,12 +1,10 @@
 import logging
 from typing import Dict, Optional
+from ipaddress import IPv4Network
 from infrahub_sdk.batch import InfrahubBatch
-from infrahub_sdk.node import InfrahubNode
-from infrahub_sdk.store import NodeStore
 from infrahub_sdk import InfrahubClient
-from infrahub_sdk.uuidt import UUIDT
 
-from utils import create_and_add_to_batch
+from utils import create_and_add_to_batch, create_ipam_pool, execute_batch
 
 # flake8: noqa
 # pylint: skip-file
@@ -73,7 +71,7 @@ ASNS = (
     (174, "Cogent Communications"),
     (7922, "Comcast Cable Communication"),
     (6762, "Telecom Italia Sparkle"),
-    (7018, "AT&T Services")
+    (7018, "AT&T Services"),
 )
 
 VRF = {
@@ -103,9 +101,16 @@ PLATFORMS = (
     ("Cisco IOS-XE", "ios", "ios", "cisco_ios", "ios", "ios"),
     ("Cisco IOS-XR", "iosxr", "iosxr", "cisco_xr", "cisco.iosxr.iosxr", "cisco_xrv"),
     ("Cisco NXOS SSH", "nxos_ssh", "nxos_ssh", "cisco_nxos", "nxos", "cisco_n9kv"),
-    ("Juniper JunOS", "junos", "junos", "juniper_junos", "junos", "juniper_vjunosswitch"),
+    (
+        "Juniper JunOS",
+        "junos",
+        "junos",
+        "juniper_junos",
+        "junos",
+        "juniper_vjunosswitch",
+    ),
     ("Arista EOS", "eos", "eos", "arista_eos", "eos", "ceos"),
-    ("Linux", "linux", "linux", "linux", "linux", "linux")
+    ("Linux", "linux", "linux", "linux", "linux", "linux"),
 )
 
 DEVICE_TYPES = (
@@ -126,7 +131,8 @@ GROUPS = (
     ("juniper_devices", "Juniper Devices"),
     ("upstream_interfaces", "Upstream Interface"),
     ("core_interfaces", "Core Interface"),
-    ("all_topologies", "All Topologies")
+    ("network_services", "Provisioned network services"),
+    ("all_topologies", "All Topologies"),
 )
 
 BGP_PEER_GROUPS = (
@@ -134,17 +140,30 @@ BGP_PEER_GROUPS = (
     ("POP_INTERNAL", "IMPORT_INTRA_POP", "EXPORT_INTRA_POP", "AS65000", "AS65000"),
     ("POP_GLOBAL", "IMPORT_POP_GLOBAL", "EXPORT_POP_GLOBLA", "AS65000", None),
     ("UPSTREAM_DEFAULT", "IMPORT_UPSTREAM", "EXPORT_PUBLIC_PREFIX", "AS65000", None),
-    ("UPSTREAM_ARELION", "IMPORT_UPSTREAM", "EXPORT_PUBLIC_PREFIX", "AS65000", "AS1299"),
+    (
+        "UPSTREAM_ARELION",
+        "IMPORT_UPSTREAM",
+        "EXPORT_PUBLIC_PREFIX",
+        "AS65000",
+        "AS1299",
+    ),
     ("IX_DEFAULT", "IMPORT_IX", "EXPORT_PUBLIC_PREFIX", "AS65000", None),
 )
 
-store = NodeStore()
+# TEST-NET
+EXTERNAL_NETWORKS = [
+    "203.0.113.0/24",
+    "192.0.2.0/24",
+    "198.51.100.0/24"
+]
 
-async def create_basics(
-        client: InfrahubClient,
-        log: logging.Logger,
-        branch: str
-    ):
+# RFC1918
+INTERNAL_NETWORKS = [
+    "10.0.0.0/8",
+    "172.16.0.0/12",
+]
+
+async def create_basics(client: InfrahubClient, log: logging.Logger, branch: str):
     # Create Batch for Accounts, Platforms, and Standards Groups
     log.info("Creating User Accounts, Platforms, and Standard Groups")
     batch = await client.create_batch()
@@ -165,28 +184,26 @@ async def create_basics(
             object_name=account[0],
             kind_name="CoreAccount",
             data=data,
-            store=store,
-            batch=batch
-            )
+            batch=batch,
+        )
 
     # ------------------------------------------
     # Create Standard Demo Groups
     # ------------------------------------------
     for group in GROUPS:
-       data={
-           "name": group[0],
-           "label": group[1],
+        data = {
+            "name": group[0],
+            "label": group[1],
         }
-       await create_and_add_to_batch(
+        await create_and_add_to_batch(
             client=client,
             log=log,
             branch=branch,
             object_name=group[0],
             kind_name="CoreStandardGroup",
             data=data,
-            store=store,
-            batch=batch
-            )
+            batch=batch,
+        )
 
     async for node, _ in batch.execute():
         accessor = f"{node._schema.default_filter.split('__')[0]}"
@@ -196,12 +213,12 @@ async def create_basics(
     # Create Organization & Autonomous System
     # ------------------------------------------
     log.info("Creating Organizations, and Autonomous Systems")
-    account = store.get("CRM Synchronization", kind="CoreAccount")
-    account2 = store.get("Chloe O'Brian", kind="CoreAccount")
+    account = client.store.get("CRM Synchronization", kind="CoreAccount")
+    account2 = client.store.get("Chloe O'Brian", kind="CoreAccount")
     # Organization
     batch = await client.create_batch()
     for org in ORGANIZATIONS:
-        data_org={
+        data_org = {
             "name": {"value": org[0], "is_protected": True},
         }
         await create_and_add_to_batch(
@@ -211,9 +228,8 @@ async def create_basics(
             object_name=org[0],
             kind_name=f"Organization{org[1].title()}",
             data=data_org,
-            store=store,
-            batch=batch
-            )
+            batch=batch,
+        )
     async for node, _ in batch.execute():
         accessor = f"{node._schema.default_filter.split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
@@ -223,16 +239,29 @@ async def create_basics(
     batch = await client.create_batch()
     for asn in ASNS:
         organization_type = organizations_dict.get(asn[1], None)
-        asn_name  = f"AS{asn[0]}"
-        data_asn={
+        asn_name = f"AS{asn[0]}"
+        data_asn = {
             "name": {"value": asn_name, "source": account.id, "owner": account2.id},
             "asn": {"value": asn[0], "source": account.id, "owner": account2.id},
         }
         if organization_type:
-            data_asn["description"] = {"value": f"{asn_name} for {asn[1]}", "source": account.id, "owner": account2.id}
-            data_asn["organization"] = {"id": store.get(kind=f"Organization{organization_type.title()}", key=asn[1]).id, "source": account.id}
+            data_asn["description"] = {
+                "value": f"{asn_name} for {asn[1]}",
+                "source": account.id,
+                "owner": account2.id,
+            }
+            data_asn["organization"] = {
+                "id": client.store.get(
+                    kind=f"Organization{organization_type.title()}", key=asn[1]
+                ).id,
+                "source": account.id,
+            }
         else:
-            data_asn["description"] = {"value": f"{asn_name}", "source": account.id, "owner": account2.id}
+            data_asn["description"] = {
+                "value": f"{asn_name}",
+                "source": account.id,
+                "owner": account2.id,
+            }
         await create_and_add_to_batch(
             client=client,
             log=log,
@@ -240,16 +269,22 @@ async def create_basics(
             object_name=f"AS{asn[0]}",
             kind_name="InfraAutonomousSystem",
             data=data_asn,
-            store=store,
-            batch=batch
-            )
+            batch=batch,
+        )
     # Generate 11 private ASNs for Duff
     for asn in range(65000, 65010):
         data_asn = {
             "name": {"value": f"AS{asn}", "source": account.id, "owner": account2.id},
             "asn": {"value": asn, "source": account.id, "owner": account2.id},
-            "description": {"value": f"Private ASN {asn_name} for Duff", "source": account.id, "owner": account2.id},
-            "organization": {"id": store.get(kind="OrganizationTenant", key="Duff").id, "source": account.id},
+            "description": {
+                "value": f"Private ASN {asn_name} for Duff",
+                "source": account.id,
+                "owner": account2.id,
+            },
+            "organization": {
+                "id": client.store.get(kind="OrganizationTenant", key="Duff").id,
+                "source": account.id,
+            },
         }
         await create_and_add_to_batch(
             client=client,
@@ -258,8 +293,7 @@ async def create_basics(
             object_name=f"AS{asn}",
             kind_name="InfraAutonomousSystem",
             data=data_asn,
-            store=store,
-            batch=batch
+            batch=batch,
         )
     async for node, _ in batch.execute():
         accessor = f"{node._schema.default_filter.split('__')[0]}"
@@ -268,11 +302,11 @@ async def create_basics(
     # ------------------------------------------
     # Create Tags
     # ------------------------------------------
-    account = store.get("CRM Synchronization")
+    account = client.store.get("CRM Synchronization")
     batch = await client.create_batch()
     log.info("Creating Tags")
     for tag in TAGS:
-        data={
+        data = {
             "name": {"value": tag, "source": account.id},
         }
         await create_and_add_to_batch(
@@ -282,9 +316,8 @@ async def create_basics(
             object_name=tag,
             kind_name="BuiltinTag",
             data=data,
-            store=store,
-            batch=batch
-            )
+            batch=batch,
+        )
     async for node, _ in batch.execute():
         accessor = f"{node._schema.default_filter.split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
@@ -294,27 +327,30 @@ async def create_basics(
     # ------------------------------------------
     batch = await client.create_batch()
     for platform in PLATFORMS:
-       manufacturer_name = platform[0].split()[0].title()
-       manufacturer = store.get(key=manufacturer_name, kind="OrganizationManufacturer", raise_when_missing=False)
-       data={
-           "name": platform[0],
+        manufacturer_name = platform[0].split()[0].title()
+        manufacturer = client.store.get(
+            key=manufacturer_name,
+            kind="OrganizationManufacturer",
+            raise_when_missing=False,
+        )
+        data = {
+            "name": platform[0],
             "nornir_platform": platform[1],
             "napalm_driver": platform[2],
             "netmiko_device_type": platform[3],
             "ansible_network_os": platform[4],
             "containerlab_os": platform[5],
         }
-       if manufacturer:
-           data["manufacturer"] = {"id": manufacturer.id }
-       await create_and_add_to_batch(
-           client=client,
-           log=log,
-           branch=branch,
-           object_name=platform[0],
-           kind_name="InfraPlatform",
-           data=data,
-           store=store,
-           batch=batch
+        if manufacturer:
+            data["manufacturer"] = {"id": manufacturer.id}
+        await create_and_add_to_batch(
+            client=client,
+            log=log,
+            branch=branch,
+            object_name=platform[0],
+            kind_name="InfraPlatform",
+            data=data,
+            batch=batch,
         )
     async for node, _ in batch.execute():
         accessor = f"{node._schema.default_filter.split('__')[0]}"
@@ -326,28 +362,31 @@ async def create_basics(
     batch = await client.create_batch()
     log.info("Creating Standard Device Type")
     for device_type in DEVICE_TYPES:
-       manufacturer_name = device_type[4].split()[0].title()
-       manufacturer = store.get(key=manufacturer_name, kind="OrganizationManufacturer", raise_when_missing=False)
-       platform_id = store.get(kind="InfraPlatform", key=device_type[4]).id
-       data = {
-           "name": { "value": device_type[0]},
-           "part_number": { "value": device_type[1]},
-           "height": { "value": device_type[2]},
-           "full_depth": { "value": device_type[3]},
-           "platform": { "id": platform_id},
+        manufacturer_name = device_type[4].split()[0].title()
+        manufacturer = client.store.get(
+            key=manufacturer_name,
+            kind="OrganizationManufacturer",
+            raise_when_missing=False,
+        )
+        platform_id = client.store.get(kind="InfraPlatform", key=device_type[4]).id
+        data = {
+            "name": {"value": device_type[0]},
+            "part_number": {"value": device_type[1]},
+            "height": {"value": device_type[2]},
+            "full_depth": {"value": device_type[3]},
+            "platform": {"id": platform_id},
         }
-       if manufacturer:
-           data["manufacturer"] = {"id": manufacturer.id }
-       await create_and_add_to_batch(
-           client=client,
-           log=log,
-           branch=branch,
-           object_name=device_type[0],
-           kind_name="InfraDeviceType",
-           data=data,
-           store=store,
-           batch=batch
-       )
+        if manufacturer:
+            data["manufacturer"] = {"id": manufacturer.id}
+        await create_and_add_to_batch(
+            client=client,
+            log=log,
+            branch=branch,
+            object_name=device_type[0],
+            kind_name="InfraDeviceType",
+            data=data,
+            batch=batch,
+        )
     async for node, _ in batch.execute():
         accessor = f"{node._schema.default_filter.split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
@@ -356,19 +395,23 @@ async def create_basics(
     # Create BGP Peer Groups
     # ------------------------------------------
     log.info(f"Creating BGP Peer Groups")
-    account = store.get(key="pop-builder", kind="CoreAccount")
+    account = client.store.get(key="pop-builder", kind="CoreAccount")
     batch = await client.create_batch()
     for peer_group in BGP_PEER_GROUPS:
         remote_as = remote_as_id = None
         if peer_group[4]:
-            remote_as = store.get(kind="InfraAutonomousSystem", key=peer_group[4], raise_when_missing=False)
-        local_as = store.get(kind="InfraAutonomousSystem", key=peer_group[3])
+            remote_as = client.store.get(
+                kind="InfraAutonomousSystem",
+                key=peer_group[4],
+                raise_when_missing=False,
+            )
+        local_as = client.store.get(kind="InfraAutonomousSystem", key=peer_group[3])
         if remote_as:
             remote_as_id = remote_as.id
         if local_as:
             local_as_id = local_as.id
 
-        data={
+        data = {
             "name": {"value": peer_group[0], "source": account.id},
             "import_policies": {"value": peer_group[1], "source": account.id},
             "export_policies": {"value": peer_group[2], "source": account.id},
@@ -382,9 +425,8 @@ async def create_basics(
             object_name=peer_group[0],
             kind_name="InfraBGPPeerGroup",
             data=data,
-            store=store,
             batch=batch,
-            )
+        )
     async for node, _ in batch.execute():
         accessor = f"{node._schema.default_filter.split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
@@ -395,8 +437,8 @@ async def create_basics(
         rt_name = route_target[0]
         rt_description = route_target[1]
         data = {
-            "name": { "value": rt_name, "source": account.id},
-            "description": { "value": rt_description, "source": account.id},
+            "name": {"value": rt_name, "source": account.id},
+            "description": {"value": rt_description, "source": account.id},
         }
         await create_and_add_to_batch(
             client=client,
@@ -405,9 +447,8 @@ async def create_basics(
             object_name=rt_name,
             kind_name="InfraRouteTarget",
             data=data,
-            store=store,
             batch=batch,
-            )
+        )
 
     async for node, _ in batch.execute():
         accessor = f"{node._schema.default_filter.split('__')[0]}"
@@ -420,15 +461,15 @@ async def create_basics(
         vrf_description = vrf[1]
         vrf_rd = vrf[2]
 
-        vrf_rt_import_obj = store.get(key=vrf[3], kind="InfraRouteTarget")
-        vrf_rt_export_obj = store.get(key=vrf[4], kind="InfraRouteTarget")
+        vrf_rt_import_obj = client.store.get(key=vrf[3], kind="InfraRouteTarget")
+        vrf_rt_export_obj = client.store.get(key=vrf[4], kind="InfraRouteTarget")
 
         data = {
-            "name": { "value": vrf_name, "source": account.id},
-            "description": { "value": vrf_description, "source": account.id},
-            "vrf_rd": { "value": vrf_rd, "source": account.id},
-            "import_rt": { "id": vrf_rt_import_obj.id, "source": account.id},
-            "export_rt": { "id": vrf_rt_export_obj.id, "source": account.id},
+            "name": {"value": vrf_name, "source": account.id},
+            "description": {"value": vrf_description, "source": account.id},
+            "vrf_rd": {"value": vrf_rd, "source": account.id},
+            "import_rt": {"id": vrf_rt_import_obj.id, "source": account.id},
+            "export_rt": {"id": vrf_rt_export_obj.id, "source": account.id},
         }
         await create_and_add_to_batch(
             client=client,
@@ -437,12 +478,58 @@ async def create_basics(
             object_name=vrf_name,
             kind_name="InfraVRF",
             data=data,
-            store=store,
             batch=batch,
-            )
+        )
     async for node, _ in batch.execute():
         accessor = f"{node._schema.default_filter.split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
+
+    log.info(f"Creating container prefixes")
+    batch = await client.create_batch()
+    for network in EXTERNAL_NETWORKS + INTERNAL_NETWORKS:
+        network_description = "Container for more specifics"
+        data = {
+            "prefix": {"value": network},
+            "description": {"value": network_description},
+            "status": {"value": "active"},
+            "role": {"value": "container"},
+        }
+        await create_and_add_to_batch(
+            client=client,
+            log=log,
+            branch=branch,
+            object_name=network,
+            kind_name="InfraPrefix",
+            data=data,
+            batch=batch,
+        )
+    async for node, _ in batch.execute():
+        accessor = f"{node._schema.default_filter.split('__')[0]}"
+        log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
+
+async def create_containers_prefixes(client: InfrahubClient, log: logging.Logger, branch: str):
+    batch = await client.create_batch()
+    await create_ipam_pool(
+        client=client,
+        log=log,
+        branch=branch,
+        batch=batch,
+        prefix=EXTERNAL_NETWORKS[0],
+        role="container",
+        default_prefix_length=28
+    )
+
+    await create_ipam_pool(
+        client=client,
+        log=log,
+        branch=branch,
+        batch=batch,
+        prefix=INTERNAL_NETWORKS[0],
+        role="container",
+        default_prefix_length=16
+    )
+    await execute_batch(batch=batch, log=log)
+
 
 # ---------------------------------------------------------------
 # Use the `infrahubctl run` command line to execute this script
@@ -450,5 +537,8 @@ async def create_basics(
 #   infrahubctl run models/infrastructure_edge.py
 #
 # ---------------------------------------------------------------
-async def run(client: InfrahubClient, log: logging.Logger, branch: str, **kwargs) -> None:
+async def run(
+    client: InfrahubClient, log: logging.Logger, branch: str, **kwargs
+) -> None:
     await create_basics(client=client, log=log, branch=branch)
+    await create_containers_prefixes(client=client, log=log, branch=branch)

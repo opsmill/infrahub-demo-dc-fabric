@@ -10,7 +10,7 @@ DATA_GENERATORS = [
     "create_basic.py",
     "create_location.py",
     "create_topology.py",
-    "create_security_nodes.py"
+    "create_security_nodes.py",
 ]
 
 # If no version is indicated, we will take the latest
@@ -35,28 +35,33 @@ def start(context: Context) -> None:
     with context.cd(MAIN_DIRECTORY_PATH):
         context.run(f"{get_docker_command()} up -d")
 
+
 @task
-def load_schema(context: Context, schema: Path=Path("./models/*.yml")) -> None:
+def load_schema(context: Context, schema: Path = Path("./models/*.yml")) -> None:
     context.run(f"infrahubctl schema load {schema} --wait 30")
+
 
 @task
 def load_data(context: Context) -> None:
     with context.cd(MAIN_DIRECTORY_PATH):
         for generator in DATA_GENERATORS:
-            context.run(f"infrahubctl run generators/{generator}")
+            context.run(f"infrahubctl run bootstrap/{generator}")
+
 
 @task
 def destroy(context: Context) -> None:
     with context.cd(MAIN_DIRECTORY_PATH):
         context.run(f"{get_docker_command()} down -v")
 
+
 @task
 def stop(context: Context) -> None:
     with context.cd(MAIN_DIRECTORY_PATH):
         context.run(f"{get_docker_command()} down")
 
+
 @task
-def restart(context: Context, component: str="")-> None:
+def restart(context: Context, component: str = "") -> None:
     with context.cd(MAIN_DIRECTORY_PATH):
         if component:
             context.run(f"{get_docker_command()} restart {component}")

@@ -10,7 +10,7 @@
   tasks:
     - name: Query Artifact
       opsmill.infrahub.artifact_fetch:
-        artifact_name: "OSPF Startup Config for arista devices"
+        artifact_name: "Startup Config for Arista devices"
         target_id: "{{ id }}"
       register: artifact
 

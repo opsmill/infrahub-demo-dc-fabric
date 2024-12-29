@@ -1,0 +1,43 @@
+{
+  "data": {
+    "TopologyNetworkService": {
+      "edges": [
+        {
+          "node": {
+            "__typename": "TopologyLayer2NetworkService",
+            "name": {
+              "value": null
+            },
+            "status": {
+              "value": "provisioning"
+            },
+            "description": {
+              "value": null
+            },
+            "topology": {
+              "node": {
+                "name": {
+                  "value": "fra05-pod1"
+                },
+                "location": {
+                  "node": {
+                    "id": "17fcb8c6-c025-4fa4-2f26-c51e15d1b5c7",
+                    "name": {
+                      "value": "Equinix FRA05"
+                    },
+                    "shortname": {
+                      "value": "FRA05"
+                    }
+                  }
+                }
+              }
+            },
+            "vlan": {
+              "node": null
+            }
+          }
+        }
+      ]
+    }
+  }
+}

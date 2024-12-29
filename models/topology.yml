@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://schema.infrahub.app/infrahub/schema/latest.json
 ---
-version: '1.0'
+version: "1.0"
 generics:
   - name: ManagementServer
     namespace: Network
@@ -97,6 +97,54 @@ generics:
         peer: TopologyTopology
         optional: true
         cardinality: many
+
+  - name: NetworkService
+    namespace: Topology
+    description: "Generic model for network service that could be extended as real nodes."
+    label: Network Service
+    icon: "carbon:ibm-cloud-internet-services"
+    default_filter: name__value
+    order_by:
+      - name__value
+    display_labels:
+      - name__value
+    attributes:
+      - name: name
+        label: Service Name
+        kind: Text
+        order_weight: 1000
+        unique: true
+      - name: description
+        kind: Text
+        order_weight: 1100
+        optional: true
+      - name: status
+        order_weight: 1150
+        optional: false
+        kind: Dropdown
+        choices:
+          - name: provisioning
+            label: Provisioning
+            description: "In the process of being set up and configured."
+            color: "#ffff7f"
+          - name: active
+            label: Active
+            description: "Fully operational and currently in service."
+            color: "#7fbf7f"
+          - name: decommissioning
+            label: Decommissioning
+            description: "In the process of beeing taken out of service."
+            color: "#fbfbfb"
+          - name: decommissioned
+            label: Decommissioned
+            description: "Taken out of service."
+            color: "#bfbfbf"
+    relationships:
+      - name: topology
+        peer: TopologyTopology
+        cardinality: one
+        kind: Parent
+        optional: false
 
 nodes:
   # --------------------  Topology  --------------------
@@ -338,68 +386,54 @@ nodes:
       - NetworkManagementServer
 
   # --------------------  Network Services --------------------
-  - name: NetworkServiceIdentifier
+  - name: Layer2NetworkService
     namespace: Topology
-    description: "Generic model for different types of identifiers used in network services."
-    label: Network Service Identifier
-    icon: "mdi:identifier"
-    menu_placement: "TopologyNetworkService"
-    default_filter: identifier__value
-    order_by:
-      - identifier__value
-    display_labels:
-      - identifier__value
-    attributes:
-      - name: identifier
-        kind: Number
-    relationships:
-      - name: service
-        label: Network Service
-        peer: TopologyNetworkService
-        cardinality: one
-        optional: true
-  - name: NetworkService
-    namespace: Topology
-    description: "Network services attached to a Topology."
-    label: Network Service
+    description: "Layer 2 network service attached to a Topology."
+    label: Layer2 Network Service
     icon: "carbon:ibm-cloud-internet-services"
-    default_filter: name__value
-    order_by:
-      - name__value
-    display_labels:
-      - name__value
-    attributes:
-      - name: name
-        label: Service Name
-        kind: Text
-        order_weight: 1000
-      - name: description
-        kind: Text
-        order_weight: 1100
-      - name: service_type
-        kind: Text
-        enum: ["Layer2", "Layer3"]
-        order_weight: 1200
+    menu_placement: "TopologyNetworkService"
+    inherit_from:
+      - TopologyNetworkService
     relationships:
-      - name: identifier
-        peer: TopologyNetworkServiceIdentifier
-        cardinality: one
-        kind: Attribute
-        optional: false
-      - name: topology
-        peer: TopologyTopology
-        cardinality: one
-        kind: Parent
-        optional: false
       - name: vlan
         peer: InfraVLAN
-        optional: true
         cardinality: one
         kind: Component
+        identifier: network_service__vlan
         order_weight: 1500
+        optional: true
+
+  - name: Layer3NetworkService
+    namespace: Topology
+    description: "Layer 3 network service attached to a Topology."
+    label: Layer3 Network Service
+    icon: "carbon:ibm-cloud-internet-services"
+    menu_placement: "TopologyNetworkService"
+    inherit_from:
+      - TopologyNetworkService
+    relationships:
       - name: prefix
         peer: InfraPrefix
-        optional: true
         cardinality: one
         kind: Component
         order_weight: 1400
+        optional: true
+      - name: vlan
+        peer: InfraVLAN
+        cardinality: one
+        kind: Component
+        identifier: network_service__vlan
+        order_weight: 1500
+        optional: true
+
+extensions:
+  nodes:
+    - kind: InfraVLAN
+      relationships:
+        - name: network_service
+          peer: TopologyNetworkService
+          identifier: network_service__vlan
+          optional: true
+          cardinality: one
+          kind: Attribute
+          order_weight: 1400

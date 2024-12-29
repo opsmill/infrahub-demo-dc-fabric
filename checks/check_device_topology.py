@@ -1,10 +1,7 @@
-from collections import Counter, defaultdict
-
 from infrahub_sdk.checks import InfrahubCheck
 
 
 class InfrahubCheckDeviceTopology(InfrahubCheck):
-
     query = "check_device_topology"
 
     def validate(self, data):
@@ -13,10 +10,19 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
         groups = data["CoreStandardGroup"]["edges"]
 
         # Map of group names to device IDs
-        group_devices = {group["node"]["name"]["value"]: {edge["node"]["id"] for edge in group["node"]["members"]["edges"] if edge["node"]} for group in groups}
+        group_devices = {
+            group["node"]["name"]["value"]: {
+                edge["node"]["id"]
+                for edge in group["node"]["members"]["edges"]
+                if edge["node"]
+            }
+            for group in groups
+        }
 
         # Map of device IDs to device info
-        device_map = {edge["node"]["id"]: edge["node"] for edge in data["InfraDevice"]["edges"]}
+        device_map = {
+            edge["node"]["id"]: edge["node"] for edge in data["InfraDevice"]["edges"]
+        }
 
         for topology_edge in topologies:
             topology_node = topology_edge["node"]
@@ -52,13 +58,21 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
 
                     if role not in actual_role_device_counts:
                         actual_role_device_counts[role] = {}
-                    actual_role_device_counts[role][device_type] = actual_role_device_counts[role].get(device_type, 0) + 1
+                    actual_role_device_counts[role][device_type] = (
+                        actual_role_device_counts[role].get(device_type, 0) + 1
+                    )
 
             # Comparison of expected vs actual, including device type check
             for role, expected_types in expected_role_device_counts.items():
                 for expected_type, expected_count in expected_types.items():
-                    actual_count = actual_role_device_counts.get(role, {}).get(expected_type, 0)
-                    unexpected_types = [actual_type for actual_type in actual_role_device_counts.get(role, {}) if actual_type != expected_type]
+                    actual_count = actual_role_device_counts.get(role, {}).get(
+                        expected_type, 0
+                    )
+                    unexpected_types = [
+                        actual_type
+                        for actual_type in actual_role_device_counts.get(role, {})
+                        if actual_type != expected_type
+                    ]
 
                     if expected_count % 2 != 0:
                         self.log_error(
@@ -69,7 +83,10 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
                             self.log_error(
                                 message=f"{topology_name} has mismatched quantity of {expected_type} devices with role {role}. Expected: {expected_count}, Actual: {actual_count}"
                             )
-                    if expected_type not in actual_role_device_counts.get(role, {}) and unexpected_types:
+                    if (
+                        expected_type not in actual_role_device_counts.get(role, {})
+                        and unexpected_types
+                    ):
                         unexpected_types_str = ", ".join(unexpected_types)
                         self.log_error(
                             message=f"{topology_name} expected {expected_type} devices with role {role}, but found different type(s): {unexpected_types_str}."

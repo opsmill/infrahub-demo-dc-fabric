@@ -1,4 +1,6 @@
-version: '1.0'
+# yaml-language-server: $schema=https://schema.infrahub.app/infrahub/schema/latest.json
+---
+version: "1.0"
 nodes:
   # --------------------  IPAM (VLAN, Prefix, IP Address)  --------------------
   - name: IPAddress
@@ -7,13 +9,13 @@ nodes:
     label: "IP Address"
     icon: "mdi:ip"
     include_in_menu: false
-    default_filter: address__value
-    order_by:
-      - "address__value"
-    display_labels:
-      - address__value
     inherit_from:
       - BuiltinIPAddress
+    uniqueness_constraints:
+      - [ip_namespace, address__value]
+    human_friendly_id:
+      - address__value
+      - ip_namespace__name__value
     relationships:
       - name: interface
         peer: InfraInterfaceL3
@@ -25,11 +27,13 @@ nodes:
     label: "VLAN"
     icon: "mdi:lan-pending"
     menu_placement: "TopologyNetworkService"
-    default_filter: name__value
     order_by:
       - name__value
     display_labels:
       - name__value
+    uniqueness_constraints:
+      - ["name__value", "location"]
+    human_friendly_id: ["name__value", "location__name__value"]
     attributes:
       - name: name
         kind: Text
@@ -75,7 +79,7 @@ nodes:
     relationships:
       - name: location
         peer: LocationGeneric
-        optional: true
+        optional: false
         cardinality: one
         kind: Attribute
   - name: Prefix
@@ -84,11 +88,11 @@ nodes:
     icon: "mdi:ip-network"
     include_in_menu: false
     label: "Prefix"
-    default_filter: prefix__value
-    order_by:
+    uniqueness_constraints:
+      - [ip_namespace, prefix__value]
+    human_friendly_id:
       - prefix__value
-    display_labels:
-      - prefix__value
+      - ip_namespace__name__value
     inherit_from:
       - BuiltinIPPrefix
     attributes:
@@ -101,6 +105,7 @@ nodes:
             label: Deprecated
           - name: reserved
             label: Reserved
+        default_value: "active"
       - name: role
         kind: Dropdown
         optional: true
@@ -133,6 +138,10 @@ nodes:
             label: Loopback VTEP
             description: "Facilitates virtualized network communications within loopback configurations."
             color: "#CDB4DB"
+          - name: container
+            label: Container
+            description: "Container."
+            color: "#a0b78d"
     relationships:
       - name: organization
         peer: OrganizationGeneric
@@ -156,7 +165,7 @@ nodes:
         order_weight: 1500
       - name: network_service
         label: Network Service
-        peer: TopologyNetworkService
+        peer: TopologyLayer3NetworkService
         optional: true
         cardinality: one
         order_weight: 1400
@@ -201,6 +210,11 @@ nodes:
         optional: true
         cardinality: one
         kind: Attribute
+      - name: prefixes
+        label: IP Prefixes
+        peer: InfraPrefix
+        optional: true
+        kind: Generic
   - name: RouteTarget
     namespace: Infra
     description: "Route Target (RFC 4360)"
