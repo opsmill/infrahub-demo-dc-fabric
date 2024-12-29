@@ -2,15 +2,19 @@
 title: Step By Step Guide
 ---
 
-## Running the demo on your pc
+## Running the demo on your PC
 
-### Set environment variables
+### Requirements
+
+Please ensure you have installed the [Infrahub docker-compose requirements](https://docs.infrahub.app/guides/installation#docker-compose).
+
+### Set environmental variables
 
 ```shell
 export INFRAHUB_ADDRESS="http://localhost:8000"
 export INFRAHUB_API_TOKEN="06438eb2-8019-4776-878c-0941b1f1d1ec"
-export CEOS_DOCKER_IMAGE="9r2s1098.c1.gra9.container-registry.ovh.net/external/ceos-image:4.29.0.2F"
-export LINUX_HOST_DOCKER_IMAGE="9r2s1098.c1.gra9.container-registry.ovh.net/external/alpine-host:v3.1.1"
+export CEOS_DOCKER_IMAGE="registry.opsmill.io/external/ceos-image:4.29.0.2F"
+export LINUX_HOST_DOCKER_IMAGE="registry.opsmill.io/external/alpine-host:v3.1.1"
 ```
 
 ### Install the Infrahub SDK
@@ -27,20 +31,16 @@ poetry run invoke start
 
 ### Load schema and data into Infrahub
 
-This will create :
+This `invoke` command will create:
 
-- Basics data (Account, organization, ASN, Device Type, and Tags)
-- Locations data (Locations, VLANs, and Prefixes)
+- Basic data (Account, organization, ASN, Device Type, and Tags)
+- Location data (Locations, VLANs, and Prefixes)
 - Topology data (Topology, Topology Elements)
 - Security data (Policies, rules, objects)
 
 ```shell
 poetry run invoke load-schema load-data
 ```
-
-## Running the demo in Github Codespaces
-
-[Spin up in Github codespace](https://codespaces.new/opsmill/infrahub-demo-dc-fabric-develop)
 
 ## Demo flow
 
@@ -133,14 +133,14 @@ Using your new branch `test` you will be able to see the Diff in the Proposed Ch
 
 - The checks will run in the Proposed Changes -> check_device_topology will fail.
 
-### 10. Deploy your environment to containerlabs
+### 10. Deploy your environment to Containerlab
 
-The containerlab generator automatically generates a containerlab topology artifact for every topology. Every device has its startup config as an artifact.
+The Containerlab generator automatically generates a Containerlab topology artifact for every topology. Every device has its startup config as an artifact.
 
 ```shell
 # Download all artifacts automatically to ./generated-configs/
 poetry run python3 scripts/get_configs.py
 
-# Start the containerlab
+# Start Containerlab
 sudo -E containerlab deploy -t ./generated-configs/clab/fra05-pod1.yml --reconfigure
 ```
