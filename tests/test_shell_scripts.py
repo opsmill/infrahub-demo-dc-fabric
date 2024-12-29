@@ -5,7 +5,7 @@ import os
 
 
 def test_topology_generator_script():
-    script_path = "tests/docs/0002_shell_run_generator.sh"
+    script_path = "docs/code_snippets/0002_shell_run_generator.sh"
     # Execute from project root directory
     result = subprocess.run(
         f"bash {script_path}",

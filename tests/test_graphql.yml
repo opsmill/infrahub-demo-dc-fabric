@@ -39,5 +39,5 @@ infrahub_tests:
     tests:
       - name: syntax_check
         spec:
-          path: tests/docs/0001_graphql_add_repo.gql
+          path: docs/code_snippets/0001_graphql_add_repo.gql
           kind: graphql-query-smoke
