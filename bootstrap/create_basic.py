@@ -151,17 +151,14 @@ BGP_PEER_GROUPS = (
 )
 
 # TEST-NET
-EXTERNAL_NETWORKS = [
-    "203.0.113.0/24",
-    "192.0.2.0/24",
-    "198.51.100.0/24"
-]
+EXTERNAL_NETWORKS = ["203.0.113.0/24", "192.0.2.0/24", "198.51.100.0/24"]
 
 # RFC1918
 INTERNAL_NETWORKS = [
     "10.0.0.0/8",
     "172.16.0.0/12",
 ]
+
 
 async def create_basics(client: InfrahubClient, log: logging.Logger, branch: str):
     # Create Batch for Accounts, Platforms, and Standards Groups
@@ -507,7 +504,10 @@ async def create_basics(client: InfrahubClient, log: logging.Logger, branch: str
         accessor = f"{node._schema.default_filter.split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
-async def create_containers_prefixes(client: InfrahubClient, log: logging.Logger, branch: str):
+
+async def create_containers_prefixes(
+    client: InfrahubClient, log: logging.Logger, branch: str
+):
     batch = await client.create_batch()
     await create_ipam_pool(
         client=client,
@@ -516,7 +516,7 @@ async def create_containers_prefixes(client: InfrahubClient, log: logging.Logger
         batch=batch,
         prefix=EXTERNAL_NETWORKS[0],
         role="container",
-        default_prefix_length=28
+        default_prefix_length=28,
     )
 
     await create_ipam_pool(
@@ -526,7 +526,7 @@ async def create_containers_prefixes(client: InfrahubClient, log: logging.Logger
         batch=batch,
         prefix=INTERNAL_NETWORKS[0],
         role="container",
-        default_prefix_length=16
+        default_prefix_length=16,
     )
     await execute_batch(batch=batch, log=log)
 

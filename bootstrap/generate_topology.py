@@ -156,6 +156,7 @@ PROVISIONING_STATUS = "provisioning"
 LOOPBACK_ROLE = "loopback"
 MGMT_ROLE = "management"
 
+
 def get_interface_names(
     device_type: str, device_role: str, interface_role: str
 ) -> Optional[List]:
@@ -377,7 +378,9 @@ async def generate_topology(
             location__shortname__value=location_shortname,
             branch=branch,
         )
-        populate_local_store(objects=locations_vlans, key_type="name", store=client.store)
+        populate_local_store(
+            objects=locations_vlans, key_type="name", store=client.store
+        )
         vlan_pxe = client.store.get(
             key=f"{location_shortname.lower()}_server-pxe", kind="InfraVLAN"
         )
@@ -1423,7 +1426,9 @@ async def run(
         populate_local_store(objects=manufacturers, key_type="name", store=client.store)
         # ASN
         autonomous_systems = await client.all("InfraAutonomousSystem")
-        populate_local_store(objects=autonomous_systems, key_type="name", store=client.store)
+        populate_local_store(
+            objects=autonomous_systems, key_type="name", store=client.store
+        )
         # Platforms + Device Types
         platforms = await client.all("InfraPlatform")
         populate_local_store(objects=platforms, key_type="name", store=client.store)
@@ -1433,7 +1438,9 @@ async def run(
         topologies = await client.all("TopologyTopology")
         populate_local_store(objects=topologies, key_type="name", store=client.store)
         evpn_strategies = await client.all("TopologyEVPNStrategy", populate_store=True)
-        populate_local_store(objects=evpn_strategies, key_type="name", store=client.store)
+        populate_local_store(
+            objects=evpn_strategies, key_type="name", store=client.store
+        )
         # Locations
         locations = await client.all("LocationGeneric", populate_store=True)
         populate_local_store(objects=locations, key_type="name", store=client.store)

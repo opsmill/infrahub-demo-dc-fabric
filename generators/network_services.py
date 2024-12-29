@@ -21,6 +21,7 @@ L3_VLAN_NAME_PREFIX = "l3"
 VRF_SERVER = "Production"
 ORGANISATION = "Duff"
 
+
 async def allocate_prefix(
     client: InfrahubClient,
     network_service,
@@ -35,14 +36,8 @@ async def allocate_prefix(
         kind="CoreIPPrefixPool",
         name__value=f"supernet-{location_shortname.lower()}",
     )
-    vrf = await client.get(
-        kind="InfraVRF",
-        name__value="Production"
-    )
-    org = await client.get(
-        kind="OrganizationTenant",
-        name__value="Duff"
-    )
+    vrf = await client.get(kind="InfraVRF", name__value="Production")
+    org = await client.get(kind="OrganizationTenant", name__value="Duff")
 
     # Craft the data dict for prefix
     prefix_data: dict = {
@@ -64,6 +59,7 @@ async def allocate_prefix(
     )
     await prefix.save(allow_upsert=True)
 
+
 async def allocate_vlan(
     client: InfrahubClient,
     vlan_name_prefix: str,
@@ -78,7 +74,7 @@ async def allocate_vlan(
     resource_pool = await client.get(
         kind="CoreNumberPool",
         name__value=f"vlans-{location_shortname.lower()}",
-        raise_when_missing=False
+        raise_when_missing=False,
     )
     if not resource_pool:
         print(f"Failed to find Pool with vlans-{location_shortname.lower()}")
@@ -95,6 +91,7 @@ async def allocate_vlan(
         location=location["id"],
     )
     await vlan.save(allow_upsert=True)
+
 
 class NetworkServicesGenerator(InfrahubGenerator):
     async def generate(self, data: dict) -> None:
@@ -116,12 +113,12 @@ class NetworkServicesGenerator(InfrahubGenerator):
             client=self.client,
             vlan_name_prefix=vlan_name_prefix,
             network_service=network_service_node,
-            location=location_node
+            location=location_node,
         )
 
         if network_service_node["__typename"] == "TopologyLayer3NetworkService":
             await allocate_prefix(
                 client=self.client,
                 network_service=network_service_node,
-                location=location_node
+                location=location_node,
             )
