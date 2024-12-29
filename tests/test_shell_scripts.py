@@ -1,6 +1,8 @@
 import subprocess
+
 # import pytest
 import os
+
 
 def test_topology_generator_script():
     script_path = "tests/docs/0002_shell_run_generator.sh"
@@ -10,6 +12,6 @@ def test_topology_generator_script():
         shell=True,
         capture_output=True,
         text=True,
-        cwd=os.path.dirname(os.path.dirname(__file__))
+        cwd=os.path.dirname(os.path.dirname(__file__)),
     )
     assert result.returncode == 0
