@@ -95,8 +95,7 @@ jobs:
     if: |
       always() && !cancelled() &&
       !contains(needs.*.result, 'failure') &&
-      !contains(needs.*.result, 'cancelled') &&
-      needs.files-changed.outputs.release == 'true'
+      !contains(needs.*.result, 'cancelled')
     needs: ["files-changed", "yaml-lint", "python-lint"]
     runs-on: "ubuntu-22.04"
     timeout-minutes: 5
