@@ -2,6 +2,10 @@
 title: Step By Step Guide
 ---
 
+import CodeBlock from '@theme/CodeBlock';
+import block1 from '!!raw-loader!../../tests/docs/0001_graphql_add_repo.gql';
+import block2 from '!!raw-loader!../../tests/docs/0002_shell_run_generator.sh';
+
 ## Running the demo on your PC
 
 ### Requirements
@@ -44,31 +48,23 @@ poetry run invoke load-schema load-data
 
 ## Demo flow
 
-### 1. Add the repository into Infrahub (replace GITHUB_USER and GITHUB_TOKEN)
+### 1. Add the repository into Infrahub via GraphQL
 
 > [!NOTE]
 > Reference the [Infrahub documentation](https://docs.infrahub.app/guides/repository) for the multiple ways this can be done.
 
-```graphql
-mutation AddRepository{
-  CoreReadOnlyRepositoryCreate(
-    data: {
-      name: { value: "infrahub-demo-dc-fabric" }
-      location: { value: "https://github.com/opsmill/infrahub-demo-dc-fabric.git" }
-    }
-  ) {
-    ok
-    object {
-      id
-    }
-  }
-}
-```
+<!-- markdownlint-disable -->
+<CodeBlock language="graphql">{block1}</CodeBlock>
+<!-- markdownlint-restore -->
 
 ### 2. Generate a topology (devices, interfaces, cabling, BGP sessions, ...)
 
 > [!NOTE]
 > The example below creates the topology fra05-pod1
+
+<!-- markdownlint-disable -->
+<CodeBlock language="bash">{block2}</CodeBlock>
+<!-- markdownlint-restore -->
 
 ```shell
 poetry run infrahubctl run generators/generate_topology.py topology=fra05-pod1
