@@ -1,5 +1,5 @@
 import subprocess
-import pytest
+# import pytest
 import os
 
 def test_topology_generator_script():
