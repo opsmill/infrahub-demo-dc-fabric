@@ -33,3 +33,11 @@ infrahub_tests:
         spec:
           path: generators/network_services.gql
           kind: graphql-query-smoke
+
+  - resource: GraphQLQuery
+    resource_name: docs_repo_import
+    tests:
+      - name: syntax_check
+        spec:
+          path: docs/code_snippets/0001_graphql_add_repo.gql
+          kind: graphql-query-smoke

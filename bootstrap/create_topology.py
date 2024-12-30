@@ -264,13 +264,17 @@ async def run(
         manufacturers = await client.all("OrganizationManufacturer")
         populate_local_store(objects=manufacturers, key_type="name", store=client.store)
         autonomous_systems = await client.all("InfraAutonomousSystem")
-        populate_local_store(objects=autonomous_systems, key_type="name", store=client.store)
+        populate_local_store(
+            objects=autonomous_systems, key_type="name", store=client.store
+        )
         platforms = await client.all("InfraPlatform")
         populate_local_store(objects=platforms, key_type="name", store=client.store)
         device_types = await client.all("InfraDeviceType")
         populate_local_store(objects=device_types, key_type="name", store=client.store)
         locations = await client.all("LocationGeneric")
-        populate_local_store(objects=locations, key_type="shortname", store=client.store)
+        populate_local_store(
+            objects=locations, key_type="shortname", store=client.store
+        )
 
     except Exception as e:
         log.error(f"Fail to populate due to {e}")

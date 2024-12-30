@@ -9,6 +9,7 @@ from infrahub_sdk.exceptions import GraphQLError
 from infrahub_sdk.node import InfrahubNode
 from infrahub_sdk.store import NodeStore
 
+
 def extract_common_prefix(prefix: str) -> str:
     # Create an IP network object
     net = ipaddress.ip_network(prefix, strict=False)
@@ -27,25 +28,30 @@ def extract_common_prefix(prefix: str) -> str:
         partial_bits = net.prefixlen % 8
         if partial_bits > 0:
             # Extract the first full octets
-            octets = net_str.split('.')[:full_octets]
+            octets = net_str.split(".")[:full_octets]
             # Add the partial octet if necessary
-            partial_octet = int(net_str.split('.')[full_octets]) & (0xFF << (8 - partial_bits))
+            partial_octet = int(net_str.split(".")[full_octets]) & (
+                0xFF << (8 - partial_bits)
+            )
             octets.append(str(partial_octet))
-            return '.'.join(octets) + f"/{net.prefixlen}"
+            return ".".join(octets) + f"/{net.prefixlen}"
         else:
-            return '.'.join(net_str.split('.')[:full_octets]) + f"/{net.prefixlen}"
+            return ".".join(net_str.split(".")[:full_octets]) + f"/{net.prefixlen}"
 
     elif isinstance(network_address, ipaddress.IPv6Address):
         # Full hextets (each 16 bits)
         full_hextets = net.prefixlen // 16
         partial_bits = net.prefixlen % 16
         if partial_bits > 0:
-            hextets = net_str.split(':')[:full_hextets]
-            partial_hextet = int(net_str.split(':')[full_hextets], 16) & (0xFFFF << (16 - partial_bits))
-            hextets.append(f'{partial_hextet:x}')
-            return ':'.join(hextets) + f"/{net.prefixlen}"
+            hextets = net_str.split(":")[:full_hextets]
+            partial_hextet = int(net_str.split(":")[full_hextets], 16) & (
+                0xFFFF << (16 - partial_bits)
+            )
+            hextets.append(f"{partial_hextet:x}")
+            return ":".join(hextets) + f"/{net.prefixlen}"
         else:
-            return ':'.join(net_str.split(':')[:full_hextets]) + f"/{net.prefixlen}"
+            return ":".join(net_str.split(":")[:full_hextets]) + f"/{net.prefixlen}"
+
 
 async def create_ipam_pool(
     client: InfrahubClient,
@@ -61,7 +67,9 @@ async def create_ipam_pool(
     """
     Helper function to create a single IP pool.
     """
-    default_ip_namespace_obj = await client.get(kind="IpamNamespace", name__value="default")
+    default_ip_namespace_obj = await client.get(
+        kind="IpamNamespace", name__value="default"
+    )
     # Prepare description and naming convention
     usage = f"{role}"
     common_prefix = extract_common_prefix(prefix=prefix)
@@ -84,7 +92,9 @@ async def create_ipam_pool(
     }
 
     kind = None
-    prefix_obj = await client.get(kind="InfraPrefix", prefix__value=prefix, raise_when_missing=True)
+    prefix_obj = await client.get(
+        kind="InfraPrefix", prefix__value=prefix, raise_when_missing=True
+    )
     if prefix_obj:
         pool_data["resources"] = [prefix_obj.id]
 
@@ -116,7 +126,7 @@ async def create_ipam_pool(
             branch=branch,
             object_name=pool_name,
             kind_name=kind,
-            data=pool_data
+            data=pool_data,
         )
     return pool
 

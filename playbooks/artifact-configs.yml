@@ -1,3 +1,4 @@
+---
 - name: Query Interfaces information with the query_graphql module
   hosts: platform_eos
   gather_facts: false
