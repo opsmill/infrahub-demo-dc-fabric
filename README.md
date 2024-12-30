@@ -94,25 +94,26 @@ mutation AddRepository{
 
 #### Via the UI
 
+<!-- markdownlint-disable -->
 <img width="403" alt="image" src="https://github.com/user-attachments/assets/8e763b89-da51-4a3c-80d1-799db55b6499">
-
+<!-- markdownlint-restore -->
 
 ### 4. Create a new l2 or l3 service
 
-### Via the UI
+[http://localhost:8000/objects/TopologyNetworkService](http://localhost:8000/objects/TopologyNetworkService)
 
-http://localhost:8000/objects/TopologyNetworkService
-
+<!-- markdownlint-disable -->
 <img width="393" alt="image" src="https://github.com/user-attachments/assets/745bf1cb-3840-4832-a988-bb0569d784a7">
+<!-- markdownlint-restore -->
 
 > [!NOTE]
 > The example below creates the Layer2 network service and a another Layer3 on topology fra05-pod1
 
-
 ### 5. Create a Proposed Changes
 
-### Via the UI
+<!-- markdownlint-disable -->
 <img width="1242" alt="image" src="https://github.com/user-attachments/assets/7308b090-a577-405f-8d00-840b1b4fa4ad">
+<!-- markdownlint-restore -->
 
 > [!NOTE]
 > This command will run the generator and render the artifacts
@@ -120,11 +121,10 @@ http://localhost:8000/objects/TopologyNetworkService
 ![image](https://github.com/user-attachments/assets/13dbad20-274a-4a23-9c71-fc56cb81789a)
 ![image](https://github.com/user-attachments/assets/706b7cf8-bfa6-436a-ad98-75e887470f3c)
 
-
 ### 6. Try out our pytest plugin
 
 > [!NOTE]
-> The command will use our infrahub pytest plugin. It will run the different test in the `tests` folder. Those tests included :
+> The command will use our infrahub pytest plugin. It will run the different test in the `tests` folder. These tests include:
 >
 > - Syntax checks for all the GraphQL Queries
 > - Syntax checks for the Checks
