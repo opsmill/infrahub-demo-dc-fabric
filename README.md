@@ -25,8 +25,8 @@ You can run this demo on your pc using docker, or using Github Codespaces.
 ```shell
 export INFRAHUB_ADDRESS="http://localhost:8000"
 export INFRAHUB_API_TOKEN="06438eb2-8019-4776-878c-0941b1f1d1ec"
-export CEOS_DOCKER_IMAGE="9r2s1098.c1.gra9.container-registry.ovh.net/external/ceos-image:4.29.0.2F"
-export LINUX_HOST_DOCKER_IMAGE="9r2s1098.c1.gra9.container-registry.ovh.net/external/alpine-host:v3.1.1"
+export CEOS_DOCKER_IMAGE="registry.opsmill.io/external/ceos-image:4.29.0.2F"
+export LINUX_HOST_DOCKER_IMAGE="registry.opsmill.io/external/alpine-host:v3.1.1"
 ```
 
 ### Install the Infrahub SDK
@@ -38,7 +38,7 @@ poetry install --no-interaction --no-ansi --no-root
 ### Start Infrahub
 
 ```shell
-poetry run inv start
+poetry run invoke start
 ```
 
 ### Load schema and data into Infrahub
@@ -51,7 +51,7 @@ This will create :
 - Security data (Policies, rules, objects)
 
 ```shell
-poetry run inv load-schema load-data
+poetry run invoke load-schema load-data
 ```
 
 ## Running the demo in Github Codespaces
