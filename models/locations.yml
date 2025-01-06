@@ -8,7 +8,7 @@ generics:
     label: "Location"
     icon: "mingcute:location-line"
     include_in_menu: true
-    hierarchical: True
+    hierarchical: true
     default_filter: shortname__value
     order_by:
       - name__value
@@ -119,12 +119,12 @@ nodes:
       - name: facility_id
         kind: Text
         unique: false
-        optional: True
+        optional: true
         order_weight: 1100
       - name: physical_address
         kind: Text
         unique: false
-        optional: True
+        optional: true
         order_weight: 1500
     relationships:
       - name: owner
@@ -157,7 +157,7 @@ nodes:
       - name: facility_id
         kind: Text
         unique: false
-        optional: True
+        optional: true
         order_weight: 1100
     relationships:
       - name: owner
@@ -180,7 +180,7 @@ nodes:
       - name: facility_id
         kind: Text
         unique: false
-        optional: True
+        optional: true
         order_weight: 1100
     relationships:
       - name: owner

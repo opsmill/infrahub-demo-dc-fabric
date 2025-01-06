@@ -104,7 +104,7 @@ generics:
       - device__name__value
       - name__value
     uniqueness_constraints:
-        - [ "device", "name__value"]
+      - ["device", "name__value"]
     attributes:
       - name: name
         kind: Text
@@ -230,7 +230,7 @@ nodes:
       - manufacturer__name__value
       - name__value
     uniqueness_constraints:
-        - [ "manufacturer", "name__value"]
+      - ["manufacturer", "name__value"]
     attributes:
       - name: name
         kind: Text
@@ -291,7 +291,7 @@ nodes:
       - manufacturer__name__value
       - name__value
     uniqueness_constraints:
-        - [ "name__value"]
+      - ["name__value"]
     attributes:
       - name: name
         kind: Text
