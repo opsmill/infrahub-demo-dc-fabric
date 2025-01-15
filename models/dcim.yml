@@ -345,6 +345,10 @@ nodes:
         kind: Dropdown
         optional: true
         choices:
+          - name: client
+            label: Endpoints
+            description: "Server & client Endpoints"
+            color: "#c5a3ff"
           - name: core
             label: Core Router
             description: Central part of the network.
