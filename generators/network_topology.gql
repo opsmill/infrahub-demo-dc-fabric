@@ -1,0 +1,39 @@
+query get_topology($name: String!) {
+  TopologyTopology(name__value: $name) {
+    edges {
+      node {
+	name {
+	  value
+	}
+	strategy {
+	  node {
+	    name {
+	      value
+	    }
+	  }
+	}
+	location {
+	  node {
+	    id
+	    name {
+	      value
+	    }
+	  }
+	}
+	elements {
+	  edges {
+	    node {
+	      id
+	      name {
+		value
+	      }
+	      quantity {
+		value
+	      }
+	    }
+	  }
+	}
+      }
+    }
+  }
+}

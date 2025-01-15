@@ -71,6 +71,14 @@ python_transforms:
     file_path: "transforms/openconfig.py"
 
 generator_definitions:
+  - name: generate_network_topology
+    file_path: "generators/network_topology.py"
+    targets: topologies
+    query: network_topology
+    class_name: NetworkTopologyGenerator
+    parameters:
+      name: "name__value"
+
   - name: generate_network_services
     file_path: "generators/network_services.py"
     targets: network_services
@@ -97,3 +105,6 @@ queries:
 
   - name: generate_network_services
     file_path: "generators/network_services.gql"
+
+  - name: network_topology
+    file_path: "generators/network_topology.gql"
