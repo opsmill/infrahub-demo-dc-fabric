@@ -9,7 +9,8 @@ from infrahub_sdk.batch import InfrahubBatch
 from infrahub_sdk.generator import InfrahubGenerator
 from infrahub_sdk.node import InfrahubNode
 from infrahub_sdk.uuidt import UUIDT
-from utils import populate_local_store, create_and_save, create_and_add_to_batch
+
+from bootstrap.utils import populate_local_store, create_and_save, create_and_add_to_batch
 
 
 # flake8: noqa
@@ -1460,7 +1461,8 @@ class NetworkTopologyGenerator(InfrahubGenerator):
         topology_name = data["TopologyTopology"]["edges"][0]["node"]["name"]["value"]
         log.info(f"Generating topology {topology_name}")
         
-        topology = await self.client.store.get(topology_name)
+        breakpoint()
+        topology = self.client.store.get(topology_name)
 
         batch = await self.client.create_batch()
 
