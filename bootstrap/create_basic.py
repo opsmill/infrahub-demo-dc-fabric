@@ -133,6 +133,7 @@ GROUPS = (
     ("core_interfaces", "Core Interface"),
     ("network_services", "Provisioned network services"),
     ("all_topologies", "All Topologies"),
+    ("network_topologies", "Network topologies"),
 )
 
 BGP_PEER_GROUPS = (

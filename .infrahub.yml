@@ -73,7 +73,7 @@ python_transforms:
 generator_definitions:
   - name: generate_network_topology
     file_path: "generators/network_topology.py"
-    targets: topologies
+    targets: network_topologies
     query: network_topology
     class_name: NetworkTopologyGenerator
     parameters:
