@@ -1,5 +1,5 @@
-query NetworkServicesGeneration($network_service_name: String) {
-  TopologyNetworkService(name__value: $network_service_name) {
+query NetworkServicesGeneration($name: String!) {
+  TopologyNetworkService(name__value: $name) {
     edges {
       node {
         __typename
@@ -13,6 +13,14 @@ query NetworkServicesGeneration($network_service_name: String) {
         description {
           value
         }
+	tenant {
+	  node {
+	    id
+	    name {
+	      value
+	    }
+	  }
+	}
         topology {
           node {
             __typename

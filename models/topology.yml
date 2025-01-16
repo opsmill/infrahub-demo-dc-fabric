@@ -6,6 +6,7 @@ generics:
     namespace: Network
     description: "Generic model for network management server (dns, ntp, and dhcp)."
     label: "Network Management Servers"
+    icon: "fluent-mdl2:data-management-settings"
     default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
@@ -140,6 +141,12 @@ generics:
             description: "Taken out of service."
             color: "#bfbfbf"
     relationships:
+      - name: tenant
+        peer: OrganizationTenant
+        label: Tenant
+        cardinality: one
+        kind: Attribute
+        optional: false
       - name: topology
         peer: TopologyTopology
         cardinality: one

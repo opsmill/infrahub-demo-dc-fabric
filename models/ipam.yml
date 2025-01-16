@@ -77,6 +77,11 @@ nodes:
             description: Segments designed for end-user access and activities.
             color: "#a0b78d"
     relationships:
+      - name: service
+        peer: TopologyNetworkService
+        optional: true
+        cardinality: one
+        kind: Attribute
       - name: location
         peer: LocationGeneric
         optional: false
@@ -196,6 +201,12 @@ nodes:
         kind: Text
         optional: true
     relationships:
+      - name: tenant
+        label: Tenant
+        peer: OrganizationTenant
+        optional: true
+        cardinality: one
+        kind: Attribute
       - name: import_rt
         identifier: "vrf__import"
         label: "Import Targets"
