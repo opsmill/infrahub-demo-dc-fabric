@@ -10,7 +10,7 @@ from infrahub_sdk.generator import InfrahubGenerator
 from infrahub_sdk.node import InfrahubNode
 from infrahub_sdk.uuidt import UUIDT
 
-from bootstrap.utils import populate_local_store, create_and_save, create_and_add_to_batch
+from .utils import populate_local_store, create_and_save, create_and_add_to_batch
 
 
 # flake8: noqa
