@@ -88,6 +88,11 @@ nodes:
     include_in_menu: true
     menu_placement: OrganizationGeneric
     relationships:
+      - name: services
+        peer: TopologyNetworkService
+        cardinality: many
+        optional: true
+        kind: Generic
       - name: location
         peer: LocationBuilding
         cardinality: many
