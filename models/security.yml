@@ -4,6 +4,7 @@ version: "1.0"
 generics:
   - name: PolicyAssignment
     namespace: Security
+    icon: "material-symbols:policy-outline"
     label: Security Policy
     include_in_menu: false
     relationships:
@@ -347,6 +348,7 @@ nodes:
   - name: Policy
     namespace: Security
     label: "Security Policy"
+    icon: "material-symbols:policy-outline"
     default_filter: name__value
     display_labels:
       - name__value
