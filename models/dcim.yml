@@ -109,6 +109,10 @@ generics:
       - name: name
         kind: Text
         order_weight: 1000
+      - name: description
+        kind: Text
+        optional: true
+        order_weight: 1100
       - name: speed
         kind: Number
         order_weight: 1400
