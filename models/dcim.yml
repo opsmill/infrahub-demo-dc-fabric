@@ -109,14 +109,6 @@ generics:
       - name: name
         kind: Text
         order_weight: 1000
-      - name: description
-        kind: Text
-        optional: true
-        order_weight: 1100
-        read_only: true
-        computed_attribute:
-          kind: TransformPython
-          transform: computed_link_description
       - name: speed
         kind: Number
         order_weight: 1400
@@ -385,6 +377,15 @@ nodes:
       - "InfraInterface"
       - "InfraEndpoint"
       - "CoreArtifactTarget"
+    attributes:
+      - name: description
+        kind: Text
+        optional: true
+        order_weight: 1100
+        read_only: true
+        computed_attribute:
+          kind: TransformPython
+          transform: computed_link_description
     relationships:
       - name: ip_addresses
         peer: InfraIPAddress
@@ -407,6 +408,14 @@ nodes:
       - "InfraEndpoint"
       - "CoreArtifactTarget"
     attributes:
+      - name: description
+        kind: Text
+        optional: true
+        order_weight: 1100
+        read_only: true
+        computed_attribute:
+          kind: TransformPython
+          transform: computed_link_description
       - name: l2_mode
         label: Layer2 Mode
         kind: Text
