@@ -1,0 +1,40 @@
+query InterfaceLinkQuery($id: ID!) {
+  InfraInterface(ids: [$id]) {
+    edges {
+      node {
+        device {
+          node {
+						name {
+              value
+            }
+          }
+        }
+        name {
+          value
+        }
+        ... on InfraInterfaceL2 {
+          name {
+            value
+          }
+          connected_endpoint {
+            node {
+              __typename
+              id
+            }
+          }
+        }
+        ... on InfraInterfaceL3 {
+          name {
+            value
+          }
+          connected_endpoint {
+            node {
+              __typename
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+}
