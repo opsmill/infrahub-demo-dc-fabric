@@ -11,6 +11,7 @@
 **/.ruff_cache
 avd-cEOS-Lab
 clab-*
+**/.DS_Store
 docker-compose.override.yml
 docker-compose.yml
 generated-configs/**
