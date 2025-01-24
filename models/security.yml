@@ -625,11 +625,13 @@ nodes:
         optional: false
         cardinality: one
         kind: Attribute
-extensions:
-  nodes:
-    - kind: LocationGeneric
-      relationships:
-        - name: policy
-          peer: SecurityPolicy
-          cardinality: one
-          kind: Attribute
+
+# NOTE: Disabled for now due to https://github.com/opsmill/infrahub/issues/4188
+# extensions:
+#   nodes:
+#     - kind: LocationGeneric
+#       relationships:
+#         - name: policy
+#           peer: SecurityPolicy
+#           cardinality: one
+#           kind: Attribute
