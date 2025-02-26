@@ -6,10 +6,10 @@ generics:
     namespace: Network
     description: "Generic model for network management server (dns, ntp, and dhcp)."
     label: "Network Management Servers"
-    default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
     include_in_menu: true
+    icon: mdi:service-toolbox
     attributes:
       - name: name
         kind: Text
@@ -52,7 +52,6 @@ generics:
     description: "Base model for elements"
     label: "Generic Topology Element"
     icon: "carbon:network-3-reference"
-    default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
     include_in_menu: false
@@ -79,7 +78,6 @@ generics:
     description: "Generic model for network strategies (underlays and overlays)."
     label: "Network Strategy"
     icon: "iconoir:strategy"
-    default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
     include_in_menu: true
@@ -103,7 +101,6 @@ generics:
     description: "Generic model for network service that could be extended as real nodes."
     label: Network Service
     icon: "carbon:ibm-cloud-internet-services"
-    default_filter: name__value
     order_by:
       - name__value
     display_labels:
@@ -153,7 +150,6 @@ nodes:
     description: "A Topology represents the entire network pod."
     label: "Topology"
     icon: "carbon:network-3"
-    default_filter: name__value
     display_labels:
       - name__value
     order_by: [name__value]
@@ -205,7 +201,6 @@ nodes:
       - TopologyNetworkStrategy
     menu_placement: "TopologyNetworkStrategy"
     include_in_menu: false
-    default_filter: name__value
     order_by: [name__value]
     display_labels:
       - name__value
@@ -237,7 +232,6 @@ nodes:
       - TopologyNetworkStrategy
     menu_placement: "TopologyNetworkStrategy"
     include_in_menu: false
-    default_filter: name__value
     order_by: [name__value]
     display_labels:
       - name__value
@@ -266,7 +260,6 @@ nodes:
     label: "Physical Topology Element"
     icon: "carbon:network-3-reference"
     menu_placement: "TopologyTopology"
-    default_filter: name__value
     order_by: [name__value]
     display_labels:
       - name__value
@@ -323,7 +316,6 @@ nodes:
     icon: "gis:globe-options"
     menu_placement: "NetworkManagementServer"
     include_in_menu: false
-    default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
     attributes:
@@ -347,7 +339,6 @@ nodes:
     icon: "eos-icons:ip"
     menu_placement: "NetworkManagementServer"
     include_in_menu: false
-    default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
     inherit_from:
@@ -368,7 +359,6 @@ nodes:
     label: "DNS Server"
     icon: "eos-icons:dns"
     menu_placement: "NetworkManagementServer"
-    default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
     inherit_from:
@@ -379,7 +369,6 @@ nodes:
     label: "NTP Server"
     icon: "iconoir:time-zone"
     menu_placement: "NetworkManagementServer"
-    default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
     inherit_from:
