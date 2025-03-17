@@ -348,6 +348,7 @@ nodes:
     namespace: Security
     label: "Security Policy"
     default_filter: name__value
+    icon: "mdi:firewall"
     display_labels:
       - name__value
     order_by:
@@ -625,7 +626,6 @@ nodes:
         optional: false
         cardinality: one
         kind: Attribute
-
 # NOTE: Disabled for now due to https://github.com/opsmill/infrahub/issues/4188
 # extensions:
 #   nodes:
