@@ -9,6 +9,7 @@ generics:
     default_filter: name__value
     display_labels: [name__value]
     order_by: [name__value]
+    icon: mdi:service-toolbox
     include_in_menu: true
     attributes:
       - name: name
