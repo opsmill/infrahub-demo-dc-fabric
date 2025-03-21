@@ -7,7 +7,8 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.10, < 3.13"
-infrahub-sdk = {version = "^1.3.0", extras = ["all"]}
+# This can be changed to ^1.8.0 once it has been released, but it has the artifact fetch updates to use artifact name rather than artifact definition name
+infrahub-sdk = {version = "^1.8.0rc0", extras = ["all"]}
 invoke = "^2.1.2"
 # nornir-infrahub = "^0, >=0.2.2"
 ansible-core = [
