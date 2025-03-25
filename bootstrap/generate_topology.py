@@ -1506,5 +1506,5 @@ async def run(
             log.info(f"No Topologies found")
     else:
         async for node, _ in batch.execute():
-            accessor = f"{node._schema.default_filter.split('__')[0]}"
+            accessor = f"{node._schema.human_friendly_id[0].split('__')[0]}"
             log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")

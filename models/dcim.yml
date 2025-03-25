@@ -1,13 +1,12 @@
 # yaml-language-server: $schema=https://schema.infrahub.app/infrahub/schema/latest.json
 ---
-version: '1.0'
+version: "1.0"
 generics:
   - name: GenericDevice
     namespace: Infra
     description: "Generic Device object."
     label: "Device"
     icon: "mdi:server"
-    default_filter: name__value
     order_by:
       - name__value
     display_labels:
@@ -223,7 +222,6 @@ nodes:
     label: "Device Type"
     icon: "mdi:poll"
     menu_placement: "InfraGenericDevice"
-    default_filter: name__value
     display_labels:
       - name__value
     order_by:
@@ -284,7 +282,6 @@ nodes:
     label: "Platform"
     icon: "mdi:application-cog-outline"
     menu_placement: "InfraGenericDevice"
-    default_filter: name__value
     display_labels:
       - name__value
     order_by:

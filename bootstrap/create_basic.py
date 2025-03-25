@@ -228,7 +228,8 @@ async def create_basics(client: InfrahubClient, log: logging.Logger, branch: str
             batch=batch,
         )
     async for node, _ in batch.execute():
-        accessor = f"{node._schema.default_filter.split('__')[0]}"
+        # accessor = f"{node._schema.human_friendly_id.split('__')[0]}"
+        accessor = f"{node._schema.human_friendly_id[0].split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
     # Autonomous System
@@ -293,7 +294,7 @@ async def create_basics(client: InfrahubClient, log: logging.Logger, branch: str
             batch=batch,
         )
     async for node, _ in batch.execute():
-        accessor = f"{node._schema.default_filter.split('__')[0]}"
+        accessor = f"{node._schema.human_friendly_id[0].split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
     # ------------------------------------------
@@ -350,7 +351,7 @@ async def create_basics(client: InfrahubClient, log: logging.Logger, branch: str
             batch=batch,
         )
     async for node, _ in batch.execute():
-        accessor = f"{node._schema.default_filter.split('__')[0]}"
+        accessor = f"{node._schema.human_friendly_id[0].split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
     # ------------------------------------------
@@ -385,7 +386,7 @@ async def create_basics(client: InfrahubClient, log: logging.Logger, branch: str
             batch=batch,
         )
     async for node, _ in batch.execute():
-        accessor = f"{node._schema.default_filter.split('__')[0]}"
+        accessor = f"{node._schema.human_friendly_id[0].split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
     # ------------------------------------------
@@ -425,7 +426,7 @@ async def create_basics(client: InfrahubClient, log: logging.Logger, branch: str
             batch=batch,
         )
     async for node, _ in batch.execute():
-        accessor = f"{node._schema.default_filter.split('__')[0]}"
+        accessor = f"{node._schema.human_friendly_id[0].split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
     batch = await client.create_batch()
@@ -448,7 +449,7 @@ async def create_basics(client: InfrahubClient, log: logging.Logger, branch: str
         )
 
     async for node, _ in batch.execute():
-        accessor = f"{node._schema.default_filter.split('__')[0]}"
+        accessor = f"{node._schema.human_friendly_id[0].split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
     log.info(f"Creating VRF")
@@ -478,7 +479,7 @@ async def create_basics(client: InfrahubClient, log: logging.Logger, branch: str
             batch=batch,
         )
     async for node, _ in batch.execute():
-        accessor = f"{node._schema.default_filter.split('__')[0]}"
+        accessor = f"{node._schema.human_friendly_id[0].split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
     log.info(f"Creating container prefixes")
@@ -501,7 +502,7 @@ async def create_basics(client: InfrahubClient, log: logging.Logger, branch: str
             batch=batch,
         )
     async for node, _ in batch.execute():
-        accessor = f"{node._schema.default_filter.split('__')[0]}"
+        accessor = f"{node._schema.human_friendly_id[0].split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
 

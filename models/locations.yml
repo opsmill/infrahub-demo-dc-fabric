@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://schema.infrahub.app/infrahub/schema/latest.json
 ---
-version: '1.0'
+version: "1.0"
 generics:
   - name: Generic
     namespace: Location
@@ -9,11 +9,13 @@ generics:
     icon: "mingcute:location-line"
     include_in_menu: true
     hierarchical: true
-    default_filter: shortname__value
     order_by:
       - name__value
     display_labels:
       - name__value
+    uniqueness_constraints:
+      - ["name__value"]
+    human_friendly_id: ["name__value"]
     attributes:
       - name: name
         kind: Text
@@ -169,7 +171,6 @@ nodes:
     inherit_from: ["LocationGeneric"]
     include_in_menu: true
     label: Rack
-    default_filter: shortname__value
     display_labels:
       - name__value
     menu_placement: "LocationGeneric"
@@ -181,7 +182,11 @@ nodes:
         kind: Text
         unique: false
         optional: true
+        read_only: true
         order_weight: 1100
+        computed_attribute:
+          kind: Jinja2
+          jinja2_template: "{{ parent__facility_id__value | upper }}R{{ shortname__value[-2:] }}"
     relationships:
       - name: owner
         peer: OrganizationGeneric
