@@ -624,9 +624,7 @@ async def create_location_vlans(
 
         # Check if pool already exists
         existing_pool = await client.get(
-            kind="CoreNumberPool",
-            name__value=pool_name,
-            raise_when_missing=False
+            kind="CoreNumberPool", name__value=pool_name, raise_when_missing=False
         )
 
         if existing_pool:
