@@ -12,10 +12,10 @@
 
 ## Infrahub - Demo repository for a DC
 
-![infrahub-demo-dc-fabric drawing](./infrahub-demo-dc-fabric.excalidraw.svg)
+![infrahub-demo-dc-fabric drawing](docs/docs/infrahub-demo-dc-fabric.excalidraw.svg)
 
 This repository is demoing the key Infrahub features for an example data center with VxLAN/EVPN and firewalls. It demonstrates the capabilities to use Infrahub with Arista AVD. Infrahub generates configurations that AVD deploys.
 
 ## Running the demo
 
-Documentation for loading and using this demo is available [here](https://docs.infrahub.app/demo/demo-dc-fabrics/)
+Documentation for loading and using this demo is available [here](https://docs.infrahub.app/demo/demo-dc-fabric/)

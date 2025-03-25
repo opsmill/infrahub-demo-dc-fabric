@@ -89,7 +89,7 @@ async def create_topology_strategies(
             batch=batch,
         )
     async for node, _ in batch.execute():
-        accessor = f"{node._schema.default_filter.split('__')[0]}"
+        accessor = f"{node._schema.human_friendly_id[0].split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
 
@@ -115,7 +115,7 @@ async def create_topology(client: InfrahubClient, log: logging.Logger, branch: s
             batch=batch,
         )
     async for node, _ in batch.execute():
-        accessor = f"{node._schema.default_filter.split('__')[0]}"
+        accessor = f"{node._schema.human_friendly_id[0].split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
     # Create Topology
@@ -148,7 +148,7 @@ async def create_topology(client: InfrahubClient, log: logging.Logger, branch: s
             batch=batch,
         )
     async for node, _ in batch.execute():
-        accessor = f"{node._schema.default_filter.split('__')[0]}"
+        accessor = f"{node._schema.human_friendly_id[0].split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
     batch = await client.create_batch()
@@ -240,7 +240,7 @@ async def create_topology(client: InfrahubClient, log: logging.Logger, branch: s
     await all_topologies_group.save()
 
     async for node, _ in batch.execute():
-        accessor = f"{node._schema.default_filter.split('__')[0]}"
+        accessor = f"{node._schema.human_friendly_id[0].split('__')[0]}"
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
 
