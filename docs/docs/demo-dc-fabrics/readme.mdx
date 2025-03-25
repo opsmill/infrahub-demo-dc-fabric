@@ -1,12 +1,24 @@
 ---
-title: Step By Step Guide
+title: Demo-dc-fabric
 ---
 
 import CodeBlock from '@theme/CodeBlock';
 import block1 from '!!raw-loader!./code_snippets/0001_graphql_add_repo.gql';
 import block2 from '!!raw-loader!./code_snippets/0002_shell_run_generator.sh';
 
-## Running the demo on your PC
+This repository demos key Infrahub features using an example data center running VxLAN / EVPN and firewalls. It demonstrates the capabilities to use Infrahub with Arista AVD and Containerlab. Infrahub generates configurations that AVD deploys to a Containerlab topology.
+
+![infrahub-demo-dc-fabric drawing](./infrahub-demo-dc-fabric.excalidraw.svg)
+
+## Running the demo
+
+### Clone the repository
+
+Clone the GitHub repository to the server you will run this demo on:
+
+```shell
+git clone https://github.com/opsmill/infrahub-demo-dc-fabric.git
+```
 
 ### Requirements
 
@@ -23,6 +35,8 @@ export LINUX_HOST_DOCKER_IMAGE="registry.opsmill.io/external/alpine-host:v3.1.1"
 
 ### Install the Infrahub SDK
 
+Our demos use [poetry](https://python-poetry.org/) to manage the Python environment.
+
 ```shell
 poetry install --no-interaction --no-ansi --no-root
 ```
@@ -35,7 +49,7 @@ poetry run invoke start
 
 ### Load schema and data into Infrahub
 
-This `invoke` command will create:
+The `invoke` command will create:
 
 - Basic data (Account, organization, ASN, Device Type, and Tags)
 - Location data (Locations, VLANs, and Prefixes)
@@ -65,7 +79,6 @@ poetry run invoke load-schema load-data
 <!-- markdownlint-disable -->
 <CodeBlock language="bash">{block2}</CodeBlock>
 <!-- markdownlint-restore -->
-
 
 ### 3. Generate a network service in a Topology
 
