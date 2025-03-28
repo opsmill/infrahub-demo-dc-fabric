@@ -141,12 +141,12 @@ poetry run infrahubctl branch create test2
 
 ### 10. Deploy your environment to ContainerLabs
 
-The containerlab generator automatically generates a containerlab topology artifact for every topology. Every device has its startup configuration as an artifact.
+The Containerlab generator automatically generates a Containerlab topology artifact for every topology. Every device has its startup configuration as an artifact.
 
 ```shell
 # Download all artifacts automatically to ./generated-configs/
 poetry run python3 scripts/get_configs.py
 
-# Start the containerlab
+# Start the Containerlab
 sudo -E containerlab deploy -t ./generated-configs/clab/fra05-pod1.yml --reconfigure
 ```
