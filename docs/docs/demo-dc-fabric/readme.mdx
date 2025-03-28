@@ -99,7 +99,7 @@ poetry run invoke load-schema load-data
 > [!NOTE]
 > The example below creates the Layer2 network service and a another Layer3 on topology fra05-pod1
 
-### 5. Create a Proposed Changes
+### 5. Create a proposed change
 
 <!-- markdownlint-disable -->
 <img width="1242" alt="proposed change" src="./img/pc.png">
@@ -114,7 +114,7 @@ poetry run invoke load-schema load-data
 ### 6. Try out our pytest plugin
 
 > [!NOTE]
-> The command will use our infrahub pytest plugin. It will run the different test in the `tests` folder. These tests include:
+> The command will use our Infrahub pytest plugin. It will run the different test in the `tests` folder. These tests include:
 >
 > - Syntax checks for all the GraphQL Queries
 > - Syntax checks for the Checks
@@ -127,7 +127,7 @@ pytest -v ./tests
 
 ### 7. Create a new Branch
 
-Create directly a new branch `test2` in the UI, or if you prefer to use our SDK in CLI :
+Create a new branch `test2` in the UI, or if you prefer to use our SDK in CLI:
 
 ```shell
 poetry run infrahubctl branch create test2
@@ -135,13 +135,13 @@ poetry run infrahubctl branch create test2
 
 ### 9. Try out  the topology check
 
-- Modify an Elements in a Topology (example: increase or decrease the quantity of leaf switches in fra05-pod1)
+- Modify an Element in a Topology (example: increase or decrease the quantity of leaf switches in fra05-pod1)
 
-- The checks will run in the Proposed Changes -> check_device_topology will fail.
+- The checks will run in the Proposed Change -> `check_device_topology` will fail.
 
 ### 10. Deploy your environment to ContainerLabs
 
-The containerlab generator automatically generates a containerlab topology artifact for every topology. Every device has its startup config as an artifact.
+The containerlab generator automatically generates a containerlab topology artifact for every topology. Every device has its startup configuration as an artifact.
 
 ```shell
 # Download all artifacts automatically to ./generated-configs/
