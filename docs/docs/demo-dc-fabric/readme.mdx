@@ -64,8 +64,11 @@ poetry run invoke load-schema load-data
 
 ### 1. Add the repository into Infrahub via GraphQL
 
-> [!NOTE]
-> Reference the [Infrahub documentation](https://docs.infrahub.app/guides/repository) for the multiple ways this can be done.
+:::note
+
+Reference the [Infrahub documentation](https://docs.infrahub.app/guides/repository) for the multiple ways this can be done.
+
+:::
 
 <!-- markdownlint-disable -->
 <CodeBlock language="graphql">{block1}</CodeBlock>
@@ -73,8 +76,11 @@ poetry run invoke load-schema load-data
 
 ### 2. Generate a topology (devices, interfaces, cabling, BGP sessions, ...)
 
-> [!NOTE]
-> The example below creates the topology fra05-pod1
+:::note
+
+The example below creates the topology fra05-pod1
+
+:::
 
 <!-- markdownlint-disable -->
 <CodeBlock language="bash">{block2}</CodeBlock>
@@ -92,34 +98,39 @@ poetry run invoke load-schema load-data
 
 [http://localhost:8000/objects/TopologyNetworkService](http://localhost:8000/objects/TopologyNetworkService)
 
-<!-- markdownlint-disable -->
-<img width="393" alt="service" src="./img/service.png"/>
-<!-- markdownlint-restore -->
+![service](./img/service.png)
 
-> [!NOTE]
-> The example below creates the Layer2 network service and a another Layer3 on topology fra05-pod1
+:::note
+
+The example below creates the Layer2 network service and a another Layer3 on topology fra05-pod1
+
+:::
 
 ### 5. Create a proposed change
 
-<!-- markdownlint-disable -->
-<img width="1242" alt="proposed change" src="./img/pc.png"/>
-<!-- markdownlint-restore -->
+![proposed change](./img/pc.png)
 
-> [!NOTE]
-> This command will run the generator and render the artifacts
+:::note
+
+This command will run the generator and render the artifacts
+
+:::
 
 ![diff](./img/diff.png)
 ![artifact](./img/artifact.png)
 
 ### 6. Try out our pytest plugin
 
-> [!NOTE]
-> The command will use our Infrahub pytest plugin. It will run the different test in the `tests` folder. These tests include:
->
-> - Syntax checks for all the GraphQL Queries
-> - Syntax checks for the Checks
-> - Syntax checks for all the jinja files used in `templates`
-> - will use the input/output file to try out the rendering and confirm there is no unexpected missing piece
+:::note
+
+The command will use our Infrahub pytest plugin. It will run the different test in the `tests` folder. These tests include:
+
+- Syntax checks for all the GraphQL Queries
+- Syntax checks for the Checks
+- Syntax checks for all the jinja files used in `templates`
+- will use the input/output file to try out the rendering and confirm there is no unexpected missing piece
+
+:::
 
 ```shell
 pytest -v ./tests
