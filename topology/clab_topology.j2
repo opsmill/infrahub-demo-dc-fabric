@@ -1,4 +1,4 @@
-name: avdasymirb
+name: demo-dc-fabric
 
 topology:
   kinds:
@@ -50,6 +50,8 @@ topology:
   {% endfor %}
 {% endfor %}
 
+{# FIXME: This won't work if we deploy multiple topology on the same docker host #}
 mgmt:
   network: mgmt_network
   ipv4-subnet: 10.0.0.0/24
+  ipv4-gw: 10.0.0.254
