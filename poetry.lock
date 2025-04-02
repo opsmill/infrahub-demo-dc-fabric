@@ -679,14 +679,14 @@ all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2
 
 [[package]]
 name = "infrahub-sdk"
-version = "1.9.1"
+version = "1.10.0"
 description = "Python Client to interact with Infrahub"
 optional = false
 python-versions = "<3.14,>=3.9"
 groups = ["main"]
 files = [
-    {file = "infrahub_sdk-1.9.1-py3-none-any.whl", hash = "sha256:bf9655512bb57f63e45d29090e7a48abe05769a4efc03cf32a975c75b834c2b5"},
-    {file = "infrahub_sdk-1.9.1.tar.gz", hash = "sha256:43e3b329909a95e881281abe55b21b4031ec2f7fdce94ca3886a46a6cac30bdd"},
+    {file = "infrahub_sdk-1.10.0-py3-none-any.whl", hash = "sha256:fe096fd8f02cd8fcbd372157b73434e5a44003f518657f141ecd80657092bb4e"},
+    {file = "infrahub_sdk-1.10.0.tar.gz", hash = "sha256:e7cbc4b9926037db733b0f5ca1cf70c54ed762c0c1862b8ee70e2d5979b8c5b2"},
 ]
 
 [package.dependencies]
@@ -697,6 +697,7 @@ httpx = [
     {version = ">=0.23", markers = "python_version >= \"3.11\""},
 ]
 Jinja2 = {version = ">=3,<4", optional = true, markers = "extra == \"ctl\" or extra == \"tests\" or extra == \"all\""}
+netutils = ">=1.0.0,<2.0.0"
 numpy = [
     {version = ">=1.24.2,<2.0.0", optional = true, markers = "python_version >= \"3.9\" and python_version < \"3.12\" and (extra == \"ctl\" or extra == \"all\")"},
     {version = ">=1.26.2,<2.0.0", optional = true, markers = "python_version >= \"3.12\" and (extra == \"ctl\" or extra == \"all\")"},
@@ -1015,6 +1016,21 @@ files = [
 
 [package.extras]
 nicer-shell = ["ipython"]
+
+[[package]]
+name = "netutils"
+version = "1.13.0"
+description = "Common helper functions useful in network automation."
+optional = false
+python-versions = "<4.0,>=3.8"
+groups = ["main"]
+files = [
+    {file = "netutils-1.13.0-py3-none-any.whl", hash = "sha256:61d58202cee4424ae3d261e10035a8f85cb72a282efc63fb3d70cc397106a3f2"},
+    {file = "netutils-1.13.0.tar.gz", hash = "sha256:0369fbb3248b43d52f5b59e7d4bffb7694d5d493718d65ffad4d6e50312873e0"},
+]
+
+[package.extras]
+optionals = ["jsonschema (>=4.17.3,<5.0.0)", "legacycrypt (==0.3)", "napalm (>=4.0.0,<5.0.0)"]
 
 [[package]]
 name = "numpy"
@@ -2270,4 +2286,4 @@ dev = ["doc8", "flake8", "flake8-import-order", "rstcheck[sphinx]", "sphinx"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10, < 3.13"
-content-hash = "c058f72b1a9c7ff323f535c0733cc141877ca2a0f67456e5aeb25eeeb4a6caed"
+content-hash = "03a500ef341a0421456f0bdea0b48c5091214fc09d08b95224ca460cb39e0520"
