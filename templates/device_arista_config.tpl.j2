@@ -94,7 +94,6 @@ interface {{ intf.node.name.value }}
 {%      if intf.node.ip_addresses %}
 {%         for ip in intf.node.ip_addresses.edges %}
    ip address {{ ip.node.address.value  }}
-   no switchport
 {%            if intf.node.role.value == "peer" or intf.node.role.value == "backbone" %}
    ip ospf network point-to-point
 {%            endif %}
