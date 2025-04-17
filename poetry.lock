@@ -679,14 +679,14 @@ all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2
 
 [[package]]
 name = "infrahub-sdk"
-version = "1.10.1"
+version = "1.10.2"
 description = "Python Client to interact with Infrahub"
 optional = false
 python-versions = "<3.14,>=3.9"
 groups = ["main"]
 files = [
-    {file = "infrahub_sdk-1.10.1-py3-none-any.whl", hash = "sha256:890a2f971f9805307405ad252dc41b9f95d29e7d2b27293788b129a2073c4349"},
-    {file = "infrahub_sdk-1.10.1.tar.gz", hash = "sha256:cf772f9e84d0356aeba561420311a0b0f29633da1e203bb6a2b6200e10967ae5"},
+    {file = "infrahub_sdk-1.10.2-py3-none-any.whl", hash = "sha256:7adaffb1d01c2a88f741a10dfce88c7250e6c542b22cbfde407ff875cc83b81e"},
+    {file = "infrahub_sdk-1.10.2.tar.gz", hash = "sha256:b3a6260a9a038acbbd289d805f4d9bbcdcc84cfa2ba45cd8517ad45eab350df9"},
 ]
 
 [package.dependencies]
@@ -2286,4 +2286,4 @@ dev = ["doc8", "flake8", "flake8-import-order", "rstcheck[sphinx]", "sphinx"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10, < 3.13"
-content-hash = "ffe58291553996809151d52cd57414663f9e12325ddae6c3e26cffbc68288c56"
+content-hash = "05733dad5ab624e93a673f6cd577c5d361b12ca29f5d5d848a4303aaabf9633d"
