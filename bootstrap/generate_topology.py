@@ -1349,10 +1349,10 @@ async def generate_topology(
             leaf2_name = f"{topology_name}-leaf{leaf_idx + 1}"
             for leaf_peer_interface in leaf_peer_interfaces:
                 intf_leaf1_obj = client.store.get(
-                    kind="InfraInterfaceL3", key=f"{leaf1_name}-{leaf_peer_interface}"
+                    kind="InfraInterfaceL2", key=f"{leaf1_name}-{leaf_peer_interface}"
                 )
                 intf_leaf2_obj = client.store.get(
-                    kind="InfraInterfaceL3", key=f"{leaf2_name}-{leaf_peer_interface}"
+                    kind="InfraInterfaceL2", key=f"{leaf2_name}-{leaf_peer_interface}"
                 )
 
                 new_leaf1_intf_description = (
