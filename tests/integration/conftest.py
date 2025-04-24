@@ -1,27 +1,64 @@
-import pytest
+import os
+import subprocess
+
 from pathlib import Path
 
-from typing import Any
-from infrahub_sdk.yaml import SchemaFile
+import pytest
 
-CURRENT_DIRECTORY = Path(__file__).parent.resolve()
-
-
-@pytest.fixture
-def root_directory() -> Path:
-    """
-    Return the path of the root directory of the repository.
-    This fixture need to be adjusted based on the layout of the project
-    """
-    return CURRENT_DIRECTORY.parent.parent
+from infrahub_sdk import InfrahubClient, InfrahubClientSync, Config
+from infrahub_testcontainers.helpers import TestInfrahubDocker
 
 
-@pytest.fixture
-def schemas_directory(root_directory: Path) -> Path:
-    return root_directory / "models"
+TEST_DIRECTORY = Path(__file__).parent
+PROJECT_DIRECTORY = TEST_DIRECTORY.parent.parent
 
 
-@pytest.fixture
-def schemas(schemas_directory: Path) -> list[dict[str, Any]]:
-    schema_files = SchemaFile.load_from_disk(paths=[schemas_directory])
-    return [item.content for item in schema_files if item.content]
+class TestInfrahubDockerWithClient(TestInfrahubDocker):
+    @pytest.fixture(scope="class")
+    def async_client_main(self, infrahub_port: int) -> InfrahubClient:
+        client = InfrahubClient(
+            config=Config(
+                address=f"http://localhost:{infrahub_port}",
+            )  # noqa: S106
+        )
+        return client
+
+    @pytest.fixture(scope="class")
+    def client_main(self, infrahub_port: int) -> InfrahubClientSync:
+        client = InfrahubClientSync(
+            config=Config(
+                address=f"http://localhost:{infrahub_port}",
+            )  # noqa: S106
+        )
+
+        return client
+
+    @pytest.fixture(scope="class")
+    def client(self, infrahub_port: int, default_branch: str) -> InfrahubClientSync:
+        client = InfrahubClientSync(
+            config=Config(
+                address=f"http://localhost:{infrahub_port}",
+            )  # noqa: S106
+        )
+        if default_branch not in client.branch.all():
+            client.branch.create(default_branch)
+        if client.default_branch != default_branch:
+            client.default_branch = default_branch
+
+        return client
+
+    # @pytest.fixture(scope="class")
+    # def infrahubctl(self, client_main: InfrahubClientSync):
+    #     # Set the INFRAHUB_ADDRESS environment variable to match the testcontainers address
+    #     return CliRunner(env={"INFRAHUB_ADDRESS": client_main.config.address})
+
+    @staticmethod
+    def execute_command(command: str, address: str) -> str:
+        env = os.environ.copy()
+        env["INFRAHUB_ADDRESS"] = address
+        # env["INFRAHUB_API_TOKEN"] = "06438eb2-8019-4776-878c-0941b1f1d1ec"
+        env["INFRAHUB_MAX_CONCURRENT_EXECUTION"] = "10"
+        result = subprocess.run(  # noqa: S602
+            command, shell=True, capture_output=True, text=True, env=env, check=False
+        )
+        return result
