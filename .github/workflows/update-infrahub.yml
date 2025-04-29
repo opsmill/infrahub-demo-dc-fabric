@@ -63,7 +63,7 @@ jobs:
 
       - name: Update testcontainers to workflow version ${{ env.INFRAHUB_VERSION }}
         run: |
-          poetry add infrahub-testcontainers==${INFRAHUB_VERSION}
+          poetry add --group=dev infrahub-testcontainers==${INFRAHUB_VERSION}
 
       - name: Prepare the branch for the update
         id: prepare-branch
