@@ -23,6 +23,7 @@ treelib = "^1.7.0"
 jsonschema = "4.23"
 # anta = "^0.11.0"
 pytest = "^8.3.3"
+infrahub-testcontainers = "1.2.7"
 
 [tool.poetry.group.dev.dependencies]
 yamllint = "^1.35.1"
