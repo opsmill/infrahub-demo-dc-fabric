@@ -695,13 +695,13 @@ tests = ["Jinja2 (>=3,<4)", "pytest", "pyyaml (>=6,<7)", "rich (>=13,<14)"]
 
 [[package]]
 name = "infrahub-testcontainers"
-version = "1.2.7"
+version = "1.2.8"
 description = "Testcontainers instance for Infrahub to easily build integration tests"
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "infrahub_testcontainers-1.2.7-py3-none-any.whl", hash = "sha256:26a5633a009038cb2f8bcedf1fe4d3090078a1a479d1baeb496ee9cc944cb6ab"},
-    {file = "infrahub_testcontainers-1.2.7.tar.gz", hash = "sha256:0d5a33cd662df58f7f8d89548a0a408ad8a8db9bff8da634c645d32a558af489"},
+    {file = "infrahub_testcontainers-1.2.8-py3-none-any.whl", hash = "sha256:c9286cb5f400eca49747cb4db8c9560e7882caedef3bf5a242a6399d2e90d593"},
+    {file = "infrahub_testcontainers-1.2.8.tar.gz", hash = "sha256:e70847d9446df35b4fc07de94af6d80b000a143722d02e3e7ef36808263490ff"},
 ]
 
 [package.dependencies]
@@ -2231,4 +2231,4 @@ dev = ["doc8", "flake8", "flake8-import-order", "rstcheck[sphinx]", "sphinx"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10, < 3.13"
-content-hash = "de41a3147833e92c5b819021acf43623e000adda686ac66e3f2826e31916590f"
+content-hash = "30bfd393beb849f6e18d85212a3f0fc98db770037df4835b5ada93b1911388bf"
