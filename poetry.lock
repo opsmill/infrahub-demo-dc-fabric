@@ -655,16 +655,17 @@ all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2
 
 [[package]]
 name = "infrahub-sdk"
-version = "1.12.0"
+version = "1.12.1"
 description = "Python Client to interact with Infrahub"
 optional = false
 python-versions = "<3.14,>=3.9"
 files = [
-    {file = "infrahub_sdk-1.12.0-py3-none-any.whl", hash = "sha256:8f9b05ac511df01fc98518bdadf3c71f59a2d2a6b9e99eb4412ffcb16148803c"},
-    {file = "infrahub_sdk-1.12.0.tar.gz", hash = "sha256:822fdb6c5ad74f9e2810078664da13eb8962dd204d8b80158d4491e31d37c9f1"},
+    {file = "infrahub_sdk-1.12.1-py3-none-any.whl", hash = "sha256:4ca7e61ea8c2160549af83b3b9b645b5cedab004c1d2459fff3014d222f16388"},
+    {file = "infrahub_sdk-1.12.1.tar.gz", hash = "sha256:4898c2aaa5d98d8134a4e41cb05060e1e517dc7aad4b9e2e58c00bfd0a029a87"},
 ]
 
 [package.dependencies]
+click = {version = "==8.1.*", optional = true, markers = "extra == \"ctl\" or extra == \"all\""}
 dulwich = ">=0.21.4,<0.22.0"
 graphql-core = ">=3.1,<3.3"
 httpx = [
@@ -689,8 +690,8 @@ ujson = ">=5,<6"
 whenever = "0.7.2"
 
 [package.extras]
-all = ["Jinja2 (>=3,<4)", "numpy (>=1.24.2,<2.0.0)", "numpy (>=1.26.2,<2.0.0)", "pyarrow (>=14)", "pytest", "pyyaml (>=6,<7)", "rich (>=13,<14)", "toml (>=0.10,<0.11)", "typer (>=0.12.3,<0.13.0)"]
-ctl = ["Jinja2 (>=3,<4)", "numpy (>=1.24.2,<2.0.0)", "numpy (>=1.26.2,<2.0.0)", "pyarrow (>=14)", "pyyaml (>=6,<7)", "rich (>=13,<14)", "toml (>=0.10,<0.11)", "typer (>=0.12.3,<0.13.0)"]
+all = ["Jinja2 (>=3,<4)", "click (==8.1.*)", "numpy (>=1.24.2,<2.0.0)", "numpy (>=1.26.2,<2.0.0)", "pyarrow (>=14)", "pytest", "pyyaml (>=6,<7)", "rich (>=13,<14)", "toml (>=0.10,<0.11)", "typer (>=0.12.3,<0.13.0)"]
+ctl = ["Jinja2 (>=3,<4)", "click (==8.1.*)", "numpy (>=1.24.2,<2.0.0)", "numpy (>=1.26.2,<2.0.0)", "pyarrow (>=14)", "pyyaml (>=6,<7)", "rich (>=13,<14)", "toml (>=0.10,<0.11)", "typer (>=0.12.3,<0.13.0)"]
 tests = ["Jinja2 (>=3,<4)", "pytest", "pyyaml (>=6,<7)", "rich (>=13,<14)"]
 
 [[package]]
@@ -2231,4 +2232,4 @@ dev = ["doc8", "flake8", "flake8-import-order", "rstcheck[sphinx]", "sphinx"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10, < 3.13"
-content-hash = "73b240b65dbbdcb6aab61cd3b80ffa2a99bdbbba92a49a5f114d9163ab517138"
+content-hash = "a68073baf25b9ab579b412ffdace261d82f5515a7949d578a1bbef0d187fae75"
