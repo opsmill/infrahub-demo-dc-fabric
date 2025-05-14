@@ -247,7 +247,7 @@ MGMT_SERVERS = {
     ("8.8.4.4", "Google-8.8.4.4", "Name"),
     ("1.1.1.1", "Cloudflare-1.1.1.1", "Name"),
     ("time1.google.com", "Google time1", "NTP"),
-    ("129.6.15.28", "Cloudflare time", "NTP"),
+    ("time.cloudflare.com", "Cloudflare time", "NTP"),
 }
 
 # We filter locations to include only those of type 'site'

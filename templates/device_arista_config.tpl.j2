@@ -46,11 +46,7 @@ username admin privilege 15 role network-admin secret admin
 no enable password
 no aaa root
 !
-{%   if ns.ntp_servers %}
-{%      for ntp_server in ns.ntp_servers %}
-ntp server {{ ntp_server }}
-{%      endfor %}
-{%   endif %}
+ntp server 129.6.15.28
 !
 {%   if ns.name_servers %}
 {%      for name_server in ns.name_servers %}
