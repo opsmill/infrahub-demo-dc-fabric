@@ -5,12 +5,11 @@ from collections import defaultdict
 from ipaddress import IPv4Network
 from typing import Dict, List, Optional
 
-from infrahub_sdk.batch import InfrahubBatch
 from infrahub_sdk import InfrahubClient
-
+from infrahub_sdk.batch import InfrahubBatch
 from utils import (
-    create_and_save,
     create_and_add_to_batch,
+    create_and_save,
     create_ipam_pool,
     execute_batch,
     extract_common_prefix,
@@ -248,7 +247,7 @@ MGMT_SERVERS = {
     ("8.8.4.4", "Google-8.8.4.4", "Name"),
     ("1.1.1.1", "Cloudflare-1.1.1.1", "Name"),
     ("time1.google.com", "Google time1", "NTP"),
-    ("time.cloudflare.com", "Cloudflare time", "NTP"),
+    ("129.6.15.28", "Cloudflare time", "NTP"),
 }
 
 # We filter locations to include only those of type 'site'
