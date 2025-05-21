@@ -1,40 +1,40 @@
 ---
 jinja2_transforms:
-  - name: "device_cisco"
-    description: "Template to generate startup configuration for Cisco devices"
-    query: "device_info"
-    template_path: "templates/device_cisco_config.tpl.j2"
+  # - name: "device_cisco"
+  #   description: "Template to generate startup configuration for Cisco devices"
+  #   query: "device_info"
+  #   template_path: "templates/device_cisco_config.tpl.j2"
 
   - name: "device_arista"
     description: "Template to generate startup configuration for Arista devices"
     query: "device_info"
     template_path: "templates/device_arista_config.tpl.j2"
 
-  - name: "firewall_config"
-    description: "Template to generate startup configuration for a Juniper SRX Firewall"
-    query: "juniper_srx_config"
-    template_path: "templates/juniper_srx_config.j2"
+  # - name: "firewall_config"
+  #   description: "Template to generate startup configuration for a Juniper SRX Firewall"
+  #   query: "juniper_srx_config"
+  #   template_path: "templates/juniper_srx_config.j2"
 
-  - name: "clab_topology"
-    query: "topology_info"
-    template_path: "topology/clab_topology.j2"
+  # - name: "clab_topology"
+  #   query: "topology_info"
+  #   template_path: "topology/clab_topology.j2"
 
 artifact_definitions:
-  - name: "Openconfig Interface for Arista devices"
-    artifact_name: "openconfig-interfaces"
-    parameters:
-      device: "name__value"
-    content_type: "application/json"
-    targets: "arista_devices"
-    transformation: "OCInterfaces"
+  # - name: "Openconfig Interface for Arista devices"
+  #   artifact_name: "openconfig-interfaces"
+  #   parameters:
+  #     device: "name__value"
+  #   content_type: "application/json"
+  #   targets: "arista_devices"
+  #   transformation: "OCInterfaces"
 
-  - name: "Startup Config for Cisco devices"
-    artifact_name: "startup-config"
-    parameters:
-      device: "name__value"
-    content_type: "text/plain"
-    targets: "cisco_devices"
-    transformation: "device_cisco"
+  # - name: "Startup Config for Cisco devices"
+  #   artifact_name: "startup-config"
+  #   parameters:
+  #     device: "name__value"
+  #   content_type: "text/plain"
+  #   targets: "cisco_devices"
+  #   transformation: "device_cisco"
 
   - name: "Startup Config for Arista devices"
     artifact_name: "startup-config"
@@ -44,31 +44,31 @@ artifact_definitions:
     targets: "arista_devices"
     transformation: "device_arista"
 
-  - name: "Firewall config"
-    artifact_name: "firewall-config"
-    parameters:
-      device: "name__value"
-    content_type: "text/plain"
-    targets: "firewall_devices"
-    transformation: "firewall_config"
+#   - name: "Firewall config"
+#     artifact_name: "firewall-config"
+#     parameters:
+#       device: "name__value"
+#     content_type: "text/plain"
+#     targets: "firewall_devices"
+#     transformation: "firewall_config"
 
-  - name: "Containerlab Topology"
-    artifact_name: "containerlab-topology"
-    parameters:
-      topology_name: "name__value"
-    content_type: "text/plain"
-    targets: "all_topologies"
-    transformation: "clab_topology"
+#   - name: "Containerlab Topology"
+#     artifact_name: "containerlab-topology"
+#     parameters:
+#       topology_name: "name__value"
+#     content_type: "text/plain"
+#     targets: "all_topologies"
+#     transformation: "clab_topology"
 
-check_definitions:
-  - name: "check_device_topology"
-    class_name: "InfrahubCheckDeviceTopology"
-    file_path: "checks/check_device_topology.py"
+# check_definitions:
+#   - name: "check_device_topology"
+#     class_name: "InfrahubCheckDeviceTopology"
+#     file_path: "checks/check_device_topology.py"
 
-python_transforms:
-  - name: OCInterfaces
-    class_name: OCInterfaces
-    file_path: "transforms/openconfig.py"
+# python_transforms:
+#   - name: OCInterfaces
+#     class_name: OCInterfaces
+#     file_path: "transforms/openconfig.py"
 
 generator_definitions:
   - name: generate_network_services
@@ -80,20 +80,20 @@ generator_definitions:
       network_service_name: "name__value"
 
 queries:
-  - name: topology_info
-    file_path: "topology/topology_info.gql"
+  # - name: topology_info
+  #   file_path: "topology/topology_info.gql"
 
-  - name: juniper_srx_config
-    file_path: "templates/juniper_srx_config.gql"
+  # - name: juniper_srx_config
+  #   file_path: "templates/juniper_srx_config.gql"
 
   - name: device_info
     file_path: "templates/device_info.gql"
 
-  - name: oc_interfaces
-    file_path: "transforms/oc_interfaces.gql"
+  # - name: oc_interfaces
+  #   file_path: "transforms/oc_interfaces.gql"
 
-  - name: check_device_topology
-    file_path: "checks/check_device_topology.gql"
+  # - name: check_device_topology
+  #   file_path: "checks/check_device_topology.gql"
 
-  - name: generate_network_services
-    file_path: "generators/network_services.gql"
+  # - name: generate_network_services
+  #   file_path: "generators/network_services.gql"
