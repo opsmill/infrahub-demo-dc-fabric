@@ -95,5 +95,5 @@ queries:
   # - name: check_device_topology
   #   file_path: "checks/check_device_topology.gql"
 
-  # - name: generate_network_services
-  #   file_path: "generators/network_services.gql"
+  - name: generate_network_services
+    file_path: "generators/network_services.gql"
