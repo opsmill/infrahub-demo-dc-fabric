@@ -29,7 +29,7 @@ artifact_definitions:
     transformation: "OCInterfaces"
 
   - name: "Startup Config for Cisco devices"
-    artifact_name: "startup-config"
+    artifact_name: "Cisco startup config"
     parameters:
       device: "name__value"
     content_type: "text/plain"
