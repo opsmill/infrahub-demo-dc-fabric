@@ -37,7 +37,7 @@ artifact_definitions:
     transformation: "device_cisco"
 
   - name: "Startup Config for Arista devices"
-    artifact_name: "startup-config"
+    artifact_name: "Arista startup config"
     parameters:
       device: "name__value"
     content_type: "text/plain"
