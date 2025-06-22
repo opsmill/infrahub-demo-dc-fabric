@@ -4,6 +4,7 @@ extends: default
 ignore: |
   /.git
   /.github
+  /docs/node_modules
 
 rules:
   new-lines: disable

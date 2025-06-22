@@ -1,3 +1,4 @@
+# mypy: ignore-errors
 #!/usr/bin/env python
 import ipaddress
 import logging

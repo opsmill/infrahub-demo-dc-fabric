@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from infrahub_sdk import InfrahubClient
-from infrahub_sdk.generator import InfrahubGenerator
+from infrahub_sdk import InfrahubClient  # type: ignore
+from infrahub_sdk.generator import InfrahubGenerator  # type: ignore
 
 # Usage:
 # -----

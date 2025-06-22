@@ -116,7 +116,7 @@ def lint_all(context: Context) -> None:
     """Run all linters."""
     lint_yaml(context)
     lint_ruff(context)
-    # lint_mypy(context)
+    lint_mypy(context)
 
 
 @task(name="docs")
@@ -127,5 +127,5 @@ def docs_build(context: Context) -> None:
     with context.cd(DOCUMENTATION_DIRECTORY):
         output = context.run(exec_cmd)
 
-    if output.exited != 0:
+    if output is None or output.exited != 0:
         sys.exit(-1)

@@ -1,4 +1,4 @@
-from infrahub_sdk.transforms import InfrahubTransform
+from infrahub_sdk.transforms import InfrahubTransform  # type: ignore
 
 
 class OCInterfaces(InfrahubTransform):

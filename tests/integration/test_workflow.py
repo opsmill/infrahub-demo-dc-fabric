@@ -1,7 +1,8 @@
+# mypy: ignore-errors
+
 import pytest
 import time
 import logging
-
 
 from infrahub_sdk.graphql import Mutation
 from infrahub_sdk.task.models import TaskState

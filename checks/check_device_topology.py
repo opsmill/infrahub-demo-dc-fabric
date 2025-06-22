@@ -1,4 +1,4 @@
-from infrahub_sdk.checks import InfrahubCheck
+from infrahub_sdk.checks import InfrahubCheck  # type: ignore
 
 
 class InfrahubCheckDeviceTopology(InfrahubCheck):
