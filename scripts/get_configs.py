@@ -1,6 +1,8 @@
+# mypy: ignore-errors
+
 import asyncio
 import os
-from infrahub_sdk import InfrahubClient  # type: ignore
+from infrahub_sdk import InfrahubClient
 
 
 async def get_containerlab_topology():

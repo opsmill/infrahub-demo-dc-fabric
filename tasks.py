@@ -3,7 +3,7 @@ import sys
 
 from pathlib import Path
 
-from invoke import task, Context  # type: ignore
+from invoke import task, Context
 
 CURRENT_DIRECTORY = Path(__file__).resolve()
 DOCUMENTATION_DIRECTORY = CURRENT_DIRECTORY.parent / "docs"

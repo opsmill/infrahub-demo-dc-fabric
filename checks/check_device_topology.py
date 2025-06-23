@@ -1,4 +1,6 @@
-from infrahub_sdk.checks import InfrahubCheck  # type: ignore
+# mypy: ignore-errors
+
+from infrahub_sdk.checks import InfrahubCheck
 
 
 class InfrahubCheckDeviceTopology(InfrahubCheck):

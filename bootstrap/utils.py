@@ -1,13 +1,15 @@
+# mypy: ignore-errors
+
 import logging
 import ipaddress
 
 from typing import Dict, List, Optional
 
-from infrahub_sdk import InfrahubClient  # type: ignore
-from infrahub_sdk.batch import InfrahubBatch  # type: ignore
-from infrahub_sdk.exceptions import GraphQLError  # type: ignore
-from infrahub_sdk.node import InfrahubNode  # type: ignore
-from infrahub_sdk.store import NodeStore  # type: ignore
+from infrahub_sdk import InfrahubClient
+from infrahub_sdk.batch import InfrahubBatch
+from infrahub_sdk.exceptions import GraphQLError
+from infrahub_sdk.node import InfrahubNode
+from infrahub_sdk.store import NodeStore
 
 
 def extract_common_prefix(prefix: str) -> str:

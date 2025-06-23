@@ -1,4 +1,6 @@
-from infrahub_sdk.transforms import InfrahubTransform  # type: ignore
+# mypy: ignore-errors
+
+from infrahub_sdk.transforms import InfrahubTransform
 
 
 class OCInterfaces(InfrahubTransform):

@@ -188,11 +188,6 @@ class TestDemoflow(TestInfrahubDockerWithClient):
                 populate_store=True,
             )
 
-            if pc is None:
-                attempts += 1
-                time.sleep(5)
-                continue
-
             validations_completed = all(
                 (
                     validation.peer.state.value == "completed"

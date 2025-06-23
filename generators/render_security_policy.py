@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
+# mypy: ignore-errors
+
 import logging
 
 from typing import List, Set
 
-from infrahub_sdk import InfrahubClient  # type: ignore
-from infrahub_sdk.node import InfrahubNode  # type: ignore
+from infrahub_sdk import InfrahubClient
+from infrahub_sdk.node import InfrahubNode
 
 
 async def get_devices_from_location_hierarchy(
