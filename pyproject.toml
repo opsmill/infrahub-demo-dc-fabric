@@ -25,7 +25,7 @@ jsonschema = "4.23"
 pytest = "^8.4.1"
 
 [tool.poetry.group.dev.dependencies]
-yamllint = "^1.37.1"
+yamllint = "^1.35.1"
 ruff = "^0.12.1"
 mypy = "^1.16.1"
 pytest = "^8.4.1"
