@@ -1,3 +1,5 @@
+# mypy: ignore-errors
+
 from infrahub_sdk.transforms import InfrahubTransform
 
 

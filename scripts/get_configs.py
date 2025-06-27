@@ -1,3 +1,5 @@
+# mypy: ignore-errors
+
 import asyncio
 import os
 from infrahub_sdk import InfrahubClient
