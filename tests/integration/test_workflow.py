@@ -181,7 +181,7 @@ class TestDemoflow(TestInfrahubDockerWithClient):
 
         while not validations_completed and attempts < max_attempts:
             pc = client_main.get(
-                "CoreProposedChange",
+                kind="CoreProposedChange",
                 name__value="Test Merge PC",
                 include=["validations"],
                 exclude=["reviewers", "approved_by", "created_by"],
