@@ -376,7 +376,7 @@ nodes:
       - destination_zone__name__value
       - index__value
     uniqueness_constraints:
-      - [index__value, source_zone, destination_zone, policy]
+      - [policy, index__value, source_zone, destination_zone]
     attributes:
       - name: index
         label: Index
