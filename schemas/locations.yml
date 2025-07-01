@@ -62,7 +62,7 @@ generics:
 
 nodes:
   # --------------------  Locations  --------------------
-  - name: Continent
+  - name: Continent  #LocationContinent
     namespace: Location
     inherit_from: ["LocationGeneric"]
     include_in_menu: true
@@ -73,7 +73,7 @@ nodes:
     parent: ""
     children: "LocationCountry"
     icon: "jam:world"
-  - name: Country
+  - name: Country  #LocationCountry
     namespace: Location
     inherit_from: ["LocationGeneric"]
     include_in_menu: true
@@ -84,7 +84,7 @@ nodes:
     parent: "LocationContinent"
     children: "LocationRegion"
     icon: "gis:search-country"
-  - name: Region
+  - name: Region  #LocationRegion
     namespace: Location
     inherit_from: ["LocationGeneric"]
     include_in_menu: true
@@ -95,7 +95,7 @@ nodes:
     parent: "LocationCountry"
     children: "LocationMetro"
     icon: "carbon:cics-region-target"
-  - name: Metro
+  - name: Metro  #LocationMetro
     namespace: Location
     inherit_from: ["LocationGeneric"]
     include_in_menu: true
@@ -106,7 +106,7 @@ nodes:
     parent: "LocationRegion"
     children: "LocationBuilding"
     icon: "healthicons:city"
-  - name: Building
+  - name: Building  #LocationBuilding
     namespace: Location
     inherit_from: ["LocationGeneric"]
     include_in_menu: true
@@ -133,7 +133,7 @@ nodes:
         peer: OrganizationGeneric
         optional: true
         cardinality: one
-  - name: Floor
+  - name: Floor  #LocationFloor
     namespace: Location
     inherit_from: ["LocationGeneric"]
     include_in_menu: true
@@ -144,7 +144,7 @@ nodes:
     parent: "LocationBuilding"
     icon: "mdi:home-floor-0"
     children: "LocationSuite"
-  - name: Suite
+  - name: Suite  #LocationSuite
     namespace: Location
     inherit_from: ["LocationGeneric"]
     include_in_menu: true
@@ -166,7 +166,7 @@ nodes:
         peer: OrganizationGeneric
         optional: true
         cardinality: one
-  - name: Rack
+  - name: Rack  #LocationRack
     namespace: Location
     inherit_from: ["LocationGeneric"]
     include_in_menu: true
