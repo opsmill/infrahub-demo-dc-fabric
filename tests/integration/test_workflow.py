@@ -1,3 +1,5 @@
+from pathlib import Path
+from infrahub_sdk import InfrahubClient, InfrahubClientSync
 import pytest
 import time
 import logging
@@ -26,7 +28,7 @@ class TestDemoflow(TestInfrahubDockerWithClient):
     def default_branch(self) -> str:
         return "test-demo"
 
-    def test_schema_load(self, client_main):
+    def test_schema_load(self, client_main: InfrahubClientSync):
         logging.info("Starting test: test_schema_load")
         # Load schema files into main
         logging.info("Invoking schema load command")
@@ -41,7 +43,7 @@ class TestDemoflow(TestInfrahubDockerWithClient):
             f"Schema load failed: {load_schemas.stdout}"
         )
 
-    def test_load_data(self, client_main):
+    def test_load_data(self, client_main: InfrahubClientSync):
         for data_generator in DATA_GENERATORS:
             load_data = self.execute_command(
                 f"infrahubctl run bootstrap/{data_generator}",
@@ -49,7 +51,7 @@ class TestDemoflow(TestInfrahubDockerWithClient):
             )
             assert load_data.returncode == 0
 
-    async def test_add_repository(self, async_client_main, remote_repos_dir):
+    async def test_add_repository(self, async_client_main: InfrahubClient, remote_repos_dir: Path):
         client = async_client_main
         src_directory = PROJECT_DIRECTORY
         git_repository = GitRepo(
@@ -80,17 +82,17 @@ class TestDemoflow(TestInfrahubDockerWithClient):
 
         assert synchronized
 
-    def test_generate_topology(self, client_main):
+    def test_generate_topology(self, client_main: InfrahubClientSync):
         generate_topology = self.execute_command(
             "infrahubctl run bootstrap/generate_topology.py topology=fra05-pod1",
             address=client_main.config.address,
         )
         assert generate_topology.returncode == 0
 
-    def test_create_branch(self, client_main, default_branch):
+    def test_create_branch(self, client_main: InfrahubClientSync, default_branch: str):
         client_main.branch.create(default_branch)
 
-    def test_create_services(self, client, default_branch):
+    def test_create_services(self, client: InfrahubClientSync, default_branch: str):
         l2_service = client.create(
             kind="TopologyLayer2NetworkService",
             name="cust01",
@@ -109,7 +111,7 @@ class TestDemoflow(TestInfrahubDockerWithClient):
         )
         l3_service.save(allow_upsert=True)
 
-    def test_generator(self, client, default_branch):
+    def test_generator(self, client: InfrahubClientSync, default_branch: str):
         definition = client.get(
             "CoreGeneratorDefinition", name__value="generate_network_services"
         )
@@ -134,7 +136,7 @@ class TestDemoflow(TestInfrahubDockerWithClient):
             f"Task {task.id} - generator generate_network_services did not complete successfully"
         )
 
-    def test_create_diff(self, client_main, default_branch):
+    def test_create_diff(self, client_main: InfrahubClientSync, default_branch: str):
         mutation = Mutation(
             mutation="DiffUpdate",
             input_data={
@@ -156,7 +158,7 @@ class TestDemoflow(TestInfrahubDockerWithClient):
             f"Task {task.id} - generate diff for {default_branch} did not complete successfully"
         )
 
-    def test_proposed_change(self, client_main, default_branch):
+    def test_proposed_change(self, client_main: InfrahubClientSync, default_branch: str):
         pc_mutation_create = Mutation(
             mutation="CoreProposedChangeCreate",
             input_data={
