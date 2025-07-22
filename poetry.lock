@@ -899,13 +899,13 @@ type = ["pytest-mypy"]
 
 [[package]]
 name = "infrahub-sdk"
-version = "1.12.3"
+version = "1.13.4"
 description = "Python Client to interact with Infrahub"
 optional = false
 python-versions = "<3.14,>=3.9"
 files = [
-    {file = "infrahub_sdk-1.12.3-py3-none-any.whl", hash = "sha256:c8e4979d66c0e6259aa04754c53761e5783bfd6c10c3c7cbceb841377988c8ef"},
-    {file = "infrahub_sdk-1.12.3.tar.gz", hash = "sha256:4d36c7acadccf29a1ebcdfb8b2992e2b25246542a0ace77c6bd1c9a8377e8d38"},
+    {file = "infrahub_sdk-1.13.4-py3-none-any.whl", hash = "sha256:ff693fc1b948ff4347d910d66ee89b80c081fa7e1bf9adccd730f5c5019e3ce7"},
+    {file = "infrahub_sdk-1.13.4.tar.gz", hash = "sha256:ecb54acd8265c648a7ae2c52c84cc8f6923799f5d4fa003b5c7a597cf4a3224b"},
 ]
 
 [package.dependencies]
@@ -3196,4 +3196,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10, < 3.13"
-content-hash = "9ed939c3f1d613ad9e988dab9882fcccf56b0f5174448ea830b52791f0ef77d2"
+content-hash = "a44bd6e499e48a92a2915bd5b44ba7ba84d52e3cc307c1ad47ce3b4bd0f998a5"
