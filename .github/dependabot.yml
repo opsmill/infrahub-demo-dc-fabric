@@ -26,11 +26,8 @@ updates:
       time: "12:00"
     target-branch: main
     labels:
-      - "changes/patch"
+      - "type/housekeeping"
     groups:
       all:
         patterns:
-          - "^(?!infrahub-sdk$).*"  # Regex to exclude infrahub-sdk
-      infrahub-sdk:
-        patterns:
-          - "infrahub-sdk"
+          - "*"
