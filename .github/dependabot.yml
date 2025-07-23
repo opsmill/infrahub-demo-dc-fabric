@@ -12,7 +12,7 @@ updates:
       time: "09:00"
     target-branch: main
     labels:
-      - "changes/patch"
+      - "type/housekeeping"
     groups:
       all:
         patterns:
