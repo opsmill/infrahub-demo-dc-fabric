@@ -86,7 +86,7 @@ vrf instance {{ vrf.node.name.value }}
 {%      if network_services.node.vlan and leaf_ip_suffix %}
 interface Vlan{{ network_services.node.vlan.node.vlan_id.value }}
    description "Placeholder interface for testing"
-   ip address 10.{{ network_services.node.vlan.node.name.value }}.{{ leaf_ip_suffix }}/24
+   ip address 10.{{ network_services.node.vlan.node.vlan_id.value }}.{{ leaf_ip_suffix }}/24
 !
 {%      endif %}
 {%   endfor %}
