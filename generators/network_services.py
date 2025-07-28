@@ -92,6 +92,25 @@ async def allocate_vlan(
     )
     await vlan.save(allow_upsert=True)
 
+    # Assign VLAN to eth8 on leafs
+    leafs = await client.filters(
+        kind="InfraDevice",
+        location__ids=[location["id"]],
+        role__value="leaf",
+        include=["interfaces"],
+    )
+
+    for leaf in leafs:
+        await leaf.interfaces.fetch()
+        for interface in leaf.interfaces.peers:
+            if (
+                interface.peer.typename == "InfraInterfaceL2"
+                and interface.peer.name.value == "Ethernet8"
+            ):
+                await interface.peer.tagged_vlan.fetch()
+                interface.peer.tagged_vlan.add(vlan)
+                await interface.peer.save()
+
 
 class NetworkServicesGenerator(InfrahubGenerator):
     async def generate(self, data: dict) -> None:

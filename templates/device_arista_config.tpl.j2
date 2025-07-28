@@ -59,7 +59,7 @@ ip name-server {{ name_server }}
 {%   endif %}
 ! Vlan Configuration
 {%   for network_services in data.InfraDevice.edges[0].node.topology.node.network_services.edges %}
-{%      if network_services.node.vlan %}
+{%      if network_services.node.vlan.node %}
 vlan {{ network_services.node.vlan.node.vlan_id.value }}
    name {{ network_services.node.vlan.node.name.value }}
 !
@@ -83,7 +83,7 @@ vrf instance {{ vrf.node.name.value }}
 {% if 'leaf' in data.InfraDevice.edges[0].node.name.value %}
 {%   set leaf_ip_suffix = '1.1' if 'leaf1' in data.InfraDevice.edges[0].node.name.value else '1.2' if 'leaf2' in data.InfraDevice.edges[0].node.name.value else None %}
 {%   for network_services in data.InfraDevice.edges[0].node.topology.node.network_services.edges %}
-{%      if network_services.node.vlan and leaf_ip_suffix %}
+{%      if network_services.node.vlan.node and leaf_ip_suffix %}
 interface Vlan{{ network_services.node.vlan.node.vlan_id.value }}
    description "Placeholder interface for testing"
    ip address 10.{{ network_services.node.vlan.node.vlan_id.value }}.{{ leaf_ip_suffix }}/24
