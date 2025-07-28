@@ -80,6 +80,17 @@ vrf instance {{ vrf.node.name.value }}
 {%   endfor %}
 !
 ! Interface Configuration
+{% if 'leaf' in data.InfraDevice.edges[0].node.name.value %}
+{%   set leaf_ip_suffix = '1.1' if 'leaf1' in data.InfraDevice.edges[0].node.name.value else '1.2' if 'leaf2' in data.InfraDevice.edges[0].node.name.value else None %}
+{%   for network_services in data.InfraDevice.edges[0].node.topology.node.network_services.edges %}
+{%      if network_services.node.vlan and leaf_ip_suffix %}
+interface Vlan{{ network_services.node.vlan.node.vlan_id.value }}
+   description "Placeholder interface for testing"
+   ip address 10.{{ network_services.node.vlan.node.name.value }}.{{ leaf_ip_suffix }}/24
+!
+{%      endif %}
+{%   endfor %}
+{% endif %}
 {%   for intf in data.InfraDevice.edges[0].node.interfaces.edges %}
 interface {{ intf.node.name.value }}
 {%      if intf.node.description.value %}
@@ -94,7 +105,6 @@ interface {{ intf.node.name.value }}
 {%      if intf.node.ip_addresses %}
 {%         for ip in intf.node.ip_addresses.edges %}
    ip address {{ ip.node.address.value  }}
-   no switchport
 {%            if intf.node.role.value == "peer" or intf.node.role.value == "backbone" %}
    ip ospf network point-to-point
 {%            endif %}
