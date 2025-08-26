@@ -940,13 +940,13 @@ tests = ["Jinja2 (>=3,<4)", "pytest", "pyyaml (>=6,<7)", "rich (>=12,<14)"]
 
 [[package]]
 name = "infrahub-testcontainers"
-version = "1.3.3"
+version = "1.3.8"
 description = "Testcontainers instance for Infrahub to easily build integration tests"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "infrahub_testcontainers-1.3.3-py3-none-any.whl", hash = "sha256:f8821922b8bf434e6a8e72d0801f803e0ff669d269f0518927b556d13ac2f070"},
-    {file = "infrahub_testcontainers-1.3.3.tar.gz", hash = "sha256:27c6d5dab55f9df3c3f4a5761add14d99a248e989e1eb83f634d0e4499591f4a"},
+    {file = "infrahub_testcontainers-1.3.8-py3-none-any.whl", hash = "sha256:89a663656a906b346e0d0dd60ea6f43807129fec5a214cf09cc18ba3b04e578e"},
+    {file = "infrahub_testcontainers-1.3.8.tar.gz", hash = "sha256:41e47fbde029f1f671ea275e01df6ce0c8c4bbdd1c718a919fa12bb160303a8c"},
 ]
 
 [package.dependencies]
@@ -3196,4 +3196,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10, < 3.13"
-content-hash = "edca2b5a64a85d31640bb2c8abf529c7ad2ed2ae0e2967bbef297b48e9d08375"
+content-hash = "ee342cbdfa949e010ada1d2864032279eb4b26bbb98a417cbf39c8b402a74f10"
