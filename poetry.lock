@@ -940,18 +940,18 @@ tests = ["Jinja2 (>=3,<4)", "pytest", "pyyaml (>=6,<7)", "rich (>=12,<14)"]
 
 [[package]]
 name = "infrahub-testcontainers"
-version = "1.3.3"
+version = "1.4.3"
 description = "Testcontainers instance for Infrahub to easily build integration tests"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "infrahub_testcontainers-1.3.3-py3-none-any.whl", hash = "sha256:f8821922b8bf434e6a8e72d0801f803e0ff669d269f0518927b556d13ac2f070"},
-    {file = "infrahub_testcontainers-1.3.3.tar.gz", hash = "sha256:27c6d5dab55f9df3c3f4a5761add14d99a248e989e1eb83f634d0e4499591f4a"},
+    {file = "infrahub_testcontainers-1.4.3-py3-none-any.whl", hash = "sha256:385c7ab69b1c7dd2eba0057b1f73398603ec373822699fde62ea41ecc19f74b8"},
+    {file = "infrahub_testcontainers-1.4.3.tar.gz", hash = "sha256:818bceed8284f256217ad924f41d1fc3aeb6ac17f1fb42fe14bb6668c2c3287c"},
 ]
 
 [package.dependencies]
 httpx = ">=0.28.1,<0.29.0"
-prefect-client = "3.4.1"
+prefect-client = "3.4.13"
 psutil = "*"
 pydantic = ">=2.10.6,<3.0.0"
 pytest = "*"
@@ -1548,19 +1548,19 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "prefect-client"
-version = "3.4.1"
+version = "3.4.13"
 description = "Workflow orchestration and management."
 optional = false
 python-versions = "<3.14,>=3.9"
 files = [
-    {file = "prefect_client-3.4.1-py3-none-any.whl", hash = "sha256:b7b11a7c98fa13380e6999b3d8543c20767f920c97c27437eac919592170c998"},
-    {file = "prefect_client-3.4.1.tar.gz", hash = "sha256:b0b8e25e62383144962d523a6c6e4c9f8bdedc218354ba1378a993d552e4a21c"},
+    {file = "prefect_client-3.4.13-py3-none-any.whl", hash = "sha256:24d0599c1c3135b8fd55c195312d1b6020d146762b2b046ea2902478f6402cd5"},
+    {file = "prefect_client-3.4.13.tar.gz", hash = "sha256:96572081a14892d7d02667e9e4fa3a3634f5421ab6389bc8aa1e18f475b9e3f2"},
 ]
 
 [package.dependencies]
 anyio = ">=4.4.0,<5.0.0"
 asgi-lifespan = ">=1.0,<3.0"
-cachetools = ">=5.3,<6.0"
+cachetools = ">=5.3,<7.0"
 cloudpickle = ">=2.0,<4.0"
 coolname = ">=1.0.4,<3.0.0"
 dateparser = ">=1.1.1,<2.0.0"
@@ -1573,14 +1573,14 @@ httpcore = ">=1.0.5,<2.0.0"
 httpx = {version = ">=0.23,<0.23.2 || >0.23.2", extras = ["http2"]}
 humanize = ">=4.9.0,<5.0.0"
 jsonpatch = ">=1.32,<2.0"
-jsonschema = ">=4.0.0,<5.0.0"
+jsonschema = ">=4.18.0,<5.0.0"
 opentelemetry-api = ">=1.27.0,<2.0.0"
 orjson = ">=3.7,<4.0"
 packaging = ">=21.3,<25.1"
 pathspec = ">=0.8.0"
 pendulum = {version = ">=3.0.0,<4", markers = "python_version < \"3.13\""}
 prometheus-client = ">=0.20.0"
-pydantic = ">=2.9,<2.10.0 || >2.10.0,<3.0.0"
+pydantic = ">=2.10.1,<2.11.0 || >2.11.0,<2.11.1 || >2.11.1,<2.11.2 || >2.11.2,<2.11.3 || >2.11.3,<2.11.4 || >2.11.4,<3.0.0"
 pydantic-core = ">=2.12.0,<3.0.0"
 pydantic-extra-types = ">=2.8.2,<3.0.0"
 pydantic-settings = ">2.2.1,<2.9.0 || >2.9.0,<3.0.0"
@@ -1595,8 +1595,6 @@ ruamel-yaml = ">=0.17.0"
 sniffio = ">=1.3.0,<2.0.0"
 toml = ">=0.10.0"
 typing-extensions = ">=4.10.0,<5.0.0"
-ujson = ">=5.8.0,<6.0.0"
-uuid7 = ">=0.1.0"
 uvicorn = ">=0.14.0,<0.29.0 || >0.29.0"
 websockets = ">=13.0,<16.0"
 
@@ -2878,17 +2876,6 @@ socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
 zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
-name = "uuid7"
-version = "0.1.0"
-description = "UUID version 7, generating time-sorted UUIDs with 200ns time resolution and 48 bits of randomness"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "uuid7-0.1.0-py2.py3-none-any.whl", hash = "sha256:5e259bb63c8cb4aded5927ff41b444a80d0c7124e8a0ced7cf44efa1f5cccf61"},
-    {file = "uuid7-0.1.0.tar.gz", hash = "sha256:8c57aa32ee7456d3cc68c95c4530bc571646defac01895cfc73545449894a63c"},
-]
-
-[[package]]
 name = "uvicorn"
 version = "0.34.3"
 description = "The lightning-fast ASGI server."
@@ -3196,4 +3183,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10, < 3.13"
-content-hash = "edca2b5a64a85d31640bb2c8abf529c7ad2ed2ae0e2967bbef297b48e9d08375"
+content-hash = "4f36f388058ce6ac5b847cd8eb6e8cb7aa9cf92a8cda19ac2c26d9d52e086fc5"
