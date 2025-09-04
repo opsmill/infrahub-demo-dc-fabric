@@ -7,7 +7,7 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.10, < 3.13"
-infrahub-sdk = {version = "1.13.5", extras = ["all"]}
+infrahub-sdk = {version = "1.14.0", extras = ["all"]}
 invoke = "^2.1.2"
 # nornir-infrahub = "^0, >=0.2.2"
 ansible-core = [
@@ -15,22 +15,22 @@ ansible-core = [
     { version = ">=2.17.8", python = ">=3.10" },
 ]
 netaddr = "^1.3.0"
-paramiko = "^3.5.1"
+paramiko = "^4.0.0"
 deepmerge = "^2.0"
-cvprac = "^1.3.1"
+cvprac = "^1.4.1"
 md-toc = "^9.0.0"
-treelib = "^1.7.0"
-jsonschema = "4.23"
+treelib = "^1.8.0"
+jsonschema = "4.25.1"
 # anta = "^0.11.0"
-pytest = "^8.3.3"
+pytest = "^8.4.1"
 
 [tool.poetry.group.dev.dependencies]
-yamllint = "^1.35.1"
-ruff = "^0.11.4"
-mypy = "^1.14.1"
-pytest = "^8.3.3"
-infrahub-testcontainers = "1.3.3"
-pytest-asyncio = "^1.0.0"
+yamllint = "^1.37.1"
+ruff = "^0.12.11"
+mypy = "^1.17.1"
+pytest = "^8.4.1"
+infrahub-testcontainers = "1.4.3"
+pytest-asyncio = "^1.1.0"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
