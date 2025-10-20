@@ -69,7 +69,7 @@ artifact_definitions:
     parameters:
       device: "name__value"
     content_type: "text/csv"
-    targets: "device_arista"
+    targets: "arista_devices"
     transformation: "interface_csv"
 
 check_definitions:
