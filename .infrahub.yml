@@ -80,7 +80,7 @@ artifact_definitions:
     artifact_name: "interfaces_xml"
     parameters:
       device: "name__value"
-    content_type: "application/xml"
+    content_type: "application/xmls"
     targets: "arista_devices"
     transformation: "interface_xml"
 
