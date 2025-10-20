@@ -23,6 +23,10 @@ jinja2_transforms:
     query: "oc_interfaces"
     template_path: "templates/interface_csv.j2"
 
+  - name: "interface_xml"
+    query: "oc_interfaces"
+    template_path: "templates/interface_xml.j2"
+
 artifact_definitions:
   - name: "Openconfig Interface for Arista devices"
     artifact_name: "openconfig-interfaces"
@@ -71,6 +75,14 @@ artifact_definitions:
     content_type: "text/csv"
     targets: "arista_devices"
     transformation: "interface_csv"
+
+  - name: "Interfaces XML"
+    artifact_name: "interfaces_xml"
+    parameters:
+      device: "name__value"
+    content_type: "application/xml"
+    targets: "arista_devices"
+    transformation: "interface_xml"
 
 check_definitions:
   - name: "check_device_topology"

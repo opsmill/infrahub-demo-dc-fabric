@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inventory>
+  <devices>
+    {% for device in data.InfraDevice.edges %}
+    <device id="{{ device.node.id }}">
+      <interfaces>
+        {% for interface in device.node.interfaces.edges %}
+        <interface name="{{ interface.node.name.value }}">
+          <description>{{ interface.node.description.value | default('') }}</description>
+          <enabled>{{ interface.node.enabled.value | lower }}</enabled>
+        </interface>
+        {% endfor %}
+      </interfaces>
+    </device>
+    {% endfor %}
+  </devices>
+</inventory>
