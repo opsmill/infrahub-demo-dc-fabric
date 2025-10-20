@@ -1,4 +1,6 @@
-name,description,enabled
-{% for interface in data.InfraDevice.edges%}
-{{ interface.node.name }},{{ interface.node.description | default('') }},{{ interface.node.enabled }}
+device_id,interface,description,enabled
+{% for device in data.InfraDevice.edges%}
+{%    for interface in device.node.interfaces.edges %}
+{{ device.node.id }},{{ interface.node.name.value }},{{ interface.node.description.value | default('') }},{{ interface.node.enabled.value }}
+{%    endfor %}
 {% endfor %}
