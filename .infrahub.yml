@@ -19,6 +19,10 @@ jinja2_transforms:
     query: "topology_info"
     template_path: "topology/clab_topology.j2"
 
+  - name: "interface_csv"
+    query: "oc_interfaces"
+    template_path: "templates/interface_csv.j2"
+
 artifact_definitions:
   - name: "Openconfig Interface for Arista devices"
     artifact_name: "openconfig-interfaces"
@@ -59,6 +63,14 @@ artifact_definitions:
     content_type: "text/plain"
     targets: "all_topologies"
     transformation: "clab_topology"
+
+  - name: "Interfaces CSV"
+    artifact_name: "interfaces_csv"
+    parameters:
+      device: "name__value"
+    content_type: "text/csv"
+    targets: "all_devices"
+    transformation: "interface_csv"
 
 check_definitions:
   - name: "check_device_topology"
