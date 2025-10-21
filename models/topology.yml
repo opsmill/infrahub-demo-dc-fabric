@@ -56,7 +56,6 @@ generics:
     human_friendly_id: ["name__value"]
     order_by: [name__value]
     include_in_menu: false
-    menu_placement: "TopologyTopology"
     attributes:
       - name: name
         kind: Text
@@ -83,7 +82,6 @@ generics:
     human_friendly_id: ["name__value"]
     order_by: [name__value]
     include_in_menu: true
-    menu_placement: "TopologyTopology"
     attributes:
       - name: name
         kind: Text
@@ -202,7 +200,6 @@ nodes:
     icon: "eos-icons:neural-network"
     inherit_from:
       - TopologyNetworkStrategy
-    menu_placement: "TopologyNetworkStrategy"
     include_in_menu: false
     order_by: [name__value]
     display_labels:
@@ -233,7 +230,6 @@ nodes:
     icon: "carbon:load-balancer-network"
     inherit_from:
       - TopologyNetworkStrategy
-    menu_placement: "TopologyNetworkStrategy"
     include_in_menu: false
     order_by: [name__value]
     display_labels:
@@ -262,7 +258,6 @@ nodes:
     description: "Physical aspect of topology elements."
     label: "Physical Topology Element"
     icon: "carbon:network-3-reference"
-    menu_placement: "TopologyTopology"
     order_by: [name__value]
     display_labels:
       - name__value
@@ -317,7 +312,6 @@ nodes:
     description: "Represents a configurable option within a Dhcp server."
     label: "Dhcp Option"
     icon: "gis:globe-options"
-    menu_placement: "NetworkManagementServer"
     include_in_menu: false
     display_labels: [name__value]
     order_by: [name__value]
@@ -340,7 +334,6 @@ nodes:
     description: "Represents a Dhcp server in the network."
     label: "Dhcp Server"
     icon: "eos-icons:ip"
-    menu_placement: "NetworkManagementServer"
     include_in_menu: false
     display_labels: [name__value]
     order_by: [name__value]
@@ -361,7 +354,6 @@ nodes:
     description: "Represents a DNS server in the network."
     label: "DNS Server"
     icon: "eos-icons:dns"
-    menu_placement: "NetworkManagementServer"
     display_labels: [name__value]
     order_by: [name__value]
     inherit_from:
@@ -371,7 +363,6 @@ nodes:
     description: "Represents a NTP server in the network."
     label: "NTP Server"
     icon: "iconoir:time-zone"
-    menu_placement: "NetworkManagementServer"
     display_labels: [name__value]
     order_by: [name__value]
     inherit_from:
@@ -383,7 +374,6 @@ nodes:
     description: "Layer 2 network service attached to a Topology."
     label: Layer2 Network Service
     icon: "carbon:ibm-cloud-internet-services"
-    menu_placement: "TopologyNetworkService"
     inherit_from:
       - TopologyNetworkService
     relationships:
@@ -400,7 +390,6 @@ nodes:
     description: "Layer 3 network service attached to a Topology."
     label: Layer3 Network Service
     icon: "carbon:ibm-cloud-internet-services"
-    menu_placement: "TopologyNetworkService"
     inherit_from:
       - TopologyNetworkService
     relationships:

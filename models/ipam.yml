@@ -26,7 +26,6 @@ nodes:
     description: "A VLAN is isolated layer two domain"
     label: "VLAN"
     icon: "mdi:lan-pending"
-    menu_placement: "TopologyNetworkService"
     order_by:
       - name__value
     display_labels:
@@ -220,7 +219,6 @@ nodes:
     description: "Route Target (RFC 4360)"
     label: "Route Target"
     icon: "mdi:target"
-    menu_placement: "InfraVRF"
     order_by:
       - name__value
     display_labels:

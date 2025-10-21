@@ -97,7 +97,6 @@ generics:
 nodes:
   - name: Zone
     namespace: Security
-    menu_placement: SecurityPolicy
     display_labels:
       - name__value
     include_in_menu: true
@@ -117,7 +116,6 @@ nodes:
         peer: SecurityFirewallInterface
   - name: IPAMIPAddress
     namespace: Security
-    menu_placement: SecurityPolicy
     include_in_menu: true
     icon: "mdi:ip-outline"
     description: "Infrahub IPv4/6 address"
@@ -136,7 +134,6 @@ nodes:
         optional: false
   - name: IPAMIPPrefix
     namespace: Security
-    menu_placement: SecurityPolicy
     include_in_menu: true
     icon: "mdi:ip-network-outline"
     description: "Infrahub IPv4/6 prefix"
@@ -155,7 +152,6 @@ nodes:
         optional: false
   - name: IPAddress
     namespace: Security
-    menu_placement: SecurityPolicy
     include_in_menu: true
     description: "IPv4/6 address"
     label: "IP Address"
@@ -175,7 +171,6 @@ nodes:
         optional: true
   - name: Prefix
     namespace: Security
-    menu_placement: SecurityPolicy
     include_in_menu: true
     icon: "mdi:ip-network-outline"
     description: "IPv4/6 prefix"
@@ -197,7 +192,6 @@ nodes:
         optional: true
   - name: IPRange
     namespace: Security
-    menu_placement: SecurityPolicy
     include_in_menu: true
     icon: "mdi:ip-outline"
     description: "IPv4/6 Range"
@@ -222,7 +216,6 @@ nodes:
     description: "Full Qualified Domain Name"
     include_in_menu: true
     icon: "eos-icons:dns"
-    menu_placement: SecurityPolicy
     label: "FQDN"
     display_labels:
       - name__value
@@ -240,7 +233,6 @@ nodes:
         regex: "(?=^.{1,253}$)(^(((?!-)[a-zA-Z0-9-]{1,63}(?<!-))|((?!-)[a-zA-Z0-9-]{1,63}(?<!-)\\.)+[a-zA-Z]{2,63})$)"
   - name: AddressGroup
     namespace: Security
-    menu_placement: SecurityPolicy
     include_in_menu: true
     icon: "material-symbols:menu-book-outline-rounded"
     description: "Group of addresses"
@@ -253,7 +245,6 @@ nodes:
 
   - name: IPProtocol
     namespace: Security
-    menu_placement: SecurityPolicy
     icon: "mdi:protocol"
     include_in_menu: true
     description: "IP protocol"
@@ -271,7 +262,6 @@ nodes:
 
   - name: Service
     namespace: Security
-    menu_placement: SecurityPolicy
     include_in_menu: true
     icon: "eos-icons:application-outlined"
     description: "Service"
@@ -294,7 +284,6 @@ nodes:
 
   - name: ServiceRange
     namespace: Security
-    menu_placement: SecurityPolicy
     include_in_menu: true
     icon: "eos-icons:application-outlined"
     description: "Service range"
@@ -321,7 +310,6 @@ nodes:
 
   - name: ServiceGroup
     namespace: Security
-    menu_placement: SecurityPolicy
     include_in_menu: true
     icon: "material-symbols:menu-book-outline-rounded"
     label: Service group
@@ -366,7 +354,6 @@ nodes:
         kind: Attribute
   - name: PolicyRule
     namespace: Security
-    menu_placement: SecurityPolicy
     include_in_menu: true
     icon: "material-symbols:policy"
     label: Policy rule
@@ -475,7 +462,6 @@ nodes:
       - SecurityPolicyAssignment
     icon: "mdi:firewall"
     include_in_menu: true
-    menu_placement: "InfraGenericDevice"
     attributes:
       - name: role
         kind: Dropdown
@@ -593,7 +579,6 @@ nodes:
   - name: FirewallInterface
     namespace: Security
     label: Firewall Interface
-    menu_placement: "InfraGenericDevice"
     include_in_menu: false
     icon: "mdi:ethernet"
     display_labels:

@@ -43,6 +43,7 @@ def start(context: Context) -> None:
 @task
 def load_schema(context: Context, schema: Path = Path("./models/*.yml")) -> None:
     context.run(f"infrahubctl schema load {schema} --wait 30")
+    context.run("infrahubctl menu load menus/menu.yml")
 
 
 @task

@@ -1,0 +1,357 @@
+# yaml-language-server: $schema=https://schema.infrahub.app/infrahub/menu/latest.json
+---
+apiVersion: infrahub.app/v1
+kind: Menu
+spec:
+  data:
+    # Infrastructure Menu
+    - namespace: Infra
+      name: GenericDevice
+      label: Infrastructure
+      kind: InfraGenericDevice
+      children:
+        data:
+          - namespace: Infra
+            name: Device
+            label: Devices
+            kind: InfraDevice
+
+          - namespace: Infra
+            name: Interface
+            label: Interfaces
+            kind: InfraInterface
+
+          - namespace: Infra
+            name: InterfaceL2
+            label: L2 Interfaces
+            kind: InfraInterfaceL2
+
+          - namespace: Infra
+            name: InterfaceL3
+            label: L3 Interfaces
+            kind: InfraInterfaceL3
+
+          - namespace: Infra
+            name: DeviceType
+            label: Device Types
+            kind: InfraDeviceType
+
+          - namespace: Infra
+            name: Platform
+            label: Platforms
+            kind: InfraPlatform
+
+          - namespace: Infra
+            name: Endpoint
+            label: Endpoints
+            kind: InfraEndpoint
+
+    # Circuits Menu
+    - namespace: Infra
+      name: Circuit
+      label: Circuits
+      kind: InfraCircuit
+      children:
+        data:
+          - namespace: Infra
+            name: CircuitEndpoint
+            label: Circuit Endpoints
+            kind: InfraCircuitEndpoint
+
+          - namespace: Infra
+            name: CircuitType
+            label: Circuit Types
+            kind: InfraCircuitType
+
+    # IPAM Menu
+    - namespace: Infra
+      name: VRF
+      label: IP Address Management
+      kind: InfraVRF
+      children:
+        data:
+          - namespace: Infra
+            name: IPAddress
+            label: IP Addresses
+            kind: InfraIPAddress
+
+          - namespace: Infra
+            name: Prefix
+            label: Prefixes
+            kind: InfraPrefix
+
+    # Locations Menu
+    - namespace: Location
+      name: Generic
+      label: Locations
+      kind: LocationGeneric
+      children:
+        data:
+          - namespace: Location
+            name: Continent
+            label: Continents
+            kind: LocationContinent
+
+          - namespace: Location
+            name: Country
+            label: Countries
+            kind: LocationCountry
+
+          - namespace: Location
+            name: Metro
+            label: Metros
+            kind: LocationMetro
+
+          - namespace: Location
+            name: Region
+            label: Regions
+            kind: LocationRegion
+
+          - namespace: Location
+            name: Building
+            label: Buildings
+            kind: LocationBuilding
+
+          - namespace: Location
+            name: Suite
+            label: Suites
+            kind: LocationSuite
+
+          - namespace: Location
+            name: Floor
+            label: Floors
+            kind: LocationFloor
+
+          - namespace: Location
+            name: Rack
+            label: Racks
+            kind: LocationRack
+
+    # Organizations Menu
+    - namespace: Organization
+      name: Generic
+      label: Organizations
+      kind: OrganizationGeneric
+      children:
+        data:
+          - namespace: Organization
+            name: Manufacturer
+            label: Manufacturers
+            kind: OrganizationManufacturer
+
+          - namespace: Organization
+            name: Tenant
+            label: Tenants
+            kind: OrganizationTenant
+
+          - namespace: Organization
+            name: Provider
+            label: Providers
+            kind: OrganizationProvider
+
+    # Routing Menu
+    - namespace: Infra
+      name: BGPSession
+      label: Routing
+      kind: InfraBGPSession
+      children:
+        data:
+          - namespace: Infra
+            name: AutonomousSystem
+            label: Autonomous Systems
+            kind: InfraAutonomousSystem
+
+          - namespace: Infra
+            name: BGPPeerGroup
+            label: BGP Peer Groups
+            kind: InfraBGPPeerGroup
+
+    # Security Menu
+    - namespace: Security
+      name: Policy
+      label: Security
+      kind: SecurityPolicy
+      children:
+        data:
+          - namespace: Security
+            name: PolicyRule
+            label: Policy Rules
+            kind: SecurityPolicyRule
+
+          - namespace: Security
+            name: PolicyAssignment
+            label: Policy Assignments
+            kind: SecurityPolicyAssignment
+
+          - namespace: Security
+            name: Zone
+            label: Security Zones
+            kind: SecurityZone
+
+          - namespace: Security
+            name: GenericAddress
+            label: Address Objects
+            kind: SecurityGenericAddress
+
+          - namespace: Security
+            name: AddressGroup
+            label: Address Groups
+            kind: SecurityAddressGroup
+
+          - namespace: Security
+            name: GenericAddressGroup
+            label: Generic Address Groups
+            kind: SecurityGenericAddressGroup
+
+          - namespace: Security
+            name: GenericService
+            label: Service Objects
+            kind: SecurityGenericService
+
+          - namespace: Security
+            name: ServiceGroup
+            label: Service Groups
+            kind: SecurityServiceGroup
+
+          - namespace: Security
+            name: GenericServiceGroup
+            label: Generic Service Groups
+            kind: SecurityGenericServiceGroup
+
+          - namespace: Security
+            name: IPAddress
+            label: IP Addresses
+            kind: SecurityIPAddress
+
+          - namespace: Security
+            name: IPAMIPAddress
+            label: IPAM IP Addresses
+            kind: SecurityIPAMIPAddress
+
+          - namespace: Security
+            name: Prefix
+            label: Prefixes
+            kind: SecurityPrefix
+
+          - namespace: Security
+            name: IPAMIPPrefix
+            label: IPAM Prefixes
+            kind: SecurityIPAMIPPrefix
+
+          - namespace: Security
+            name: FQDN
+            label: FQDNs
+            kind: SecurityFQDN
+
+          - namespace: Security
+            name: IPProtocol
+            label: IP Protocols
+            kind: SecurityIPProtocol
+
+          - namespace: Security
+            name: IPRange
+            label: IP Ranges
+            kind: SecurityIPRange
+
+          - namespace: Security
+            name: Service
+            label: Services
+            kind: SecurityService
+
+          - namespace: Security
+            name: ServiceRange
+            label: Service Ranges
+            kind: SecurityServiceRange
+
+          - namespace: Security
+            name: RenderedPolicyRule
+            label: Rendered Policy Rules
+            kind: SecurityRenderedPolicyRule
+
+          - namespace: Security
+            name: Firewall
+            label: Firewalls
+            kind: SecurityFirewall
+
+          - namespace: Security
+            name: FirewallInterface
+            label: Firewall Interfaces
+            kind: SecurityFirewallInterface
+
+    # Topology Menu
+    - namespace: Topology
+      name: Topology
+      label: Topology
+      kind: TopologyTopology
+      children:
+        data:
+          - namespace: Topology
+            name: GenericElement
+            label: Generic Elements
+            kind: TopologyGenericElement
+
+          - namespace: Topology
+            name: PhysicalElement
+            label: Physical Elements
+            kind: TopologyPhysicalElement
+
+    # Network Services Menu
+    - namespace: Topology
+      name: NetworkService
+      label: Network Services
+      kind: TopologyNetworkService
+      children:
+        data:
+          - namespace: Topology
+            name: Layer2NetworkService
+            label: Layer 2 Services
+            kind: TopologyLayer2NetworkService
+
+          - namespace: Topology
+            name: Layer3NetworkService
+            label: Layer 3 Services
+            kind: TopologyLayer3NetworkService
+
+          - namespace: Infra
+            name: VLAN
+            label: VLANs
+            kind: InfraVLAN
+
+    # Network Strategy Menu
+    - namespace: Topology
+      name: NetworkStrategy
+      label: Network Strategies
+      kind: TopologyNetworkStrategy
+      children:
+        data:
+          - namespace: Topology
+            name: EVPNStrategy
+            label: EVPN Strategies
+            kind: TopologyEVPNStrategy
+
+          - namespace: Topology
+            name: MPLSStrategy
+            label: MPLS Strategies
+            kind: TopologyMPLSStrategy
+
+    # Management Servers Menu
+    - namespace: Network
+      name: ManagementServer
+      label: Management Servers
+      kind: NetworkManagementServer
+      children:
+        data:
+          - namespace: Network
+            name: NTPServer
+            label: NTP Servers
+            kind: NetworkNTPServer
+
+          - namespace: Network
+            name: NameServer
+            label: Name Servers
+            kind: NetworkNameServer
+
+          - namespace: Network
+            name: DhcpServer
+            label: DHCP Servers
+            kind: NetworkDhcpServer

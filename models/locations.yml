@@ -66,7 +66,6 @@ nodes:
     namespace: Location
     inherit_from: ["LocationGeneric"]
     include_in_menu: true
-    menu_placement: "LocationGeneric"
     label: Continent
     display_labels:
       - name__value
@@ -77,7 +76,6 @@ nodes:
     namespace: Location
     inherit_from: ["LocationGeneric"]
     include_in_menu: true
-    menu_placement: "LocationGeneric"
     label: Country
     display_labels:
       - name__value
@@ -88,7 +86,6 @@ nodes:
     namespace: Location
     inherit_from: ["LocationGeneric"]
     include_in_menu: true
-    menu_placement: "LocationGeneric"
     label: Region
     display_labels:
       - name__value
@@ -99,7 +96,6 @@ nodes:
     namespace: Location
     inherit_from: ["LocationGeneric"]
     include_in_menu: true
-    menu_placement: "LocationGeneric"
     label: Metro
     display_labels:
       - name__value
@@ -110,7 +106,6 @@ nodes:
     namespace: Location
     inherit_from: ["LocationGeneric"]
     include_in_menu: true
-    menu_placement: "LocationGeneric"
     label: Building
     display_labels:
       - name__value
@@ -137,7 +132,6 @@ nodes:
     namespace: Location
     inherit_from: ["LocationGeneric"]
     include_in_menu: true
-    menu_placement: "LocationGeneric"
     label: Floor
     display_labels:
       - name__value
@@ -148,7 +142,6 @@ nodes:
     namespace: Location
     inherit_from: ["LocationGeneric"]
     include_in_menu: true
-    menu_placement: "LocationGeneric"
     label: Suite
     display_labels:
       - name__value
@@ -173,7 +166,6 @@ nodes:
     label: Rack
     display_labels:
       - name__value
-    menu_placement: "LocationGeneric"
     parent: "LocationSuite"
     children: ""
     icon: "clarity:rack-server-line"

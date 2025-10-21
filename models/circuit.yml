@@ -79,7 +79,7 @@ nodes:
     description: "A type of Circuit"
     label: "Circuit Type"
     icon: "mdi:poll"
-    menu_placement: "InfraCircuit"
+    include_in_menu: false
     display_labels:
       - name__value
     order_by:
@@ -104,7 +104,6 @@ nodes:
     description: "A Circuit endpoint is attached to each end of a circuit"
     label: "Circuit Endpoint"
     icon: "mdi:ethernet-cable"
-    menu_placement: "InfraCircuit"
     include_in_menu: false
     attributes:
       - name: description
