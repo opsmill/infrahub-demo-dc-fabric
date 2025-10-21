@@ -8,350 +8,408 @@ spec:
     - namespace: Infra
       name: GenericDevice
       label: Infrastructure
+      icon: "mdi:server"
       kind: InfraGenericDevice
       children:
         data:
           - namespace: Infra
             name: Device
             label: Devices
+            icon: "mdi:server"
             kind: InfraDevice
 
           - namespace: Infra
             name: Interface
             label: Interfaces
+            icon: "mdi:ethernet"
             kind: InfraInterface
 
           - namespace: Infra
             name: InterfaceL2
             label: L2 Interfaces
+            icon: "mdi:ethernet-cable"
             kind: InfraInterfaceL2
 
           - namespace: Infra
             name: InterfaceL3
             label: L3 Interfaces
+            icon: "mdi:ip"
             kind: InfraInterfaceL3
 
           - namespace: Infra
             name: DeviceType
             label: Device Types
+            icon: "mdi:format-list-bulleted-type"
             kind: InfraDeviceType
 
           - namespace: Infra
             name: Platform
             label: Platforms
+            icon: "mdi:application-cog-outline"
             kind: InfraPlatform
 
           - namespace: Infra
             name: Endpoint
             label: Endpoints
+            icon: "mdi:connection"
             kind: InfraEndpoint
 
     # Circuits Menu
     - namespace: Infra
       name: Circuit
       label: Circuits
+      icon: "mdi:transit-connection-variant"
       kind: InfraCircuit
       children:
         data:
           - namespace: Infra
             name: CircuitEndpoint
             label: Circuit Endpoints
+            icon: "mdi:transit-connection"
             kind: InfraCircuitEndpoint
 
           - namespace: Infra
             name: CircuitType
             label: Circuit Types
+            icon: "mdi:format-list-bulleted-type"
             kind: InfraCircuitType
-
-    # IPAM Menu
-    - namespace: Infra
-      name: VRF
-      label: IP Address Management
-      kind: InfraVRF
-      children:
-        data:
-          - namespace: Infra
-            name: IPAddress
-            label: IP Addresses
-            kind: InfraIPAddress
-
-          - namespace: Infra
-            name: Prefix
-            label: Prefixes
-            kind: InfraPrefix
 
     # Locations Menu
     - namespace: Location
       name: Generic
       label: Locations
+      icon: "mingcute:location-line"
       kind: LocationGeneric
       children:
         data:
           - namespace: Location
             name: Continent
             label: Continents
+            icon: "mdi:earth"
             kind: LocationContinent
 
           - namespace: Location
             name: Country
             label: Countries
+            icon: "mdi:flag"
             kind: LocationCountry
 
           - namespace: Location
             name: Metro
             label: Metros
+            icon: "mdi:city"
             kind: LocationMetro
 
           - namespace: Location
             name: Region
             label: Regions
+            icon: "mdi:map-marker-radius"
             kind: LocationRegion
 
           - namespace: Location
             name: Building
             label: Buildings
+            icon: "mdi:office-building"
             kind: LocationBuilding
 
           - namespace: Location
             name: Suite
             label: Suites
+            icon: "mdi:door"
             kind: LocationSuite
 
           - namespace: Location
             name: Floor
             label: Floors
+            icon: "mdi:stairs"
             kind: LocationFloor
 
           - namespace: Location
             name: Rack
             label: Racks
+            icon: "mdi:server-security"
             kind: LocationRack
 
     # Organizations Menu
     - namespace: Organization
       name: Generic
       label: Organizations
+      icon: "mdi:domain"
       kind: OrganizationGeneric
       children:
         data:
           - namespace: Organization
             name: Manufacturer
             label: Manufacturers
+            icon: "mdi:factory"
             kind: OrganizationManufacturer
 
           - namespace: Organization
             name: Tenant
             label: Tenants
+            icon: "mdi:account-group"
             kind: OrganizationTenant
 
           - namespace: Organization
             name: Provider
             label: Providers
+            icon: "mdi:truck-delivery"
             kind: OrganizationProvider
 
     # Routing Menu
     - namespace: Infra
       name: BGPSession
       label: Routing
+      icon: "mdi:router"
       kind: InfraBGPSession
       children:
         data:
           - namespace: Infra
             name: AutonomousSystem
             label: Autonomous Systems
+            icon: "mdi:web"
             kind: InfraAutonomousSystem
 
           - namespace: Infra
             name: BGPPeerGroup
             label: BGP Peer Groups
+            icon: "mdi:account-multiple"
             kind: InfraBGPPeerGroup
+
+          - namespace: Infra
+            name: RouteTarget
+            label: Route Targets
+            icon: "mdi:target"
+            kind: InfraRouteTarget
 
     # Security Menu
     - namespace: Security
       name: Policy
       label: Security
+      icon: "mdi:shield-lock"
       kind: SecurityPolicy
       children:
         data:
           - namespace: Security
             name: PolicyRule
             label: Policy Rules
+            icon: "mdi:file-document-outline"
             kind: SecurityPolicyRule
 
           - namespace: Security
             name: PolicyAssignment
             label: Policy Assignments
+            icon: "mdi:file-link"
             kind: SecurityPolicyAssignment
 
           - namespace: Security
             name: Zone
             label: Security Zones
+            icon: "mdi:shield-outline"
             kind: SecurityZone
 
           - namespace: Security
             name: GenericAddress
             label: Address Objects
+            icon: "mdi:ip-network"
             kind: SecurityGenericAddress
 
           - namespace: Security
             name: AddressGroup
             label: Address Groups
+            icon: "mdi:ip-network-outline"
             kind: SecurityAddressGroup
 
           - namespace: Security
             name: GenericAddressGroup
             label: Generic Address Groups
+            icon: "mdi:folder-network"
             kind: SecurityGenericAddressGroup
 
           - namespace: Security
             name: GenericService
             label: Service Objects
+            icon: "mdi:application"
             kind: SecurityGenericService
 
           - namespace: Security
             name: ServiceGroup
             label: Service Groups
+            icon: "mdi:application-outline"
             kind: SecurityServiceGroup
 
           - namespace: Security
             name: GenericServiceGroup
             label: Generic Service Groups
+            icon: "mdi:folder-cog"
             kind: SecurityGenericServiceGroup
 
           - namespace: Security
             name: IPAddress
             label: IP Addresses
+            icon: "mdi:ip"
             kind: SecurityIPAddress
 
           - namespace: Security
             name: IPAMIPAddress
             label: IPAM IP Addresses
+            icon: "mdi:ip-outline"
             kind: SecurityIPAMIPAddress
 
           - namespace: Security
             name: Prefix
             label: Prefixes
+            icon: "mdi:network"
             kind: SecurityPrefix
 
           - namespace: Security
             name: IPAMIPPrefix
             label: IPAM Prefixes
+            icon: "mdi:network-outline"
             kind: SecurityIPAMIPPrefix
 
           - namespace: Security
             name: FQDN
             label: FQDNs
+            icon: "mdi:web"
             kind: SecurityFQDN
 
           - namespace: Security
             name: IPProtocol
             label: IP Protocols
+            icon: "mdi:protocol"
             kind: SecurityIPProtocol
 
           - namespace: Security
             name: IPRange
             label: IP Ranges
+            icon: "mdi:format-line-weight"
             kind: SecurityIPRange
 
           - namespace: Security
             name: Service
             label: Services
+            icon: "mdi:apps"
             kind: SecurityService
 
           - namespace: Security
             name: ServiceRange
             label: Service Ranges
+            icon: "mdi:apps-box"
             kind: SecurityServiceRange
 
           - namespace: Security
             name: RenderedPolicyRule
             label: Rendered Policy Rules
+            icon: "mdi:file-check"
             kind: SecurityRenderedPolicyRule
 
           - namespace: Security
             name: Firewall
             label: Firewalls
+            icon: "mdi:firewall"
             kind: SecurityFirewall
 
           - namespace: Security
             name: FirewallInterface
             label: Firewall Interfaces
+            icon: "mdi:ethernet-cable"
             kind: SecurityFirewallInterface
 
     # Topology Menu
     - namespace: Topology
       name: Topology
       label: Topology
+      icon: "mdi:lan"
       kind: TopologyTopology
       children:
         data:
           - namespace: Topology
             name: GenericElement
             label: Generic Elements
+            icon: "mdi:hexagon"
             kind: TopologyGenericElement
 
           - namespace: Topology
             name: PhysicalElement
             label: Physical Elements
+            icon: "mdi:hexagon-outline"
             kind: TopologyPhysicalElement
 
     # Network Services Menu
     - namespace: Topology
       name: NetworkService
       label: Network Services
+      icon: "carbon:container-services"
       kind: TopologyNetworkService
       children:
         data:
           - namespace: Topology
             name: Layer2NetworkService
             label: Layer 2 Services
+            icon: "mdi:layers"
             kind: TopologyLayer2NetworkService
 
           - namespace: Topology
             name: Layer3NetworkService
             label: Layer 3 Services
+            icon: "mdi:layers-triple"
             kind: TopologyLayer3NetworkService
 
           - namespace: Infra
             name: VLAN
             label: VLANs
+            icon: "mdi:lan"
             kind: InfraVLAN
 
     # Network Strategy Menu
     - namespace: Topology
       name: NetworkStrategy
       label: Network Strategies
+      icon: "mdi:strategy"
       kind: TopologyNetworkStrategy
       children:
         data:
           - namespace: Topology
             name: EVPNStrategy
             label: EVPN Strategies
+            icon: "mdi:network-strength-4"
             kind: TopologyEVPNStrategy
 
           - namespace: Topology
             name: MPLSStrategy
             label: MPLS Strategies
+            icon: "mdi:label"
             kind: TopologyMPLSStrategy
 
     # Management Servers Menu
     - namespace: Network
       name: ManagementServer
       label: Management Servers
+      icon: "mdi:server-network"
       kind: NetworkManagementServer
       children:
         data:
           - namespace: Network
             name: NTPServer
             label: NTP Servers
+            icon: "mdi:clock-outline"
             kind: NetworkNTPServer
 
           - namespace: Network
             name: NameServer
             label: Name Servers
+            icon: "mdi:dns"
             kind: NetworkNameServer
 
           - namespace: Network
             name: DhcpServer
             label: DHCP Servers
+            icon: "mdi:ip-network"
             kind: NetworkDhcpServer
+
+          - namespace: Network
+            name: DhcpOption
+            label: DHCP Options
+            icon: "mdi:cog"
+            kind: NetworkDhcpOption

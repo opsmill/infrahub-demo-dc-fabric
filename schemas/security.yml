@@ -5,7 +5,7 @@ generics:
   - name: PolicyAssignment
     namespace: Security
     label: Security Policy
-    include_in_menu: false
+    # include_in_menu: false
     relationships:
       - name: rules
         label: Policy
@@ -15,7 +15,7 @@ generics:
         optional: true
   - name: GenericAddressGroup
     namespace: Security
-    include_in_menu: false
+    # include_in_menu: false
     display_labels:
       - name__value
     hierarchical: true
@@ -39,7 +39,7 @@ generics:
     namespace: Security
     display_labels:
       - name__value
-    include_in_menu: false
+    # include_in_menu: false
     attributes:
       - name: name
         kind: Text
@@ -53,7 +53,7 @@ generics:
         optional: true
   - name: GenericServiceGroup
     namespace: Security
-    include_in_menu: false
+    # include_in_menu: false
     hierarchical: true
     display_labels:
       - name__value
@@ -74,7 +74,7 @@ generics:
         kind: Component
         optional: true
   - name: GenericService
-    include_in_menu: false
+    # include_in_menu: false
     namespace: Security
     display_labels:
       - name__value
@@ -99,7 +99,7 @@ nodes:
     namespace: Security
     display_labels:
       - name__value
-    include_in_menu: true
+    # include_in_menu: true
     icon: "game-icons:fire-zone"
     description: "Security zones"
     label: "Security zone"
@@ -116,7 +116,7 @@ nodes:
         peer: SecurityFirewallInterface
   - name: IPAMIPAddress
     namespace: Security
-    include_in_menu: true
+    # include_in_menu: true
     icon: "mdi:ip-outline"
     description: "Infrahub IPv4/6 address"
     label: "IPAM IP Address"
@@ -134,7 +134,7 @@ nodes:
         optional: false
   - name: IPAMIPPrefix
     namespace: Security
-    include_in_menu: true
+    # include_in_menu: true
     icon: "mdi:ip-network-outline"
     description: "Infrahub IPv4/6 prefix"
     label: "IPAM IP Prefix"
@@ -152,7 +152,7 @@ nodes:
         optional: false
   - name: IPAddress
     namespace: Security
-    include_in_menu: true
+    # include_in_menu: true
     description: "IPv4/6 address"
     label: "IP Address"
     icon: "mdi:ip-outline"
@@ -171,7 +171,7 @@ nodes:
         optional: true
   - name: Prefix
     namespace: Security
-    include_in_menu: true
+    # include_in_menu: true
     icon: "mdi:ip-network-outline"
     description: "IPv4/6 prefix"
     label: "Prefix"
@@ -192,7 +192,7 @@ nodes:
         optional: true
   - name: IPRange
     namespace: Security
-    include_in_menu: true
+    # include_in_menu: true
     icon: "mdi:ip-outline"
     description: "IPv4/6 Range"
     label: "IP Range"
@@ -214,7 +214,7 @@ nodes:
   - name: FQDN
     namespace: Security
     description: "Full Qualified Domain Name"
-    include_in_menu: true
+    # include_in_menu: true
     icon: "eos-icons:dns"
     label: "FQDN"
     display_labels:
@@ -233,7 +233,7 @@ nodes:
         regex: "(?=^.{1,253}$)(^(((?!-)[a-zA-Z0-9-]{1,63}(?<!-))|((?!-)[a-zA-Z0-9-]{1,63}(?<!-)\\.)+[a-zA-Z]{2,63})$)"
   - name: AddressGroup
     namespace: Security
-    include_in_menu: true
+    # include_in_menu: true
     icon: "material-symbols:menu-book-outline-rounded"
     description: "Group of addresses"
     label: Address Group
@@ -246,7 +246,7 @@ nodes:
   - name: IPProtocol
     namespace: Security
     icon: "mdi:protocol"
-    include_in_menu: true
+    # include_in_menu: true
     description: "IP protocol"
     label: IP Protocols
     display_labels:
@@ -262,7 +262,7 @@ nodes:
 
   - name: Service
     namespace: Security
-    include_in_menu: true
+    # include_in_menu: true
     icon: "eos-icons:application-outlined"
     description: "Service"
     label: Service
@@ -284,7 +284,7 @@ nodes:
 
   - name: ServiceRange
     namespace: Security
-    include_in_menu: true
+    # include_in_menu: true
     icon: "eos-icons:application-outlined"
     description: "Service range"
     label: Service range
@@ -310,7 +310,7 @@ nodes:
 
   - name: ServiceGroup
     namespace: Security
-    include_in_menu: true
+    # include_in_menu: true
     icon: "material-symbols:menu-book-outline-rounded"
     label: Service group
     description: "Group of services"
@@ -354,7 +354,7 @@ nodes:
         kind: Attribute
   - name: PolicyRule
     namespace: Security
-    include_in_menu: true
+    # include_in_menu: true
     icon: "material-symbols:policy"
     label: Policy rule
     description: "Policy rule"
@@ -461,7 +461,7 @@ nodes:
       - CoreArtifactTarget
       - SecurityPolicyAssignment
     icon: "mdi:firewall"
-    include_in_menu: true
+    # include_in_menu: true
     attributes:
       - name: role
         kind: Dropdown
@@ -479,7 +479,7 @@ nodes:
         kind: Attribute
   - name: RenderedPolicyRule
     namespace: Security
-    include_in_menu: false
+    # include_in_menu: false
     label: Policy rule
     description: "Policy rule"
     order_by:
@@ -579,7 +579,7 @@ nodes:
   - name: FirewallInterface
     namespace: Security
     label: Firewall Interface
-    include_in_menu: false
+    # include_in_menu: false
     icon: "mdi:ethernet"
     display_labels:
       - name__value

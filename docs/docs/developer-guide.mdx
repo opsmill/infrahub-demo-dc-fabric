@@ -9,7 +9,7 @@ This guide explains how the Infrahub DC fabric demo works under the hood. Use th
 The demo follows a layered architecture:
 
 ```
-Schema (models/)
+Schema (schemas/)
     ↓
 Bootstrap Scripts (bootstrap/)
     ↓
@@ -28,7 +28,7 @@ Each layer builds on the previous one, with clear separation of concerns.
 
 ### Schema structure
 
-The schema defines the data model using YAML files in `models/`:
+The schema defines the data model using YAML files in `schemas/`:
 
 - `dcim.yml` - Devices, interfaces, platforms, and physical infrastructure
 - `ipam.yml` - IP addresses, prefixes, VLANs, VRFs, and resource pools
@@ -89,7 +89,7 @@ Dropdowns provide constrained values with UI representations.
 Schemas are loaded with:
 
 ```bash
-infrahubctl schema load models/*.yml --wait 30
+infrahubctl schema load schemas/*.yml --wait 30
 ```
 
 Infrahub validates the schema, creates database structures, and makes object types available via GraphQL and the UI.
@@ -501,7 +501,7 @@ Tests inherit from `TestInfrahubDockerWithClient` which provides:
 
 ### Making schema changes
 
-1. Modify schema files in `models/`
+1. Modify schema files in `schemas/`
 2. Reload schema: `poetry run invoke load-schema`
 3. Infrahub applies migrations automatically
 4. Update bootstrap scripts if needed

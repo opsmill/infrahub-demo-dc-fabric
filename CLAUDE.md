@@ -73,7 +73,7 @@ invoke lint-mypy    # mypy type checking
 
 ## Architecture
 
-### Schema Models (models/)
+### Schema Models (schemas/)
 
 YAML schema files define the Infrahub data model:
 
@@ -86,7 +86,7 @@ YAML schema files define the Infrahub data model:
 - `topology.yml` - Network topology definitions
 - `circuit.yml` - Circuit and connectivity definitions
 
-Schemas are loaded with: `infrahubctl schema load models/*.yml --wait 30`
+Schemas are loaded with: `infrahubctl schema load schemas/*.yml --wait 30`
 
 ### Bootstrap Scripts (bootstrap/)
 

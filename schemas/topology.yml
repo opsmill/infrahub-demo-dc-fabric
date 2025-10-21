@@ -9,7 +9,7 @@ generics:
     display_labels: [name__value]
     order_by: [name__value]
     icon: mdi:service-toolbox
-    include_in_menu: true
+    # include_in_menu: true
     attributes:
       - name: name
         kind: Text
@@ -55,7 +55,7 @@ generics:
     display_labels: [name__value]
     human_friendly_id: ["name__value"]
     order_by: [name__value]
-    include_in_menu: false
+    # include_in_menu: false
     attributes:
       - name: name
         kind: Text
@@ -81,7 +81,7 @@ generics:
     display_labels: [name__value]
     human_friendly_id: ["name__value"]
     order_by: [name__value]
-    include_in_menu: true
+    # include_in_menu: true
     attributes:
       - name: name
         kind: Text
@@ -200,7 +200,7 @@ nodes:
     icon: "eos-icons:neural-network"
     inherit_from:
       - TopologyNetworkStrategy
-    include_in_menu: false
+    # include_in_menu: false
     order_by: [name__value]
     display_labels:
       - name__value
@@ -230,7 +230,7 @@ nodes:
     icon: "carbon:load-balancer-network"
     inherit_from:
       - TopologyNetworkStrategy
-    include_in_menu: false
+    # include_in_menu: false
     order_by: [name__value]
     display_labels:
       - name__value
@@ -312,7 +312,7 @@ nodes:
     description: "Represents a configurable option within a Dhcp server."
     label: "Dhcp Option"
     icon: "gis:globe-options"
-    include_in_menu: false
+    # include_in_menu: false
     display_labels: [name__value]
     order_by: [name__value]
     attributes:
@@ -334,7 +334,7 @@ nodes:
     description: "Represents a Dhcp server in the network."
     label: "Dhcp Server"
     icon: "eos-icons:ip"
-    include_in_menu: false
+    # include_in_menu: false
     display_labels: [name__value]
     order_by: [name__value]
     inherit_from:

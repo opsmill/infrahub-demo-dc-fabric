@@ -32,7 +32,7 @@ class TestDemoflow(TestInfrahubDockerWithClient):
         logging.info("Invoking schema load command")
 
         load_schemas = self.execute_command(
-            "infrahubctl schema load models --wait 60",
+            "infrahubctl schema load schemas --wait 60",
             address=client_main.config.address,
         )
 

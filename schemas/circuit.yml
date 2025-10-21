@@ -8,7 +8,7 @@ nodes:
     description: "A Circuit represent a single physical link between two locations"
     label: "Circuit"
     icon: "mdi:cable-data"
-    include_in_menu: false
+    # include_in_menu: false
     order_by:
       - circuit_id__value
     display_labels:
@@ -79,7 +79,7 @@ nodes:
     description: "A type of Circuit"
     label: "Circuit Type"
     icon: "mdi:poll"
-    include_in_menu: false
+    # include_in_menu: false
     display_labels:
       - name__value
     order_by:
@@ -104,7 +104,7 @@ nodes:
     description: "A Circuit endpoint is attached to each end of a circuit"
     label: "Circuit Endpoint"
     icon: "mdi:ethernet-cable"
-    include_in_menu: false
+    # include_in_menu: false
     attributes:
       - name: description
         kind: Text

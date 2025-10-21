@@ -8,7 +8,7 @@ nodes:
     description: "IP Address"
     label: "IP Address"
     icon: "mdi:ip"
-    include_in_menu: false
+    # include_in_menu: false
     inherit_from:
       - BuiltinIPAddress
     uniqueness_constraints:
@@ -85,7 +85,7 @@ nodes:
     namespace: Infra
     description: "IPv4 or IPv6 network (with mask)"
     icon: "mdi:ip-network"
-    include_in_menu: false
+    # include_in_menu: false
     label: "Prefix"
     uniqueness_constraints:
       - [prefix__value, ip_namespace]

@@ -95,7 +95,7 @@ generics:
     description: "Generic Network Interface."
     label: "Interface"
     icon: "mdi:ethernet"
-    include_in_menu: true
+    # include_in_menu: true
     display_labels:
       - name__value
     order_by:
@@ -203,7 +203,7 @@ generics:
   - name: Endpoint
     namespace: Infra
     description: "Generic Endpoint to connect two objects together."
-    include_in_menu: false
+    # include_in_menu: false
     label: "Endpoint"
     relationships:
       - name: connected_endpoint
@@ -364,7 +364,7 @@ nodes:
     description: "Network Layer 3 Interface"
     label: "Interface L3"
     icon: "mdi:ethernet"
-    include_in_menu: false
+    # include_in_menu: false
     display_labels:
       - name__value
     order_by:
@@ -384,7 +384,7 @@ nodes:
     description: "Network Layer 2 Interface"
     label: "Interface L2"
     icon: "mdi:ethernet"
-    include_in_menu: false
+    # include_in_menu: false
     display_labels:
       - name__value
     order_by:
