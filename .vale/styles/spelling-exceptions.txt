@@ -16,6 +16,7 @@ codespaces
 combobox
 config
 Config
+configs
 Containerlab
 content_type
 convert_query_response
@@ -28,10 +29,12 @@ default_filter
 deserialized
 dev
 devcontainer
+Diataxis
 direnv
 display_labels
 docker
 dockerfile
+Docstrings
 docusaurus
 e2e
 edit_default_branch
@@ -100,12 +103,15 @@ rebase
 rebased
 Redoc
 repo
-ressources
 REST
 schema_mapping
 sdk
 subcommand
+sudo
 subnet
+supernet
+supernets
+SVIs
 template_path
 toml
 towncrier
@@ -123,7 +129,9 @@ validators
 Version Control
 Vitest
 VLANs
+VRFs
 vscode
 VSCode
+walkthrough
 Yaml
 yamllint

@@ -14,6 +14,7 @@ exceptions:
   - Alpha
   - Ansible
   - API
+  - Arista AVD
   - Attributes
   - AWS S3
   - Beta
@@ -21,6 +22,7 @@ exceptions:
   - CA certificates
   - CI
   - Codespaces
+  - Containerlab
   - CoreArtifactTarget
   - CoreRepository
   - CoreGroup
@@ -50,6 +52,10 @@ exceptions:
   - Jinja
   - Jinja2
   - JWT
+  - L2
+  - L3
+  - Layer 2
+  - Layer 3
   - Namespace
   - NATS
   - Node

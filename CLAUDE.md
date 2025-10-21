@@ -71,6 +71,24 @@ invoke lint-ruff    # ruff check
 invoke lint-mypy    # mypy type checking
 ```
 
+### Documentation
+
+The documentation is built with Docusaurus and lives in the `docs/` directory.
+
+```bash
+# Build documentation (requires Node.js >= 20.0)
+cd docs
+npm install
+npm run build
+
+# Serve documentation locally
+npm run start
+```
+
+**Requirements:**
+- Node.js >= 20.0 (specified in `.node-version` and `docs/package.json`)
+- The `.node-version` file ensures Cloudflare Pages uses the correct Node.js version
+
 ## Architecture
 
 ### Schema Models (schemas/)
