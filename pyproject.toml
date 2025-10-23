@@ -29,7 +29,7 @@ yamllint = "^1.37.1"
 ruff = "^0.13.0"
 mypy = "^1.18.1"
 pytest = "^8.4.2"
-infrahub-testcontainers = "1.4.6"
+infrahub-testcontainers = "1.4.12"
 pytest-asyncio = "^1.2.0"
 
 [tool.pytest.ini_options]
