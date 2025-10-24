@@ -109,6 +109,7 @@ class NetworkServicesGenerator(InfrahubGenerator):
             # This Generator doesn't support other type of NetworkService
             return
 
+        self.logger.exception("Failing to test if I can re-execute generator")
         await allocate_vlan(
             client=self.client,
             vlan_name_prefix=vlan_name_prefix,
