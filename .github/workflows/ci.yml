@@ -48,7 +48,7 @@ jobs:
           poetry config virtualenvs.create true --local
           poetry env use 3.12
       - name: "Install dependencies"
-        run: "poetry install --no-interaction --no-ansi --with dev"
+        run: "poetry install --with dev"
       - name: "Linting: ruff check"
         run: "poetry run ruff check ."
       - name: "Linting: ruff format"
@@ -92,7 +92,7 @@ jobs:
           poetry config virtualenvs.create true --local
           poetry env use 3.12
       - name: "Install dependencies"
-        run: "poetry install --no-interaction --no-ansi --with dev"
+        run: "poetry install --with dev"
       - name: "Set environment variables"
         run: |
           RUNNER_NAME=$(echo "${{ runner.name }}" | grep -o 'ghrunner[0-9]\+' | sed 's/ghrunner\([0-9]\+\)/ghrunner_\1/')
@@ -120,7 +120,7 @@ jobs:
         with:
           submodules: true
       - name: Install NodeJS
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: 'npm'

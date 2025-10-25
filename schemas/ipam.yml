@@ -8,7 +8,7 @@ nodes:
     description: "IP Address"
     label: "IP Address"
     icon: "mdi:ip"
-    include_in_menu: false
+    # include_in_menu: false
     inherit_from:
       - BuiltinIPAddress
     uniqueness_constraints:
@@ -26,7 +26,6 @@ nodes:
     description: "A VLAN is isolated layer two domain"
     label: "VLAN"
     icon: "mdi:lan-pending"
-    menu_placement: "TopologyNetworkService"
     order_by:
       - name__value
     display_labels:
@@ -86,7 +85,7 @@ nodes:
     namespace: Infra
     description: "IPv4 or IPv6 network (with mask)"
     icon: "mdi:ip-network"
-    include_in_menu: false
+    # include_in_menu: false
     label: "Prefix"
     uniqueness_constraints:
       - [prefix__value, ip_namespace]
@@ -220,7 +219,6 @@ nodes:
     description: "Route Target (RFC 4360)"
     label: "Route Target"
     icon: "mdi:target"
-    menu_placement: "InfraVRF"
     order_by:
       - name__value
     display_labels:

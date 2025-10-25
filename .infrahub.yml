@@ -1,4 +1,7 @@
 ---
+menus:
+  - "menus/menu.yml"
+
 jinja2_transforms:
   - name: "device_cisco"
     description: "Template to generate startup configuration for Cisco devices"

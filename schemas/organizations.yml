@@ -10,7 +10,7 @@ generics:
     display_labels:
       - name__value
     human_friendly_id: ["name__value"]
-    include_in_menu: true
+    # include_in_menu: true
     attributes:
       - name: name
         kind: Text
@@ -42,8 +42,7 @@ nodes:
     icon: mdi:domain
     inherit_from:
       - OrganizationGeneric
-    include_in_menu: true
-    menu_placement: OrganizationGeneric
+    # include_in_menu: true
     relationships:
       - name: device_type
         peer: InfraDeviceType
@@ -60,8 +59,7 @@ nodes:
     icon: mdi:domain
     inherit_from:
       - OrganizationGeneric
-    include_in_menu: true
-    menu_placement: OrganizationGeneric
+    # include_in_menu: true
     relationships:
       - name: location
         peer: LocationBuilding
@@ -78,8 +76,7 @@ nodes:
     icon: mdi:domain
     inherit_from:
       - OrganizationGeneric
-    include_in_menu: true
-    menu_placement: OrganizationGeneric
+    # include_in_menu: true
     relationships:
       - name: location
         peer: LocationBuilding

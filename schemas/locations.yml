@@ -7,7 +7,7 @@ generics:
     description: "Generic Location Interface."
     label: "Location"
     icon: "mingcute:location-line"
-    include_in_menu: true
+    # include_in_menu: true
     hierarchical: true
     order_by:
       - name__value
@@ -65,8 +65,7 @@ nodes:
   - name: Continent
     namespace: Location
     inherit_from: ["LocationGeneric"]
-    include_in_menu: true
-    menu_placement: "LocationGeneric"
+    # include_in_menu: true
     label: Continent
     display_labels:
       - name__value
@@ -76,8 +75,7 @@ nodes:
   - name: Country
     namespace: Location
     inherit_from: ["LocationGeneric"]
-    include_in_menu: true
-    menu_placement: "LocationGeneric"
+    # include_in_menu: true
     label: Country
     display_labels:
       - name__value
@@ -87,8 +85,7 @@ nodes:
   - name: Region
     namespace: Location
     inherit_from: ["LocationGeneric"]
-    include_in_menu: true
-    menu_placement: "LocationGeneric"
+    # include_in_menu: true
     label: Region
     display_labels:
       - name__value
@@ -98,8 +95,7 @@ nodes:
   - name: Metro
     namespace: Location
     inherit_from: ["LocationGeneric"]
-    include_in_menu: true
-    menu_placement: "LocationGeneric"
+    # include_in_menu: true
     label: Metro
     display_labels:
       - name__value
@@ -109,8 +105,7 @@ nodes:
   - name: Building
     namespace: Location
     inherit_from: ["LocationGeneric"]
-    include_in_menu: true
-    menu_placement: "LocationGeneric"
+    # include_in_menu: true
     label: Building
     display_labels:
       - name__value
@@ -136,8 +131,7 @@ nodes:
   - name: Floor
     namespace: Location
     inherit_from: ["LocationGeneric"]
-    include_in_menu: true
-    menu_placement: "LocationGeneric"
+    # include_in_menu: true
     label: Floor
     display_labels:
       - name__value
@@ -147,8 +141,7 @@ nodes:
   - name: Suite
     namespace: Location
     inherit_from: ["LocationGeneric"]
-    include_in_menu: true
-    menu_placement: "LocationGeneric"
+    # include_in_menu: true
     label: Suite
     display_labels:
       - name__value
@@ -169,11 +162,10 @@ nodes:
   - name: Rack
     namespace: Location
     inherit_from: ["LocationGeneric"]
-    include_in_menu: true
+    # include_in_menu: true
     label: Rack
     display_labels:
       - name__value
-    menu_placement: "LocationGeneric"
     parent: "LocationSuite"
     children: ""
     icon: "clarity:rack-server-line"
