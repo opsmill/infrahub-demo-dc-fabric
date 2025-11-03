@@ -24,10 +24,10 @@ pytest = "^8.4.2"
 
 [tool.poetry.group.dev.dependencies]
 yamllint = "^1.37.1"
-ruff = "^0.13.0"
+ruff = "^0.14.2"
 mypy = "^1.18.1"
 pytest = "^8.4.2"
-infrahub-testcontainers = "1.4.11"
+infrahub-testcontainers = "1.4.12"
 pytest-asyncio = "^1.2.0"
 
 [tool.pytest.ini_options]
