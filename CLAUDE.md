@@ -18,10 +18,10 @@ Infrahub is an infrastructure data management platform built on three pillars:
 
 ```bash
 # Install dependencies
-poetry install
+uv sync
 
 # Install with dev dependencies
-poetry install --with dev
+uv sync --group dev
 ```
 
 ### Running the Demo

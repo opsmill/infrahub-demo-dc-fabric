@@ -502,10 +502,10 @@ Tests inherit from `TestInfrahubDockerWithClient` which provides:
 ### Making schema changes
 
 1. Modify schema files in `schemas/`
-2. Reload schema: `poetry run invoke load-schema`
+2. Reload schema: `uv run invoke load-schema`
 3. Infrahub applies migrations automatically
 4. Update bootstrap scripts if needed
-5. Test with: `pytest tests/`
+5. Test with: `uv run pytest tests/`
 
 ### Adding a new generator
 

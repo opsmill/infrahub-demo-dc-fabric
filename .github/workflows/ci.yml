@@ -20,7 +20,7 @@ jobs:
       yaml: ${{ steps.changes.outputs.yaml_all }}
     steps:
       - name: "Check out repository code"
-        uses: "actions/checkout@v5"
+        uses: "actions/checkout@v6"
       - name: Check for file changes
         uses: opsmill/paths-filter@v3.0.2
         id: changes
@@ -35,24 +35,21 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Check out repository code"
-        uses: "actions/checkout@v5"
+        uses: "actions/checkout@v6"
         with:
           submodules: true
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - name: "Setup Python environment"
-        run: |
-          pipx install poetry==1.8.5
-          poetry config virtualenvs.create true --local
-          poetry env use 3.12
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
       - name: "Install dependencies"
-        run: "poetry install --with dev"
+        run: "uv sync --group dev"
       - name: "Linting: ruff check"
-        run: "poetry run ruff check ."
+        run: "uv run ruff check ."
       - name: "Linting: ruff format"
-        run: "poetry run ruff format --check --diff"
+        run: "uv run ruff format --check --diff"
 
   yaml-lint:
     if: needs.files-changed.outputs.yaml == 'true'
@@ -61,7 +58,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Check out repository code"
-        uses: "actions/checkout@v5"
+        uses: "actions/checkout@v6"
         with:
           submodules: true
       - name: "Setup environment"
@@ -82,23 +79,21 @@ jobs:
       INFRAHUB_TESTING_LOG_LEVEL: INFO
     steps:
       - name: "Check out repository code"
-        uses: "actions/checkout@v5"
+        uses: "actions/checkout@v6"
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - name: "Setup Python environment"
-        run: |
-          poetry config virtualenvs.create true --local
-          poetry env use 3.12
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
       - name: "Install dependencies"
-        run: "poetry install --with dev"
+        run: "uv sync --group dev"
       - name: "Set environment variables"
         run: |
           RUNNER_NAME=$(echo "${{ runner.name }}" | grep -o 'ghrunner[0-9]\+' | sed 's/ghrunner\([0-9]\+\)/ghrunner_\1/')
           echo "PYTEST_DEBUG_TEMPROOT=/var/lib/github/${RUNNER_NAME}/_temp" >> $GITHUB_ENV
       - name: "Run integration tests"
-        run: "poetry run pytest tests/integration/"
+        run: "uv run pytest tests/integration/"
         env:
           REPOSITORY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -116,7 +111,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Check out repository code"
-        uses: "actions/checkout@v5"
+        uses: "actions/checkout@v6"
         with:
           submodules: true
       - name: Install NodeJS
@@ -143,7 +138,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Check out repository code"
-        uses: "actions/checkout@v5"
+        uses: "actions/checkout@v6"
         with:
           submodules: true
 
