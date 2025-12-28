@@ -1,13 +1,21 @@
 ---
-name: Build and Deploy Docusaurus
+name: CI
+# yamllint disable rule:truthy rule:line-length
 on:
   pull_request:
   push:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 env:
-  VALE_VERSION: "3.7.1"
+  VALE_VERSION: "3.13.0"
 
 jobs:
   files-changed:
@@ -18,6 +26,7 @@ jobs:
       documentation: ${{ steps.changes.outputs.documentation_all }}
       python: ${{ steps.changes.outputs.python_all }}
       yaml: ${{ steps.changes.outputs.yaml_all }}
+      markdown: ${{ steps.changes.outputs.markdown_all }}
     steps:
       - name: "Check out repository code"
         uses: "actions/checkout@v6"
@@ -48,10 +57,14 @@ jobs:
           version: "0.9.18"
       - name: "Install dependencies"
         run: "uv sync --group dev"
-      - name: "Linting: ruff check"
+      - name: "Check code formatting"
+        run: |
+          uv run ruff format --check --diff
+          uv run ruff check --select I .
+      - name: "Run linters"
         run: "uv run ruff check ."
-      - name: "Linting: ruff format"
-        run: "uv run ruff format --check --diff"
+      - name: "Run type checks"
+        run: "uv run mypy ."
 
   yaml-lint:
     if: needs.files-changed.outputs.yaml == 'true'
@@ -63,16 +76,47 @@ jobs:
         uses: "actions/checkout@v6"
         with:
           submodules: true
-      - name: "Setup environment"
-        run: "pip install yamllint==1.35.1"
-      - name: "Linting: yamllint"
-        run: "yamllint -s ."
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install uv
+        uses: "astral-sh/setup-uv@v7"
+        with:
+          version: "0.9.18"
+      - name: "Install dependencies"
+        run: "uv sync --group dev"
+      - name: "Run yamllint"
+        run: "uv run yamllint -s ."
+
+  markdown-lint:
+    if: needs.files-changed.outputs.markdown == 'true'
+    needs: ["files-changed"]
+    runs-on: "ubuntu-latest"
+    timeout-minutes: 5
+    steps:
+      - name: "Check out repository code"
+        uses: "actions/checkout@v6"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20
+      - name: "Install markdownlint-cli"
+        run: npm install -g markdownlint-cli
+      - name: "Run markdownlint"
+        run: markdownlint "**/*.{md,mdx}"
 
   integration-test:
+    needs: ["files-changed", "python-lint", "yaml-lint", "markdown-lint"]
+    if: |
+      always() && !cancelled() &&
+      !contains(needs.*.result, 'failure') &&
+      !contains(needs.*.result, 'cancelled')
     runs-on:
       group: "huge-runners"
     strategy:
       fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
     timeout-minutes: 60
     env:
       INFRAHUB_DB_TYPE: neo4j
@@ -110,7 +154,7 @@ jobs:
       !contains(needs.*.result, 'failure') &&
       !contains(needs.*.result, 'cancelled') &&
       needs.files-changed.outputs.documentation == 'true'
-    needs: ["files-changed", "yaml-lint", "python-lint"]
+    needs: ["files-changed", "yaml-lint", "python-lint", "markdown-lint"]
     runs-on: "ubuntu-22.04"
     timeout-minutes: 5
     steps:
@@ -124,20 +168,24 @@ jobs:
           node-version: 20
           cache: 'npm'
           cache-dependency-path: docs/package-lock.json
-      - name: "Install dependencies"
+      - name: "Install Node dependencies"
         run: npm install
-      - name: "Setup Python environment"
-        run: "pip install invoke toml"
+      - name: Install uv
+        uses: "astral-sh/setup-uv@v7"
+        with:
+          version: "0.9.18"
+      - name: "Install Python dependencies"
+        run: "uv sync"
+        working-directory: ./
       - name: "Build docs website"
-        run: "invoke docs"
-
+        run: "uv run invoke docs"
 
   validate-documentation-style:
     if: |
       always() && !cancelled() &&
       !contains(needs.*.result, 'failure') &&
       !contains(needs.*.result, 'cancelled')
-    needs: ["files-changed", "yaml-lint", "python-lint"]
+    needs: ["files-changed", "yaml-lint", "python-lint", "markdown-lint"]
     runs-on: "ubuntu-22.04"
     timeout-minutes: 5
     steps:
