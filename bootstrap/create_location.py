@@ -257,12 +257,8 @@ for continent_name, continent_data in LOCATIONS.items():
     for country_name, country_data in continent_data["countries"].items():
         for region_name, region_data in country_data.get("regions", {}).items():
             for metro_name, metro_data in region_data.get("metros", {}).items():
-                for building_name, building_data in metro_data.get(
-                    "buildings", {}
-                ).items():
-                    site_locations.append(
-                        {"name": building_name, "shortname": building_data["shortname"]}
-                    )
+                for building_name, building_data in metro_data.get("buildings", {}).items():
+                    site_locations.append({"name": building_name, "shortname": building_data["shortname"]})
 
 
 VLANS = [
@@ -274,9 +270,7 @@ VLANS = [
 ACTIVE_STATUS = "active"
 
 
-async def create_location_hierarchy(
-    client: InfrahubClient, log: logging.Logger, branch: str
-):
+async def create_location_hierarchy(client: InfrahubClient, log: logging.Logger, branch: str):
     orga_duff_obj = client.store.get(key="Duff", kind="OrganizationTenant")
     orga_eqx_obj = client.store.get(key="Equinix", kind="OrganizationProvider")
     orga_itx_obj = client.store.get(key="Interxion", kind="OrganizationProvider")
@@ -354,27 +348,17 @@ async def create_location_hierarchy(
                     data=data,
                     retrieved_on_failure=True,
                 )
-                name_servers = [
-                    server[0] for server in MGMT_SERVERS if server[2] == "Name"
-                ]
+                name_servers = [server[0] for server in MGMT_SERVERS if server[2] == "Name"]
                 random_name_server = random.choice(name_servers)
 
-                ntp_servers = [
-                    server[0] for server in MGMT_SERVERS if server[2] == "NTP"
-                ]
+                ntp_servers = [server[0] for server in MGMT_SERVERS if server[2] == "NTP"]
                 random_ntp_server = random.choice(ntp_servers)
 
-                time_server_obj = client.store.get(
-                    key=random_ntp_server, kind="NetworkNTPServer"
-                )
-                name_server_obj = client.store.get(
-                    key=random_name_server, kind="NetworkNameServer"
-                )
+                time_server_obj = client.store.get(key=random_ntp_server, kind="NetworkNTPServer")
+                name_server_obj = client.store.get(key=random_name_server, kind="NetworkNameServer")
 
                 mgmt_servers_obj = [name_server_obj, time_server_obj]
-                mgmt_servers_obj_ids = [
-                    mgmt_server_obj.id for mgmt_server_obj in mgmt_servers_obj
-                ]
+                mgmt_servers_obj_ids = [mgmt_server_obj.id for mgmt_server_obj in mgmt_servers_obj]
                 await region_obj.add_relationships(
                     relation_to_update="network_management_servers",
                     related_nodes=mgmt_servers_obj_ids,
@@ -405,9 +389,7 @@ async def create_location_hierarchy(
                         retrieved_on_failure=True,
                     )
 
-                    for building_name, building_data in metro_data.get(
-                        "buildings", {}
-                    ).items():
+                    for building_name, building_data in metro_data.get("buildings", {}).items():
                         building_shortname = building_data["shortname"]
                         building_facility_id = building_data["facility_id"]
                         building_owner = building_data.get("owner")
@@ -422,9 +404,7 @@ async def create_location_hierarchy(
                                 "is_protected": True,
                                 "source": account_crm.id,
                             },
-                            "description": {
-                                "value": f"Building {building_name.lower()}"
-                            },
+                            "description": {"value": f"Building {building_name.lower()}"},
                             "shortname": building_shortname,
                             "facility_id": building_facility_id,
                             "owner": owner_id,
@@ -440,9 +420,7 @@ async def create_location_hierarchy(
                             retrieved_on_failure=True,
                         )
 
-                        for floor_name, floor_data in building_data.get(
-                            "floors", {}
-                        ).items():
+                        for floor_name, floor_data in building_data.get("floors", {}).items():
                             floor_shortname = floor_data["shortname"]
                             data = {
                                 "name": {
@@ -450,9 +428,7 @@ async def create_location_hierarchy(
                                     "is_protected": True,
                                     "source": account_crm.id,
                                 },
-                                "description": {
-                                    "value": f"Floor {floor_name.lower()}-{building_name.lower()}"
-                                },
+                                "description": {"value": f"Floor {floor_name.lower()}-{building_name.lower()}"},
                                 "shortname": floor_shortname,
                                 "parent": building_obj,
                             }
@@ -466,9 +442,7 @@ async def create_location_hierarchy(
                                 retrieved_on_failure=True,
                             )
 
-                            for suite_name, suite_data in floor_data.get(
-                                "suites", {}
-                            ).items():
+                            for suite_name, suite_data in floor_data.get("suites", {}).items():
                                 suite_shortname = suite_data["shortname"]
                                 suite_facility_id = suite_data["facility_id"]
                                 suite_owner = suite_data.get("owner")
@@ -503,9 +477,7 @@ async def create_location_hierarchy(
                                     retrieved_on_failure=True,
                                 )
 
-                                for rack_name, rack_data in suite_data.get(
-                                    "racks", {}
-                                ).items():
+                                for rack_name, rack_data in suite_data.get("racks", {}).items():
                                     rack_owner = rack_data.get("owner")
                                     owner_id = None
                                     if rack_owner == "Duff":
@@ -623,9 +595,7 @@ async def create_location_vlans(
         pool_name = f"vlans-{location_shortname.lower()}"
 
         # Check if pool already exists
-        existing_pool = await client.get(
-            kind="CoreNumberPool", name__value=pool_name, raise_when_missing=False
-        )
+        existing_pool = await client.get(kind="CoreNumberPool", name__value=pool_name, raise_when_missing=False)
 
         if existing_pool:
             log.info(f"Pool {pool_name} already exists, skipping creation")
@@ -745,9 +715,7 @@ async def create_location(client: InfrahubClient, log: logging.Logger, branch: s
         organisation=orga_duff_obj,
     )
     log.info("Creating the Locations VLANs")
-    await create_location_vlans(
-        client=client, log=log, branch=branch, organisation=orga_duff_obj
-    )
+    await create_location_vlans(client=client, log=log, branch=branch, organisation=orga_duff_obj)
     log.info("Creating the Locations Prefixes")
     # Create prefixes from supernets
     #   - XX.XX.00.0/24 -> Management
@@ -774,15 +742,11 @@ async def create_location(client: InfrahubClient, log: logging.Logger, branch: s
             }
             member_type = "prefix"
             if role == "management":
-                data_prefix["vrf"] = client.store.get(
-                    key="Management", kind="InfraVRF"
-                ).id
+                data_prefix["vrf"] = client.store.get(key="Management", kind="InfraVRF").id
                 data_prefix["status"] = "active"
                 member_type = "address"
             elif role in ("technical", "loopback", "loopback-vtep"):
-                data_prefix["vrf"] = client.store.get(
-                    key="Backbone", kind="InfraVRF"
-                ).id
+                data_prefix["vrf"] = client.store.get(key="Backbone", kind="InfraVRF").id
                 data_prefix["status"] = "reserved"
                 if role != "technical":
                     member_type = "address"
@@ -805,9 +769,7 @@ async def create_location(client: InfrahubClient, log: logging.Logger, branch: s
 #   infrahubctl run models/infrastructure_edge.py
 #
 # ---------------------------------------------------------------
-async def run(
-    client: InfrahubClient, log: logging.Logger, branch: str, **kwargs
-) -> None:
+async def run(client: InfrahubClient, log: logging.Logger, branch: str, **kwargs) -> None:
     # ------------------------------------------
     # Create Sites
     # ------------------------------------------
@@ -820,9 +782,7 @@ async def run(
         providers = await client.all("OrganizationProvider")
         populate_local_store(objects=providers, key_type="name", store=client.store)
         autonomous_systems = await client.all("InfraAutonomousSystem")
-        populate_local_store(
-            objects=autonomous_systems, key_type="name", store=client.store
-        )
+        populate_local_store(objects=autonomous_systems, key_type="name", store=client.store)
         groups = await client.all("CoreStandardGroup")
         populate_local_store(objects=groups, key_type="name", store=client.store)
         vrfs = await client.all("InfraVRF")

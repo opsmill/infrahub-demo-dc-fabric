@@ -35,9 +35,7 @@ async def get_policies_from_location_hierarchy(
 
     if hasattr(location, "parent") and location.parent.id:
         await location.parent.fetch()
-        policies.extend(
-            await get_policies_from_location_hierarchy(location.parent.peer)
-        )
+        policies.extend(await get_policies_from_location_hierarchy(location.parent.peer))
 
     return policies
 
@@ -51,9 +49,7 @@ async def find_policy_targets(policy: InfrahubNode) -> List[InfrahubNode]:
 
     if policy.location_target.initialized:
         await policy.location_target.fetch()
-        targets.extend(
-            await get_devices_from_location_hierarchy(policy.location_target.peer)
-        )
+        targets.extend(await get_devices_from_location_hierarchy(policy.location_target.peer))
 
     return targets
 
@@ -81,9 +77,7 @@ async def find_device_policies(device: InfrahubNode) -> List[InfrahubNode]:
     return policies[::-1]
 
 
-async def render_policy_for_device(
-    client: InfrahubClient, device: InfrahubNode, policies: List[InfrahubNode]
-) -> None:
+async def render_policy_for_device(client: InfrahubClient, device: InfrahubNode, policies: List[InfrahubNode]) -> None:
     index = 0
     rendered_rules = []
 
@@ -114,10 +108,7 @@ async def render_policy_for_device(
         )
 
         for rule in rules:
-            if (
-                rule.source_zone.peer in security_zones
-                and rule.destination_zone.peer in security_zones
-            ):
+            if rule.source_zone.peer in security_zones and rule.destination_zone.peer in security_zones:
                 rendered_rule = await client.create(
                     "SecurityRenderedPolicyRule",
                     index={"value": index, "is_protected": True, "owner": account.id},
@@ -152,16 +143,13 @@ async def render_policy_for_device(
                         "owner": account.id,
                     },
                     source_address=[
-                        {"id": s.peer.id, "is_protected": True, "owner": account.id}
-                        for s in rule.source_address.peers
+                        {"id": s.peer.id, "is_protected": True, "owner": account.id} for s in rule.source_address.peers
                     ],
                     source_groups=[
-                        {"id": s.peer.id, "is_protected": True, "owner": account.id}
-                        for s in rule.source_groups.peers
+                        {"id": s.peer.id, "is_protected": True, "owner": account.id} for s in rule.source_groups.peers
                     ],
                     source_services=[
-                        {"id": s.peer.id, "is_protected": True, "owner": account.id}
-                        for s in rule.source_services.peers
+                        {"id": s.peer.id, "is_protected": True, "owner": account.id} for s in rule.source_services.peers
                     ],
                     source_service_groups=[
                         {"id": s.peer.id, "is_protected": True, "owner": account.id}
@@ -189,16 +177,11 @@ async def render_policy_for_device(
                 index += 1
 
     await device.rules.fetch()
-    device.rules.extend(
-        {"id": rule.id, "is_protected": True, "owner": account.id}
-        for rule in rendered_rules
-    )
+    device.rules.extend({"id": rule.id, "is_protected": True, "owner": account.id} for rule in rendered_rules)
     await device.save()
 
 
-async def run(
-    client: InfrahubClient, log: logging.Logger, branch: str, **kwargs
-) -> None:
+async def run(client: InfrahubClient, log: logging.Logger, branch: str, **kwargs) -> None:
     if "policy" not in kwargs:
         raise ValueError("no policy argument provided")
 

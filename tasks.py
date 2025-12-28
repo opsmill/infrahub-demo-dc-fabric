@@ -114,10 +114,13 @@ def lint_mypy(context: Context) -> None:
 @task
 def lint_ruff(context: Context) -> None:
     """Run Linter to check all Python files."""
-    print(" - Check code with ruff")
-    exec_cmd = "ruff check ."
+    print(" - Check code formatting with ruff")
     with context.cd(MAIN_DIRECTORY_PATH):
-        context.run(exec_cmd)
+        context.run("ruff format --check --diff")
+        context.run("ruff check --select I .")
+    print(" - Check code with ruff")
+    with context.cd(MAIN_DIRECTORY_PATH):
+        context.run("ruff check .")
 
 
 @task(name="lint")

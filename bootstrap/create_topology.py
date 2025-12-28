@@ -58,9 +58,7 @@ TOPOLOGY_ELEMENTS = {
 }
 
 
-async def create_topology_strategies(
-    client: InfrahubClient, log: logging.Logger, branch: str
-):
+async def create_topology_strategies(client: InfrahubClient, log: logging.Logger, branch: str):
     log.info("Creating Network Strategies")
     # Create Network Strategies
     account = client.store.get(key="pop-builder", kind="CoreAccount")
@@ -70,9 +68,7 @@ async def create_topology_strategies(
         underlay = strategy[1]
         overlay = strategy[2]
         strategy_type = strategy[3]
-        description = (
-            f"Using {underlay.upper()} as underlay with {overlay.upper()} as overlay"
-        )
+        description = f"Using {underlay.upper()} as underlay with {overlay.upper()} as overlay"
         data = {
             "name": {"value": name, "source": account.id},
             "description": {"value": description, "source": account.id},
@@ -131,9 +127,7 @@ async def create_topology(client: InfrahubClient, log: logging.Logger, branch: s
         }
         if topology_strategy:
             strategy_type = strategy_dict.get(topology[3], None).upper()
-            data["strategy"] = client.store.get(
-                kind=f"Topology{strategy_type}Strategy", key=topology_strategy
-            ).id
+            data["strategy"] = client.store.get(kind=f"Topology{strategy_type}Strategy", key=topology_strategy).id
         if topology_location:
             topology_location_object = client.store.get(key=topology[2])
             if topology_location_object:
@@ -155,18 +149,12 @@ async def create_topology(client: InfrahubClient, log: logging.Logger, branch: s
     for topology in TOPOLOGY:
         # Add Topology to Topology Group
         topology_name = topology[0]
-        topology_group = await client.get(
-            name__value=f"{topology_name}_topology", kind="CoreStandardGroup"
-        )
-        topology_obj = await client.get(
-            name__value=topology_name, kind="TopologyTopology"
-        )
+        topology_group = await client.get(name__value=f"{topology_name}_topology", kind="CoreStandardGroup")
+        topology_obj = await client.get(name__value=topology_name, kind="TopologyTopology")
         await topology_group.members.fetch()
         topology_group.members.add(topology_obj.id)
         await topology_group.save()
-        log.info(
-            f"- Add {topology_name} to {topology_group.name.value} CoreStandardGroup"
-        )
+        log.info(f"- Add {topology_name} to {topology_group.name.value} CoreStandardGroup")
 
         topology_object = client.store.get(key=topology_name, kind="TopologyTopology")
         if topology[2]:
@@ -174,9 +162,7 @@ async def create_topology(client: InfrahubClient, log: logging.Logger, branch: s
             if topology_location_object:
                 topology_object.location = topology_location_object
                 await topology_object.save()
-            log.info(
-                f"- Add {topology_name} to {topology_location_object.name.value} Location"
-            )
+            log.info(f"- Add {topology_name} to {topology_location_object.name.value} Location")
 
         # ------------------------------------------
         # Create Topology Elements
@@ -187,9 +173,7 @@ async def create_topology(client: InfrahubClient, log: logging.Logger, branch: s
             device_type_id = client.store.get(kind="InfraDeviceType", key=element[2]).id
             element_role = element[1]
             element_name = f"{element_role}-{topology_name.lower()}"
-            element_description = (
-                f"{element_role.title()} for Topology {topology_name.title()}"
-            )
+            element_description = f"{element_role.title()} for Topology {topology_name.title()}"
             if element[5] and element_role != "spine":
                 element_name = f"border-{element_role}-{topology_name.lower()}"
                 element_description = f"Border {element_role.title()} for Topology {topology_name.title()}"
@@ -224,19 +208,13 @@ async def create_topology(client: InfrahubClient, log: logging.Logger, branch: s
             )
 
     # Add Topologies to Topology Summary Group
-    all_topologies_group = await client.get(
-        name__value=f"all_topologies", kind="CoreStandardGroup"
-    )
+    all_topologies_group = await client.get(name__value=f"all_topologies", kind="CoreStandardGroup")
     await all_topologies_group.members.fetch()
     for topology in TOPOLOGY:
         topology_name = topology[0]
-        topology_obj = await client.get(
-            name__value=topology_name, kind="TopologyTopology"
-        )
+        topology_obj = await client.get(name__value=topology_name, kind="TopologyTopology")
         all_topologies_group.members.add(topology_obj.id)
-        log.info(
-            f"- Add {topology_name} to {topology_group.name.value} CoreStandardGroup"
-        )
+        log.info(f"- Add {topology_name} to {topology_group.name.value} CoreStandardGroup")
     await all_topologies_group.save()
 
     async for node, _ in batch.execute():
@@ -250,9 +228,7 @@ async def create_topology(client: InfrahubClient, log: logging.Logger, branch: s
 #   infrahubctl run models/infrastructure_edge.py
 #
 # ---------------------------------------------------------------
-async def run(
-    client: InfrahubClient, log: logging.Logger, branch: str, **kwargs
-) -> None:
+async def run(client: InfrahubClient, log: logging.Logger, branch: str, **kwargs) -> None:
     log.info("Retrieving objects from Infrahub")
     try:
         accounts = await client.all("CoreAccount")
@@ -264,17 +240,13 @@ async def run(
         manufacturers = await client.all("OrganizationManufacturer")
         populate_local_store(objects=manufacturers, key_type="name", store=client.store)
         autonomous_systems = await client.all("InfraAutonomousSystem")
-        populate_local_store(
-            objects=autonomous_systems, key_type="name", store=client.store
-        )
+        populate_local_store(objects=autonomous_systems, key_type="name", store=client.store)
         platforms = await client.all("InfraPlatform")
         populate_local_store(objects=platforms, key_type="name", store=client.store)
         device_types = await client.all("InfraDeviceType")
         populate_local_store(objects=device_types, key_type="name", store=client.store)
         locations = await client.all("LocationGeneric")
-        populate_local_store(
-            objects=locations, key_type="shortname", store=client.store
-        )
+        populate_local_store(objects=locations, key_type="shortname", store=client.store)
 
     except Exception as e:
         log.error(f"Fail to populate due to {e}")

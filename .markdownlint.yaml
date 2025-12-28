@@ -2,6 +2,10 @@
 # Default state for all rules
 default: true
 
+# MD060/table-column-style - Table column style
+# Disabled as it requires fixed-width columns which is impractical for tables with varying content
+MD060: false
+
 # MD003/heading-style - Heading style
 MD003:
   style: "atx"

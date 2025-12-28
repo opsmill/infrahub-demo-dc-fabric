@@ -123,39 +123,21 @@ HTTP_HTTPS = ServiceGroup(name="HTTP-HTTPS", services=[HTTP, HTTPS])
 
 SERVICE_GROUPS = [DNS, HTTP_HTTPS]
 
-IANA_PRIVATE_PREFIX_1 = SecurityPrefix(
-    name="IANA_PRIVATE_PREFIX_1", prefix=ipaddress.IPv4Network("10.0.0.0/8")
-)
-IANA_PRIVATE_PREFIX_2 = SecurityPrefix(
-    name="IANA_PRIVATE_PREFIX_2", prefix=ipaddress.IPv4Network("172.16.0.0/12")
-)
-IANA_PRIVATE_PREFIX_3 = SecurityPrefix(
-    name="IANA_PRIVATE_PREFIX_3", prefix=ipaddress.IPv4Network("192.168.0.0/16")
-)
+IANA_PRIVATE_PREFIX_1 = SecurityPrefix(name="IANA_PRIVATE_PREFIX_1", prefix=ipaddress.IPv4Network("10.0.0.0/8"))
+IANA_PRIVATE_PREFIX_2 = SecurityPrefix(name="IANA_PRIVATE_PREFIX_2", prefix=ipaddress.IPv4Network("172.16.0.0/12"))
+IANA_PRIVATE_PREFIX_3 = SecurityPrefix(name="IANA_PRIVATE_PREFIX_3", prefix=ipaddress.IPv4Network("192.168.0.0/16"))
 PREFIXES = [IANA_PRIVATE_PREFIX_1, IANA_PRIVATE_PREFIX_2, IANA_PRIVATE_PREFIX_3]
 
 ANY = SecurityIPAddress(name="ANY", address=ipaddress.IPv4Interface("0.0.0.0/0"))
-SMTP_SERVER_1 = SecurityIPAddress(
-    name="SMTP_SERVER_1", address=ipaddress.IPv4Interface("10.0.0.1/32")
-)
-SMTP_SERVER_2 = SecurityIPAddress(
-    name="SMTP_SERVER_2", address=ipaddress.IPv4Interface("10.200.0.1/32")
-)
-EUR_WEB_PROXY_1 = SecurityIPAddress(
-    name="EUR_WEB_PROXY_1", address=ipaddress.IPv4Interface("10.0.1.1/32")
-)
-EUR_WEB_PROXY_2 = SecurityIPAddress(
-    name="EUR_WEB_PROXY_2", address=ipaddress.IPv4Interface("10.200.1.1/32")
-)
+SMTP_SERVER_1 = SecurityIPAddress(name="SMTP_SERVER_1", address=ipaddress.IPv4Interface("10.0.0.1/32"))
+SMTP_SERVER_2 = SecurityIPAddress(name="SMTP_SERVER_2", address=ipaddress.IPv4Interface("10.200.0.1/32"))
+EUR_WEB_PROXY_1 = SecurityIPAddress(name="EUR_WEB_PROXY_1", address=ipaddress.IPv4Interface("10.0.1.1/32"))
+EUR_WEB_PROXY_2 = SecurityIPAddress(name="EUR_WEB_PROXY_2", address=ipaddress.IPv4Interface("10.200.1.1/32"))
 ADDRESSES = [ANY, SMTP_SERVER_1, SMTP_SERVER_2, EUR_WEB_PROXY_1, EUR_WEB_PROXY_2]
 
 BLOCK_INTERNET = AddressGroup(name="BLOCK_INTERNET", addresses=PREFIXES + [ANY])
-SMTP_SERVERS = AddressGroup(
-    name="SMTP_SERVERS", addresses=[SMTP_SERVER_1, SMTP_SERVER_2]
-)
-EUR_WEB_PROXIES = AddressGroup(
-    name="EUR_WEB_PROXIES", addresses=[EUR_WEB_PROXY_1, EUR_WEB_PROXY_2]
-)
+SMTP_SERVERS = AddressGroup(name="SMTP_SERVERS", addresses=[SMTP_SERVER_1, SMTP_SERVER_2])
+EUR_WEB_PROXIES = AddressGroup(name="EUR_WEB_PROXIES", addresses=[EUR_WEB_PROXY_1, EUR_WEB_PROXY_2])
 ADDRESS_GROUPS = [BLOCK_INTERNET, SMTP_SERVERS, EUR_WEB_PROXIES]
 
 ZONE_OUTSIDE = SecurityZone(name="outside")
@@ -339,36 +321,24 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
         client.store.set(key=obj.name.value, node=obj)
 
     for service_group in SERVICE_GROUPS:
-        services = [
-            client.store.get(service.name) for service in service_group.services
-        ]
-        obj = await client.create(
-            kind="SecurityServiceGroup", name=service_group.name, services=services
-        )
+        services = [client.store.get(service.name) for service in service_group.services]
+        obj = await client.create(kind="SecurityServiceGroup", name=service_group.name, services=services)
         await obj.save(allow_upsert=True)
         client.store.set(key=obj.name.value, node=obj)
 
     for prefix in PREFIXES:
-        obj = await client.create(
-            "SecurityPrefix", name=prefix.name, prefix=prefix.prefix
-        )
+        obj = await client.create("SecurityPrefix", name=prefix.name, prefix=prefix.prefix)
         await obj.save(allow_upsert=True)
         client.store.set(key=obj.name.value, node=obj)
 
     for address in ADDRESSES:
-        obj = await client.create(
-            "SecurityIPAddress", name=address.name, address=address.address
-        )
+        obj = await client.create("SecurityIPAddress", name=address.name, address=address.address)
         await obj.save(allow_upsert=True)
         client.store.set(key=obj.name.value, node=obj)
 
     for address_group in ADDRESS_GROUPS:
-        addresses = [
-            client.store.get(key=address.name) for address in address_group.addresses
-        ]
-        obj = await client.create(
-            kind="SecurityAddressGroup", name=address_group.name, addresses=addresses
-        )
+        addresses = [client.store.get(key=address.name) for address in address_group.addresses]
+        obj = await client.create(kind="SecurityAddressGroup", name=address_group.name, addresses=addresses)
         await obj.save(allow_upsert=True)
         client.store.set(key=obj.name.value, node=obj)
 
@@ -393,19 +363,11 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
         source_zone = store_get_or_none(rule.source_zone.name)
         destination_zone = store_get_or_none(rule.destination_zone.name)
         source_address = (
-            [store_get_or_none(address.name) for address in rule.source_addresses]
-            if rule.source_addresses
-            else None
+            [store_get_or_none(address.name) for address in rule.source_addresses] if rule.source_addresses else None
         )
-        source_groups = (
-            [store_get_or_none(group.name) for group in rule.source_groups]
-            if rule.source_groups
-            else None
-        )
+        source_groups = [store_get_or_none(group.name) for group in rule.source_groups] if rule.source_groups else None
         source_services = (
-            [store_get_or_none(service.name) for service in rule.source_services]
-            if rule.source_services
-            else None
+            [store_get_or_none(service.name) for service in rule.source_services] if rule.source_services else None
         )
         source_service_groups = (
             [store_get_or_none(group.name) for group in rule.source_service_groups]
@@ -418,9 +380,7 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
             else None
         )
         destination_groups = (
-            [store_get_or_none(group.name) for group in rule.destination_groups]
-            if rule.destination_groups
-            else None
+            [store_get_or_none(group.name) for group in rule.destination_groups] if rule.destination_groups else None
         )
         destination_services = (
             [store_get_or_none(service.name) for service in rule.destination_services]
@@ -476,9 +436,7 @@ async def run(client: InfrahubClient, log: logging.Logger, branch: str) -> None:
     )
     await device.save(allow_upsert=True)
 
-    group = await client.create(
-        kind="CoreStandardGroup", name="firewall_devices", members=[device]
-    )
+    group = await client.create(kind="CoreStandardGroup", name="firewall_devices", members=[device])
     await group.save()
 
     management_interface = await client.create(

@@ -12,17 +12,13 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
         # Map of group names to device IDs
         group_devices = {
             group["node"]["name"]["value"]: {
-                edge["node"]["id"]
-                for edge in group["node"]["members"]["edges"]
-                if edge["node"]
+                edge["node"]["id"] for edge in group["node"]["members"]["edges"] if edge["node"]
             }
             for group in groups
         }
 
         # Map of device IDs to device info
-        device_map = {
-            edge["node"]["id"]: edge["node"] for edge in data["InfraDevice"]["edges"]
-        }
+        device_map = {edge["node"]["id"]: edge["node"] for edge in data["InfraDevice"]["edges"]}
 
         for topology_edge in topologies:
             topology_node = topology_edge["node"]
@@ -30,9 +26,7 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
             group_name = f"{topology_name}_topology"
 
             if group_name not in group_devices:
-                self.log_error(
-                    message=f"No corresponding group found for topology {topology_name}."
-                )
+                self.log_error(message=f"No corresponding group found for topology {topology_name}.")
                 continue
             group_device_ids = group_devices[group_name]
             expected_role_device_counts = {}
@@ -65,9 +59,7 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
             # Comparison of expected vs actual, including device type check
             for role, expected_types in expected_role_device_counts.items():
                 for expected_type, expected_count in expected_types.items():
-                    actual_count = actual_role_device_counts.get(role, {}).get(
-                        expected_type, 0
-                    )
+                    actual_count = actual_role_device_counts.get(role, {}).get(expected_type, 0)
                     unexpected_types = [
                         actual_type
                         for actual_type in actual_role_device_counts.get(role, {})
@@ -89,10 +81,7 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
                                     f"with role {role}. Expected: {expected_count}, Actual: {actual_count}"
                                 )
                             )
-                    if (
-                        expected_type not in actual_role_device_counts.get(role, {})
-                        and unexpected_types
-                    ):
+                    if expected_type not in actual_role_device_counts.get(role, {}) and unexpected_types:
                         unexpected_types_str = ", ".join(unexpected_types)
                         self.log_error(
                             message=(
