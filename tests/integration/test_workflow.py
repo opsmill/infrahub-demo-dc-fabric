@@ -1,13 +1,12 @@
-import pytest
-import time
 import logging
+import time
 
-
+import pytest
 from infrahub_sdk.graphql import Mutation
 from infrahub_sdk.task.models import TaskState
 from infrahub_sdk.testing.repository import GitRepo
 
-from .conftest import TestInfrahubDockerWithClient, PROJECT_DIRECTORY
+from .conftest import PROJECT_DIRECTORY, TestInfrahubDockerWithClient
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"

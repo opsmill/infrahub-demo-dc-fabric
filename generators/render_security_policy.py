@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 import logging
-
 from typing import List, Set
 
-from infrahub_sdk import InfrahubClient
-from infrahub_sdk.node import InfrahubNode
+from infrahub_sdk import InfrahubClient  # type: ignore[import-not-found]
+from infrahub_sdk.node import InfrahubNode  # type: ignore[import-not-found]
 
 
 async def get_devices_from_location_hierarchy(
@@ -101,7 +100,11 @@ async def render_policy_for_device(
 
     security_zones = await get_device_security_zones(device)
 
-    # async with client.start_tracking(identifier=Path(__file__).stem, params={"device": device.name.value}, delete_unused_nodes=True) as client:
+    # async with client.start_tracking(
+    #     identifier=Path(__file__).stem,
+    #     params={"device": device.name.value},
+    #     delete_unused_nodes=True,
+    # ) as client:
     for policy in policies:
         rules = await client.filters(
             "SecurityPolicyRule",

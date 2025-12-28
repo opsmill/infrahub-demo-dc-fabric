@@ -1,4 +1,4 @@
-from infrahub_sdk.checks import InfrahubCheck
+from infrahub_sdk.checks import InfrahubCheck  # type: ignore[import-not-found]
 
 
 class InfrahubCheckDeviceTopology(InfrahubCheck):
@@ -76,12 +76,18 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
 
                     if expected_count % 2 != 0:
                         self.log_error(
-                            message=f"{topology_name} has an odd number of Elements for role {role}. Expected: {expected_count}"
+                            message=(
+                                f"{topology_name} has an odd number of Elements for role {role}. "
+                                f"Expected: {expected_count}"
+                            )
                         )
                     if actual_count > 0:
                         if expected_count != actual_count:
                             self.log_error(
-                                message=f"{topology_name} has mismatched quantity of {expected_type} devices with role {role}. Expected: {expected_count}, Actual: {actual_count}"
+                                message=(
+                                    f"{topology_name} has mismatched quantity of {expected_type} devices "
+                                    f"with role {role}. Expected: {expected_count}, Actual: {actual_count}"
+                                )
                             )
                     if (
                         expected_type not in actual_role_device_counts.get(role, {})
@@ -89,5 +95,8 @@ class InfrahubCheckDeviceTopology(InfrahubCheck):
                     ):
                         unexpected_types_str = ", ".join(unexpected_types)
                         self.log_error(
-                            message=f"{topology_name} expected {expected_type} devices with role {role}, but found different type(s): {unexpected_types_str}."
+                            message=(
+                                f"{topology_name} expected {expected_type} devices with role {role}, "
+                                f"but found different type(s): {unexpected_types_str}."
+                            )
                         )

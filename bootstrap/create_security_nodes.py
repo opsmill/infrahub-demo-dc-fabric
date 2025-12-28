@@ -1,15 +1,13 @@
 #!/usr/bin/env python
 import ipaddress
 import logging
-
 from dataclasses import dataclass
-from enum import auto, Enum
+from enum import Enum, auto
 from typing import Any, List, Optional, Union
 
-
 from infrahub_sdk import InfrahubClient
-from infrahub_sdk.node import InfrahubNode
 from infrahub_sdk.exceptions import NodeNotFoundError
+from infrahub_sdk.node import InfrahubNode
 
 
 @dataclass

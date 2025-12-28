@@ -1,6 +1,5 @@
-import logging
 import ipaddress
-
+import logging
 from typing import Dict, List, Optional
 
 from infrahub_sdk import InfrahubClient
