@@ -64,17 +64,6 @@ files = [
 sniffio = "*"
 
 [[package]]
-name = "async-timeout"
-version = "5.0.1"
-description = "Timeout context manager for asyncio programs"
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "async_timeout-5.0.1-py3-none-any.whl", hash = "sha256:39e3809566ff85354557ec2398b55e096c8364bacac9405a7a1fa429e77fe76c"},
-    {file = "async_timeout-5.0.1.tar.gz", hash = "sha256:d9321a7a3d5a6a5e187e824d2fa0793ce379a202935782d555d6e9d2735677d3"},
-]
-
-[[package]]
 name = "attrs"
 version = "25.4.0"
 description = "Classes Without Boilerplate"
@@ -940,13 +929,13 @@ trio = ["trio (>=0.22.0,<1.0)"]
 
 [[package]]
 name = "httpx"
-version = "0.28.1"
+version = "0.27.2"
 description = "The next generation HTTP client."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "httpx-0.28.1-py3-none-any.whl", hash = "sha256:d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad"},
-    {file = "httpx-0.28.1.tar.gz", hash = "sha256:75e98c5f16b0f35b567856f597f06ff2270a374470a5c2392242528e3e3e42fc"},
+    {file = "httpx-0.27.2-py3-none-any.whl", hash = "sha256:7bb2708e112d8fdd7829cd4243970f0c223274051cb35ee80c03301ee29a3df0"},
+    {file = "httpx-0.27.2.tar.gz", hash = "sha256:f7c2be1d2f3c3c3160d441802406b206c2b76f5947b11115e6df10c6c65e66c2"},
 ]
 
 [package.dependencies]
@@ -955,6 +944,7 @@ certifi = "*"
 h2 = {version = ">=3,<5", optional = true, markers = "extra == \"http2\""}
 httpcore = "==1.*"
 idna = "*"
+sniffio = "*"
 
 [package.extras]
 brotli = ["brotli", "brotlicffi"]
@@ -1069,20 +1059,20 @@ tests = ["Jinja2 (>=3,<4)", "pytest", "pyyaml (>=6,<7)", "rich (>=12,<14)"]
 
 [[package]]
 name = "infrahub-testcontainers"
-version = "1.5.5"
+version = "1.6.3"
 description = "Testcontainers instance for Infrahub to easily build integration tests"
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 files = [
-    {file = "infrahub_testcontainers-1.5.5-py3-none-any.whl", hash = "sha256:04de4367a267a0f182618155aeb1bb36d5ca6258773480e3337327e217965738"},
-    {file = "infrahub_testcontainers-1.5.5.tar.gz", hash = "sha256:5ba46dde666fad94c8c246ea086b957de63f06ddb7b8ac92ea5881f104068527"},
+    {file = "infrahub_testcontainers-1.6.3-py3-none-any.whl", hash = "sha256:240ca9a7eaef2486ccfaf0a799110ae23561b52949cc9d19bd64eaa4bb147479"},
+    {file = "infrahub_testcontainers-1.6.3.tar.gz", hash = "sha256:9da1d3868b221c33d4b16c1de9d85f2a38e08c9cb9006d42a2d23320813bdbcf"},
 ]
 
 [package.dependencies]
-httpx = ">=0.28.1,<0.29.0"
-prefect-client = "3.4.23"
+httpx = "<0.28"
+prefect-client = "3.5.0"
 psutil = "*"
-pydantic = ">=2.10.6,<3.0.0"
+pydantic = ">=2.10.6,<3"
 pytest = "*"
 testcontainers = ">=4.8,<4.9"
 
@@ -1775,13 +1765,13 @@ test = ["coverage[toml]", "paramiko", "psutil", "pytest (>=6.0)", "pytest-cov", 
 
 [[package]]
 name = "prefect-client"
-version = "3.4.23"
+version = "3.5.0"
 description = "Workflow orchestration and management."
 optional = false
-python-versions = "<3.14,>=3.9"
+python-versions = "<3.15,>=3.10"
 files = [
-    {file = "prefect_client-3.4.23-py3-none-any.whl", hash = "sha256:6d3ac95ced68a3d5d461e13f90df35871ce90e58194b8a354f840c6a8e6c1fa1"},
-    {file = "prefect_client-3.4.23.tar.gz", hash = "sha256:23d035c1e5a9df0c69c701c5f6ad3f8b80530c19a2383b4ca319a2397fe09ac4"},
+    {file = "prefect_client-3.5.0-py3-none-any.whl", hash = "sha256:70e2ab2d0e44534388e6daa052e0ee52c86b2263e0bdb450cf1101027504c191"},
+    {file = "prefect_client-3.5.0.tar.gz", hash = "sha256:10b9c700288ee1d7513fdfdb394eca0807e461f8bd8da9edf2433f276cc23a17"},
 ]
 
 [package.dependencies]
@@ -1813,7 +1803,6 @@ pydantic-extra-types = ">=2.8.2,<3.0.0"
 pydantic-settings = ">2.2.1,<2.9.0 || >2.9.0,<3.0.0"
 python-dateutil = ">=2.8.2,<3.0.0"
 python-slugify = ">=5.0,<9.0"
-python-socks = {version = ">=2.5.3,<3.0", extras = ["asyncio"]}
 pytz = ">=2021.1,<2026"
 pyyaml = ">=5.4.1,<7.0.0"
 rfc3339-validator = ">=0.1.4,<0.2.0"
@@ -1823,7 +1812,7 @@ sniffio = ">=1.3.0,<2.0.0"
 toml = ">=0.10.0"
 typing-extensions = ">=4.10.0,<5.0.0"
 uvicorn = ">=0.14.0,<0.29.0 || >0.29.0"
-websockets = ">=13.0,<16.0"
+websockets = ">=15.0.1,<16.0"
 
 [package.extras]
 notifications = ["apprise (>=1.1.0,<2.0.0)"]
@@ -2297,26 +2286,6 @@ text-unidecode = ">=1.3"
 
 [package.extras]
 unidecode = ["Unidecode (>=1.1.1)"]
-
-[[package]]
-name = "python-socks"
-version = "2.7.2"
-description = "Proxy (SOCKS4, SOCKS5, HTTP CONNECT) client for Python"
-optional = false
-python-versions = ">=3.8.0"
-files = [
-    {file = "python_socks-2.7.2-py3-none-any.whl", hash = "sha256:d311aefbacc0ddfaa1fa1c32096c436d4fe75b899c24d78e677e1b0623c52c48"},
-    {file = "python_socks-2.7.2.tar.gz", hash = "sha256:4c845d4700352bc7e7382f302dfc6baf0af0de34d2a6d70ba356b2539d4dbb62"},
-]
-
-[package.dependencies]
-async-timeout = {version = ">=4.0", optional = true, markers = "python_version < \"3.11\" and extra == \"asyncio\""}
-
-[package.extras]
-anyio = ["anyio (>=3.3.4,<5.0.0)"]
-asyncio = ["async-timeout (>=4.0)"]
-curio = ["curio (>=1.4)"]
-trio = ["trio (>=0.24)"]
 
 [[package]]
 name = "pytz"
@@ -3662,4 +3631,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10, < 3.13"
-content-hash = "021b7cb877db5380613902369343f80ca3cd6ec6344fbf7a0a14d97605930f3b"
+content-hash = "d5e941984db7ed56e788e4abc1a1987d03666bb4eee6f3bc87ecbf7e08851d14"
