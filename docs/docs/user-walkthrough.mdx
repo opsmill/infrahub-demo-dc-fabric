@@ -110,7 +110,7 @@ Before making changes, create a branch to isolate your work.
   <TabItem value="cli" label="Via the CLI">
 
 ```bash
-poetry run infrahubctl branch create add-network-services
+uv run infrahubctl branch create add-network-services
 ```
 
   </TabItem>
@@ -247,7 +247,7 @@ Deploy your configurations to a virtual lab to test them.
 Run the script to download all generated configurations:
 
 ```bash
-poetry run python3 scripts/get_configs.py
+uv run python3 scripts/get_configs.py
 ```
 
 This creates a `generated-configs/` directory with:

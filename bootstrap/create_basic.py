@@ -249,9 +249,7 @@ async def create_basics(client: InfrahubClient, log: logging.Logger, branch: str
                 "owner": account2.id,
             }
             data_asn["organization"] = {
-                "id": client.store.get(
-                    kind=f"Organization{organization_type.title()}", key=asn[1]
-                ).id,
+                "id": client.store.get(kind=f"Organization{organization_type.title()}", key=asn[1]).id,
                 "source": account.id,
             }
         else:
@@ -506,9 +504,7 @@ async def create_basics(client: InfrahubClient, log: logging.Logger, branch: str
         log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
 
 
-async def create_containers_prefixes(
-    client: InfrahubClient, log: logging.Logger, branch: str
-):
+async def create_containers_prefixes(client: InfrahubClient, log: logging.Logger, branch: str):
     batch = await client.create_batch()
     await create_ipam_pool(
         client=client,
@@ -538,8 +534,6 @@ async def create_containers_prefixes(
 #   infrahubctl run models/infrastructure_edge.py
 #
 # ---------------------------------------------------------------
-async def run(
-    client: InfrahubClient, log: logging.Logger, branch: str, **kwargs
-) -> None:
+async def run(client: InfrahubClient, log: logging.Logger, branch: str, **kwargs) -> None:
     await create_basics(client=client, log=log, branch=branch)
     await create_containers_prefixes(client=client, log=log, branch=branch)

@@ -18,4 +18,4 @@ This repository is demoing the key Infrahub features for an example data center 
 
 ## Running the demo
 
-Documentation for loading and using this demo is available [here](https://docs.infrahub.app/demo/demo-dc-fabric/)
+Documentation for loading and using this demo is available in the [DC Fabric Demo Guide](https://docs.infrahub.app/demo/demo-dc-fabric/)

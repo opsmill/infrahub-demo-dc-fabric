@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 import logging
-
 from typing import List, Set
 
-from infrahub_sdk import InfrahubClient
-from infrahub_sdk.node import InfrahubNode
+from infrahub_sdk import InfrahubClient  # type: ignore[import-not-found]
+from infrahub_sdk.node import InfrahubNode  # type: ignore[import-not-found]
 
 
 async def get_devices_from_location_hierarchy(
@@ -36,9 +35,7 @@ async def get_policies_from_location_hierarchy(
 
     if hasattr(location, "parent") and location.parent.id:
         await location.parent.fetch()
-        policies.extend(
-            await get_policies_from_location_hierarchy(location.parent.peer)
-        )
+        policies.extend(await get_policies_from_location_hierarchy(location.parent.peer))
 
     return policies
 
@@ -52,9 +49,7 @@ async def find_policy_targets(policy: InfrahubNode) -> List[InfrahubNode]:
 
     if policy.location_target.initialized:
         await policy.location_target.fetch()
-        targets.extend(
-            await get_devices_from_location_hierarchy(policy.location_target.peer)
-        )
+        targets.extend(await get_devices_from_location_hierarchy(policy.location_target.peer))
 
     return targets
 
@@ -82,9 +77,7 @@ async def find_device_policies(device: InfrahubNode) -> List[InfrahubNode]:
     return policies[::-1]
 
 
-async def render_policy_for_device(
-    client: InfrahubClient, device: InfrahubNode, policies: List[InfrahubNode]
-) -> None:
+async def render_policy_for_device(client: InfrahubClient, device: InfrahubNode, policies: List[InfrahubNode]) -> None:
     index = 0
     rendered_rules = []
 
@@ -101,7 +94,11 @@ async def render_policy_for_device(
 
     security_zones = await get_device_security_zones(device)
 
-    # async with client.start_tracking(identifier=Path(__file__).stem, params={"device": device.name.value}, delete_unused_nodes=True) as client:
+    # async with client.start_tracking(
+    #     identifier=Path(__file__).stem,
+    #     params={"device": device.name.value},
+    #     delete_unused_nodes=True,
+    # ) as client:
     for policy in policies:
         rules = await client.filters(
             "SecurityPolicyRule",
@@ -111,10 +108,7 @@ async def render_policy_for_device(
         )
 
         for rule in rules:
-            if (
-                rule.source_zone.peer in security_zones
-                and rule.destination_zone.peer in security_zones
-            ):
+            if rule.source_zone.peer in security_zones and rule.destination_zone.peer in security_zones:
                 rendered_rule = await client.create(
                     "SecurityRenderedPolicyRule",
                     index={"value": index, "is_protected": True, "owner": account.id},
@@ -149,16 +143,13 @@ async def render_policy_for_device(
                         "owner": account.id,
                     },
                     source_address=[
-                        {"id": s.peer.id, "is_protected": True, "owner": account.id}
-                        for s in rule.source_address.peers
+                        {"id": s.peer.id, "is_protected": True, "owner": account.id} for s in rule.source_address.peers
                     ],
                     source_groups=[
-                        {"id": s.peer.id, "is_protected": True, "owner": account.id}
-                        for s in rule.source_groups.peers
+                        {"id": s.peer.id, "is_protected": True, "owner": account.id} for s in rule.source_groups.peers
                     ],
                     source_services=[
-                        {"id": s.peer.id, "is_protected": True, "owner": account.id}
-                        for s in rule.source_services.peers
+                        {"id": s.peer.id, "is_protected": True, "owner": account.id} for s in rule.source_services.peers
                     ],
                     source_service_groups=[
                         {"id": s.peer.id, "is_protected": True, "owner": account.id}
@@ -186,16 +177,11 @@ async def render_policy_for_device(
                 index += 1
 
     await device.rules.fetch()
-    device.rules.extend(
-        {"id": rule.id, "is_protected": True, "owner": account.id}
-        for rule in rendered_rules
-    )
+    device.rules.extend({"id": rule.id, "is_protected": True, "owner": account.id} for rule in rendered_rules)
     await device.save()
 
 
-async def run(
-    client: InfrahubClient, log: logging.Logger, branch: str, **kwargs
-) -> None:
+async def run(client: InfrahubClient, log: logging.Logger, branch: str, **kwargs) -> None:
     if "policy" not in kwargs:
         raise ValueError("no policy argument provided")
 

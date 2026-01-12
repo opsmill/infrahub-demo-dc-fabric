@@ -1,9 +1,8 @@
 import os
 import sys
-
 from pathlib import Path
 
-from invoke import task, Context  # type: ignore
+from invoke import Context, task  # type: ignore
 
 CURRENT_DIRECTORY = Path(__file__).resolve()
 DOCUMENTATION_DIRECTORY = CURRENT_DIRECTORY.parent / "docs"
@@ -86,8 +85,17 @@ def format(context: Context) -> None:
 
 
 @task
+def lint_markdown(context: Context) -> None:
+    """Run Linter to check all Markdown files."""
+    print(" - Check code with markdownlint")
+    exec_cmd = "markdownlint ."
+    with context.cd(MAIN_DIRECTORY_PATH):
+        context.run(exec_cmd)
+
+
+@task
 def lint_yaml(context: Context) -> None:
-    """Run Linter to check all Python files."""
+    """Run Linter to check all YAML files."""
     print(" - Check code with yamllint")
     exec_cmd = "yamllint ."
     with context.cd(MAIN_DIRECTORY_PATH):
@@ -96,7 +104,7 @@ def lint_yaml(context: Context) -> None:
 
 @task
 def lint_mypy(context: Context) -> None:
-    """Run Linter to check all Python files."""
+    """Run mypy to check all Python files."""
     print(" - Check code with mypy")
     exec_cmd = "mypy --show-error-codes ."
     with context.cd(MAIN_DIRECTORY_PATH):
@@ -106,18 +114,22 @@ def lint_mypy(context: Context) -> None:
 @task
 def lint_ruff(context: Context) -> None:
     """Run Linter to check all Python files."""
-    print(" - Check code with ruff")
-    exec_cmd = "ruff check ."
+    print(" - Check code formatting with ruff")
     with context.cd(MAIN_DIRECTORY_PATH):
-        context.run(exec_cmd)
+        context.run("ruff format --check --diff")
+        context.run("ruff check --select I .")
+    print(" - Check code with ruff")
+    with context.cd(MAIN_DIRECTORY_PATH):
+        context.run("ruff check .")
 
 
 @task(name="lint")
 def lint_all(context: Context) -> None:
     """Run all linters."""
+    lint_markdown(context)
     lint_yaml(context)
     lint_ruff(context)
-    # lint_mypy(context)
+    lint_mypy(context)
 
 
 @task(name="docs")
@@ -128,5 +140,5 @@ def docs_build(context: Context) -> None:
     with context.cd(DOCUMENTATION_DIRECTORY):
         output = context.run(exec_cmd)
 
-    if output.exited != 0:
+    if output and output.exited != 0:
         sys.exit(-1)

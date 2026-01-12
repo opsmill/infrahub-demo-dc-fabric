@@ -1,6 +1,5 @@
-import logging
 import ipaddress
-
+import logging
 from typing import Dict, List, Optional
 
 from infrahub_sdk import InfrahubClient
@@ -30,9 +29,7 @@ def extract_common_prefix(prefix: str) -> str:
             # Extract the first full octets
             octets = net_str.split(".")[:full_octets]
             # Add the partial octet if necessary
-            partial_octet = int(net_str.split(".")[full_octets]) & (
-                0xFF << (8 - partial_bits)
-            )
+            partial_octet = int(net_str.split(".")[full_octets]) & (0xFF << (8 - partial_bits))
             octets.append(str(partial_octet))
             return ".".join(octets) + f"/{net.prefixlen}"
         else:
@@ -44,9 +41,7 @@ def extract_common_prefix(prefix: str) -> str:
         partial_bits = net.prefixlen % 16
         if partial_bits > 0:
             hextets = net_str.split(":")[:full_hextets]
-            partial_hextet = int(net_str.split(":")[full_hextets], 16) & (
-                0xFFFF << (16 - partial_bits)
-            )
+            partial_hextet = int(net_str.split(":")[full_hextets], 16) & (0xFFFF << (16 - partial_bits))
             hextets.append(f"{partial_hextet:x}")
             return ":".join(hextets) + f"/{net.prefixlen}"
         else:
@@ -67,9 +62,7 @@ async def create_ipam_pool(
     """
     Helper function to create a single IP pool.
     """
-    default_ip_namespace_obj = await client.get(
-        kind="IpamNamespace", name__value="default"
-    )
+    default_ip_namespace_obj = await client.get(kind="IpamNamespace", name__value="default")
     # Prepare description and naming convention
     usage = f"{role}"
     common_prefix = extract_common_prefix(prefix=prefix)
@@ -92,9 +85,7 @@ async def create_ipam_pool(
     }
 
     kind = None
-    prefix_obj = await client.get(
-        kind="InfraPrefix", prefix__value=prefix, raise_when_missing=True
-    )
+    prefix_obj = await client.get(kind="InfraPrefix", prefix__value=prefix, raise_when_missing=True)
     if prefix_obj:
         pool_data["resources"] = [prefix_obj.id]
 
@@ -148,9 +139,7 @@ async def create_and_save(
         log.info(f"- Created {obj._schema.kind} - {object_name}")
         client.store.set(key=object_name, node=obj)
     except GraphQLError as exc:
-        log.debug(
-            f"- Creation failed for {obj._schema.kind} - {object_name} due to {exc}"
-        )
+        log.debug(f"- Creation failed for {obj._schema.kind} - {object_name} due to {exc}")
         if retrieved_on_failure:
             obj = await client.get(kind=kind_name, name__value=object_name)
             client.store.set(key=object_name, node=obj)

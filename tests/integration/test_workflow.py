@@ -1,17 +1,14 @@
-import pytest
-import time
 import logging
+import time
 
-
+import pytest
 from infrahub_sdk.graphql import Mutation
 from infrahub_sdk.task.models import TaskState
 from infrahub_sdk.testing.repository import GitRepo
 
-from .conftest import TestInfrahubDockerWithClient, PROJECT_DIRECTORY
+from .conftest import PROJECT_DIRECTORY, TestInfrahubDockerWithClient
 
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 DATA_GENERATORS = [
     "create_basic.py",
@@ -37,9 +34,7 @@ class TestDemoflow(TestInfrahubDockerWithClient):
         )
 
         logging.info("Command output: %s", load_schemas.stdout)
-        assert load_schemas.returncode == 0, (
-            f"Schema load failed: {load_schemas.stdout}"
-        )
+        assert load_schemas.returncode == 0, f"Schema load failed: {load_schemas.stdout}"
 
     def test_load_data(self, client_main):
         for data_generator in DATA_GENERATORS:
@@ -68,9 +63,7 @@ class TestDemoflow(TestInfrahubDockerWithClient):
         max_attempts, attempts = 60, 0
 
         while not synchronized and attempts < max_attempts:
-            repository = await client.get(
-                kind=git_repository.type.value, name__value="demo_repo"
-            )
+            repository = await client.get(kind=git_repository.type.value, name__value="demo_repo")
             synchronized = repository.sync_status.value == "in-sync"
             error = "error" in repository.sync_status.value
             if synchronized or error:
@@ -110,9 +103,7 @@ class TestDemoflow(TestInfrahubDockerWithClient):
         l3_service.save(allow_upsert=True)
 
     def test_generator(self, client, default_branch):
-        definition = client.get(
-            "CoreGeneratorDefinition", name__value="generate_network_services"
-        )
+        definition = client.get("CoreGeneratorDefinition", name__value="generate_network_services")
         mutation = Mutation(
             mutation="CoreGeneratorDefinitionRun",
             input_data={
@@ -126,9 +117,7 @@ class TestDemoflow(TestInfrahubDockerWithClient):
 
         response = client.execute_graphql(query=mutation.render())
 
-        task = client.task.wait_for_completion(
-            id=response["CoreGeneratorDefinitionRun"]["task"]["id"], timeout=1800
-        )
+        task = client.task.wait_for_completion(id=response["CoreGeneratorDefinitionRun"]["task"]["id"], timeout=1800)
 
         assert task.state == TaskState.COMPLETED, (
             f"Task {task.id} - generator generate_network_services did not complete successfully"
@@ -148,9 +137,7 @@ class TestDemoflow(TestInfrahubDockerWithClient):
         )
 
         response = client_main.execute_graphql(query=mutation.render())
-        task = client_main.task.wait_for_completion(
-            id=response["DiffUpdate"]["task"]["id"], timeout=600
-        )
+        task = client_main.task.wait_for_completion(id=response["DiffUpdate"]["task"]["id"], timeout=600)
 
         assert task.state == TaskState.COMPLETED, (
             f"Task {task.id} - generate diff for {default_branch} did not complete successfully"
@@ -188,28 +175,21 @@ class TestDemoflow(TestInfrahubDockerWithClient):
             )
 
             validations_completed = all(
-                (
-                    validation.peer.state.value == "completed"
-                    for validation in pc.validations.peers
-                )
+                (validation.peer.state.value == "completed" for validation in pc.validations.peers)
             )
 
             if validations_completed:
-                validation_results = [
-                    validation.peer for validation in pc.validations.peers
-                ]
+                validation_results = [validation.peer for validation in pc.validations.peers]
                 break
 
             attempts += 1
             time.sleep(60)
 
-        assert validations_completed, (
-            "Not all proposed change validations managed to complete in time"
-        )
+        assert validations_completed, "Not all proposed change validations managed to complete in time"
 
-        assert all(
-            (result.conclusion.value == "succes" for result in validation_results)
-        ), "Not all validations have succeeded!"
+        assert all((result.conclusion.value == "succes" for result in validation_results)), (
+            "Not all validations have succeeded!"
+        )
 
         mutation = Mutation(
             mutation="CoreProposedChangeMerge",
@@ -223,10 +203,6 @@ class TestDemoflow(TestInfrahubDockerWithClient):
         )
 
         response = client_main.execute_graphql(query=mutation.render())
-        task = client_main.task.wait_for_completion(
-            id=response["CoreProposedChangeMerge"]["task"]["id"], timeout=600
-        )
+        task = client_main.task.wait_for_completion(id=response["CoreProposedChangeMerge"]["task"]["id"], timeout=600)
 
-        assert task.state == TaskState.COMPLETED, (
-            f"Task {task.id} - merge proposed change did not complete succesfully"
-        )
+        assert task.state == TaskState.COMPLETED, f"Task {task.id} - merge proposed change did not complete succesfully"

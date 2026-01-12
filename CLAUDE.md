@@ -18,10 +18,10 @@ Infrahub is an infrastructure data management platform built on three pillars:
 
 ```bash
 # Install dependencies
-poetry install
+uv sync
 
 # Install with dev dependencies
-poetry install --with dev
+uv sync --group dev
 ```
 
 ### Running the Demo
@@ -86,6 +86,7 @@ npm run start
 ```
 
 **Requirements:**
+
 - Node.js >= 20.0 (specified in `.node-version` and `docs/package.json`)
 - The `.node-version` file ensures Cloudflare Pages uses the correct Node.js version
 

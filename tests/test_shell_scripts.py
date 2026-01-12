@@ -1,7 +1,6 @@
-import subprocess
-
 # import pytest
 import os
+import subprocess
 
 
 def test_topology_generator_script():

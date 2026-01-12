@@ -157,20 +157,14 @@ LOOPBACK_ROLE = "loopback"
 MGMT_ROLE = "management"
 
 
-def get_interface_names(
-    device_type: str, device_role: str, interface_role: str
-) -> Optional[List]:
+def get_interface_names(device_type: str, device_role: str, interface_role: str) -> Optional[List]:
     if device_type not in DEVICES_INTERFACES:
         return None
     if device_role not in INTERFACE_ROLES_MAPPING:
         return None
 
     # Mapping of roles to interface indices
-    role_indices = [
-        i
-        for i, r in enumerate(INTERFACE_ROLES_MAPPING[device_role])
-        if r == interface_role
-    ]
+    role_indices = [i for i, r in enumerate(INTERFACE_ROLES_MAPPING[device_role]) if r == interface_role]
 
     # Get the interface names based on the indices for the specific device model
     interface_names = [DEVICES_INTERFACES[device_type][i] for i in role_indices]
@@ -316,17 +310,10 @@ def remove_interface_prefixes(text: str) -> str:
         return text
 
 
-def generate_asn(
-    location_index: int, element_type_index: int, element_index: int
-) -> int:
+def generate_asn(location_index: int, element_type_index: int, element_index: int) -> int:
     location_index_adjusted = location_index + 1
     element_index_adjusted = (element_index + 1) // 2
-    asn = (
-        65000
-        + (location_index_adjusted * 100)
-        + (element_type_index * 10)
-        + element_index_adjusted
-    )
+    asn = 65000 + (location_index_adjusted * 100) + (element_type_index * 10) + element_index_adjusted
     return asn
 
 
@@ -337,9 +324,7 @@ async def generate_topology(
     topology: InfrahubNode,
     topology_index: int,
 ) -> Optional[str]:
-    async with client.start_tracking(
-        params={"topology": topology.name.value}
-    ) as client:
+    async with client.start_tracking(params={"topology": topology.name.value}) as client:
         topology_name = topology.name.value
         topology_id = topology.id
 
@@ -378,12 +363,8 @@ async def generate_topology(
             location__shortname__value=location_shortname,
             branch=branch,
         )
-        populate_local_store(
-            objects=locations_vlans, key_type="name", store=client.store
-        )
-        vlan_pxe = client.store.get(
-            key=f"{location_shortname.lower()}_server-pxe", kind="InfraVLAN"
-        )
+        populate_local_store(objects=locations_vlans, key_type="name", store=client.store)
+        vlan_pxe = client.store.get(key=f"{location_shortname.lower()}_server-pxe", kind="InfraVLAN")
         vlans = await client.filters(
             kind="InfraVLAN",
             location__shortname__value=location_shortname,
@@ -391,10 +372,7 @@ async def generate_topology(
         )
         vlans_server = []
         for vlan in vlans:
-            if (
-                vlan.role.value == "server"
-                and vlan.name != f"{location_shortname.lower}_server-pxe"
-            ):
+            if vlan.role.value == "server" and vlan.name != f"{location_shortname.lower}_server-pxe":
                 vlans_server.append(vlan)
         # Using Prefix role to knwow which network to use. Role to Prefix should help avoid doing this
         locations_subnets = await client.filters(
@@ -430,9 +408,7 @@ async def generate_topology(
         #   - Add IP to external facing L3 Interfaces
 
         loopback_address_pool = location_loopback_net_pool[0].prefix.value.hosts()
-        loopback_vtep_address_pool = location_loopback_vtep_net_pool[
-            0
-        ].prefix.value.hosts()
+        loopback_vtep_address_pool = location_loopback_vtep_net_pool[0].prefix.value.hosts()
         mgmt_address_pool = location_mgmt_net_pool[0].prefix.value.hosts()
         topology_elements = await client.filters(
             kind="TopologyPhysicalElement",
@@ -442,22 +418,16 @@ async def generate_topology(
         )
 
         batch = await client.create_batch()
-        sorted_topology_elements = sorted(
-            topology_elements, key=lambda x: x.device_role.value, reverse=True
-        )
+        sorted_topology_elements = sorted(topology_elements, key=lambda x: x.device_role.value, reverse=True)
         for elemt_index, topology_element in enumerate(sorted_topology_elements):
             if not topology_element.device_type:
                 log.info(f"No device_type for {topology_element.name.value} - Ignored")
                 continue
-            device_type = await client.get(
-                ids=topology_element.device_type.id, kind="InfraDeviceType"
-            )
+            device_type = await client.get(ids=topology_element.device_type.id, kind="InfraDeviceType")
             if not device_type.platform.id:
                 log.info(f"No platform for {device_type.name.value} - Ignored")
                 continue
-            platform = await client.get(
-                ids=device_type.platform.id, kind="InfraPlatform"
-            )
+            platform = await client.get(ids=device_type.platform.id, kind="InfraPlatform")
             platform_id = platform.id
             device_role_name = topology_element.device_role.value
             device_type_name = device_type.name.value
@@ -491,9 +461,7 @@ async def generate_topology(
                             "owner": account_pop.id,
                         },
                         "organization": {"id": orga_duff.id},
-                        "description": {
-                            "value": f"Private {asn_name} for Duff on device {device_name}"
-                        },
+                        "description": {"value": f"Private {asn_name} for Duff on device {device_name}"},
                     }
                     asn_obj = await create_and_save(
                         client=client,
@@ -552,21 +520,13 @@ async def generate_topology(
                 )
 
                 # Add device to groups
-                platform_group_name = (
-                    f"{platform.name.value.lower().split(' ', 1)[0]}_devices"
-                )
-                platform_group = await client.get(
-                    name__value=platform_group_name, kind="CoreStandardGroup"
-                )
+                platform_group_name = f"{platform.name.value.lower().split(' ', 1)[0]}_devices"
+                platform_group = await client.get(name__value=platform_group_name, kind="CoreStandardGroup")
                 await platform_group.members.fetch()
                 platform_group.members.add(device_obj.id)
                 await platform_group.save()
-                log.info(
-                    f"- Add {device_name} to {platform_group_name} CoreStandardGroup"
-                )
-                topology_group = await client.get(
-                    name__value=f"{topology_name}_topology", kind="CoreStandardGroup"
-                )
+                log.info(f"- Add {device_name} to {platform_group_name} CoreStandardGroup")
+                topology_group = await client.get(name__value=f"{topology_name}_topology", kind="CoreStandardGroup")
                 await topology_group.members.fetch()
                 topology_group.members.add(device_obj.id)
                 await topology_group.save()
@@ -586,9 +546,7 @@ async def generate_topology(
 
                 # Loopback Interface
                 loopback_name = INTERFACE_LOOP_NAME[device_type_name]
-                loopback_description = (
-                    f"{loopback_name.lower().replace(' ', '')}.{device_name.lower()}"
-                )
+                loopback_description = f"{loopback_name.lower().replace(' ', '')}.{device_name.lower()}"
                 loopback_data = prepare_interface_data(
                     device_obj_id=device_obj.id,
                     intf_name=loopback_name,
@@ -658,9 +616,7 @@ async def generate_topology(
 
                 # Management Interface
                 mgmt_name = INTERFACE_MGMT_NAME[device_type_name]
-                mgmt_description = (
-                    f"{mgmt_name.lower().replace(' ', '')}.{device_name.lower()}"
-                )
+                mgmt_description = f"{mgmt_name.lower().replace(' ', '')}.{device_name.lower()}"
                 mgmt_data = prepare_interface_data(
                     device_obj_id=device_obj.id,
                     intf_name=mgmt_name,
@@ -701,15 +657,9 @@ async def generate_topology(
                 if device_role_name.lower() not in ["spine", "leaf"]:
                     continue
 
-                for intf_idx, intf_name in enumerate(
-                    DEVICES_INTERFACES[device_type_name]
-                ):
-                    intf_role = INTERFACE_ROLES_MAPPING[device_role_name.lower()][
-                        intf_idx
-                    ]
-                    interface_description = (
-                        f"{intf_name.lower().replace(' ', '')}.{device_name.lower()}"
-                    )
+                for intf_idx, intf_name in enumerate(DEVICES_INTERFACES[device_type_name]):
+                    intf_role = INTERFACE_ROLES_MAPPING[device_role_name.lower()][intf_idx]
+                    interface_description = f"{intf_name.lower().replace(' ', '')}.{device_name.lower()}"
 
                     # L3 Interfaces
                     if intf_role in L3_ROLE_MAPPING:
@@ -750,9 +700,7 @@ async def generate_topology(
         async for node, _ in batch.execute():
             if node._schema.default_filter:
                 accessor = f"{node._schema.default_filter.split('__')[0]}"
-                log.info(
-                    f"- Created {node._schema.kind} - {getattr(node, accessor).value}"
-                )
+                log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
             else:
                 log.info(f"- Created {node}")
 
@@ -834,14 +782,12 @@ async def generate_topology(
 
         # Cabling Spines <-> Leaf
         if not spine_leaf_interfaces or not leaf_uplink_interfaces:
-            log.error(
-                "No 'uplink' interfaces found on leaf or no 'leaf' interfaces on spines"
-            )
+            log.error("No 'uplink' interfaces found on leaf or no 'leaf' interfaces on spines")
             return None
 
-        interconnection_subnets = IPv4Network(
-            next(iter(location_technical_net_pool)).prefix.value
-        ).subnets(new_prefix=31)
+        interconnection_subnets = IPv4Network(next(iter(location_technical_net_pool)).prefix.value).subnets(
+            new_prefix=31
+        )
 
         # Cabling Leaf
         backbone_vrf_obj_id = client.store.get(key="Backbone", kind="InfraVRF").id
@@ -856,20 +802,12 @@ async def generate_topology(
             if leaf_pair_num == 1:
                 if len(spine_leaf_interfaces) < 2:
                     continue
-                spine_port = (
-                    spine_leaf_interfaces[0]
-                    if leaf_idx % 2 != 0
-                    else spine_leaf_interfaces[1]
-                )
+                spine_port = spine_leaf_interfaces[0] if leaf_idx % 2 != 0 else spine_leaf_interfaces[1]
             else:
                 offset = (leaf_pair_num - 1) * 2
                 if len(spine_leaf_interfaces) < offset + 1:
                     continue
-                spine_port = (
-                    spine_leaf_interfaces[offset]
-                    if leaf_idx % 2 != 0
-                    else spine_leaf_interfaces[offset + 1]
-                )
+                spine_port = spine_leaf_interfaces[offset] if leaf_idx % 2 != 0 else spine_leaf_interfaces[offset + 1]
 
             for spine_idx in range(1, spine_quantity + 1):
                 if spine_idx > len(leaf_uplink_interfaces):
@@ -882,11 +820,7 @@ async def generate_topology(
                 if spine_pair_num == 1:
                     if len(leaf_uplink_interfaces) < 2:
                         continue
-                    uplink_port = (
-                        leaf_uplink_interfaces[0]
-                        if spine_idx % 2 != 0
-                        else leaf_uplink_interfaces[1]
-                    )
+                    uplink_port = leaf_uplink_interfaces[0] if spine_idx % 2 != 0 else leaf_uplink_interfaces[1]
                 else:
                     offset = (spine_pair_num - 1) * 2
                     if len(leaf_uplink_interfaces) < offset + 1:
@@ -909,22 +843,18 @@ async def generate_topology(
                 )
                 # store.get(kind="InfraInterfaceL3", key=f"{topology_name}-leaf{leaf_idx}-{uplink_port}")
 
-                new_spine_intf_description = (
-                    intf_spine_obj.description.value
-                    + f" to {intf_leaf_obj.description.value}"
-                )
+                new_spine_intf_description = intf_spine_obj.description.value + f" to {intf_leaf_obj.description.value}"
                 spine_ico_ip_description = intf_spine_obj.description.value
-                new_leaf_intf_description = (
-                    intf_leaf_obj.description.value
-                    + f" to {intf_spine_obj.description.value}"
-                )
+                new_leaf_intf_description = intf_leaf_obj.description.value + f" to {intf_spine_obj.description.value}"
                 leaf_ico_ip_description = intf_leaf_obj.description.value
 
                 interconnection_subnet = next(interconnection_subnets)
                 interconnection_ips = list(interconnection_subnet.hosts())
                 spine_ip = f"{str(interconnection_ips[0])}/31"
                 leaf_ip = f"{str(interconnection_ips[1])}/31"
-                prefix_description = f"{location_shortname.lower()}-ico-{IPv4Network(interconnection_subnet).network_address}"
+                prefix_description = (
+                    f"{location_shortname.lower()}-ico-{IPv4Network(interconnection_subnet).network_address}"
+                )
                 data = {
                     "prefix": {"value": IPv4Network(interconnection_subnet)},
                     "description": {"value": prefix_description},
@@ -1000,19 +930,13 @@ async def generate_topology(
                     spine_asn_obj = spine_obj.asn.peer
                     leaf_asn_obj = leaf_obj.asn.peer
                     leaf_pair = (leaf_idx + 1) // 2
-                    spine_bgp_group_name = (
-                        f"{topology_name}-underlay-spine-leaf-pair{leaf_pair}"
-                    )
-                    leaf_bgp_group_name = (
-                        f"{topology_name}-underlay-leaf-pair{leaf_pair}-spine"
-                    )
+                    spine_bgp_group_name = f"{topology_name}-underlay-spine-leaf-pair{leaf_pair}"
+                    leaf_bgp_group_name = f"{topology_name}-underlay-leaf-pair{leaf_pair}-spine"
                     data_spine_bgp_group = {
                         "name": {"value": spine_bgp_group_name},
                         "local_as": {"id": spine_asn_obj.id},
                         "remote_as": {"id": leaf_asn_obj.id},
-                        "description": {
-                            "value": f"BGP group for {topology_name} underlay"
-                        },
+                        "description": {"value": f"BGP group for {topology_name} underlay"},
                     }
                     spine_bgp_group_obj = await create_and_save(
                         client=client,
@@ -1026,9 +950,7 @@ async def generate_topology(
                         "name": {"value": leaf_bgp_group_name},
                         "remote_as": {"id": spine_asn_obj.id},
                         "local_as": {"id": leaf_asn_obj.id},
-                        "description": {
-                            "value": f"BGP group for {topology_name} underlay"
-                        },
+                        "description": {"value": f"BGP group for {topology_name} underlay"},
                     }
                     leaf_bgp_group_obj = await create_and_save(
                         client=client,
@@ -1048,11 +970,7 @@ async def generate_topology(
                         "role": {"value": "backbone"},
                         "device": {"id": spine_obj.id},
                         "peer_group": {"id": spine_bgp_group_obj.id},
-                        "description": {
-                            "value": remove_interface_prefixes(
-                                new_spine_intf_description
-                            )
-                        },
+                        "description": {"value": remove_interface_prefixes(new_spine_intf_description)},
                     }
                     spine_session_obj = await create_and_save(
                         client=client,
@@ -1073,11 +991,7 @@ async def generate_topology(
                         "device": {"id": leaf_obj.id},
                         "peer_session": {"id": spine_session_obj.id},
                         "peer_group": {"id": leaf_bgp_group_obj.id},
-                        "description": {
-                            "value": remove_interface_prefixes(
-                                new_leaf_intf_description
-                            )
-                        },
+                        "description": {"value": remove_interface_prefixes(new_leaf_intf_description)},
                     }
                     leaf_session_obj = await create_and_add_to_batch(
                         client=client,
@@ -1102,19 +1016,13 @@ async def generate_topology(
                 if leaf_pair_num == 1:
                     if len(spine_uplink_interfaces) < 2:
                         continue
-                    spine_port = (
-                        spine_uplink_interfaces[0]
-                        if leaf_idx % 2 != 0
-                        else spine_uplink_interfaces[1]
-                    )
+                    spine_port = spine_uplink_interfaces[0] if leaf_idx % 2 != 0 else spine_uplink_interfaces[1]
                 else:
                     offset = (leaf_pair_num - 1) * 2
                     if len(spine_uplink_interfaces) < offset + 1:
                         continue
                     spine_port = (
-                        spine_uplink_interfaces[offset]
-                        if leaf_idx % 2 != 0
-                        else spine_uplink_interfaces[offset + 1]
+                        spine_uplink_interfaces[offset] if leaf_idx % 2 != 0 else spine_uplink_interfaces[offset + 1]
                     )
 
                 for spine_idx in range(1, spine_quantity + 1):
@@ -1129,9 +1037,7 @@ async def generate_topology(
                         if len(border_leaf_uplink_interfaces) < 2:
                             continue
                         leaf_port = (
-                            border_leaf_uplink_interfaces[0]
-                            if spine_idx % 2 != 0
-                            else border_leaf_uplink_interfaces[1]
+                            border_leaf_uplink_interfaces[0] if spine_idx % 2 != 0 else border_leaf_uplink_interfaces[1]
                         )
                     else:
                         offset = (spine_pair_num - 1) * 2
@@ -1156,13 +1062,11 @@ async def generate_topology(
                     # store.get(kind="InfraInterfaceL3", key=f"{topology_name}-borderleaf{leaf_idx}-{leaf_port}")
 
                     new_spine_intf_description = (
-                        intf_spine_obj.description.value
-                        + f" to {intf_leaf_obj.description.value}"
+                        intf_spine_obj.description.value + f" to {intf_leaf_obj.description.value}"
                     )
                     spine_ico_ip_description = intf_spine_obj.description.value
                     new_leaf_intf_description = (
-                        intf_leaf_obj.description.value
-                        + f" to {intf_spine_obj.description.value}"
+                        intf_leaf_obj.description.value + f" to {intf_spine_obj.description.value}"
                     )
                     leaf_ico_ip_description = intf_leaf_obj.description.value
 
@@ -1170,7 +1074,9 @@ async def generate_topology(
                     interconnection_ips = list(interconnection_subnet.hosts())
                     spine_ip = f"{str(interconnection_ips[0])}/31"
                     leaf_ip = f"{str(interconnection_ips[1])}/31"
-                    prefix_description = f"{location_shortname.lower()}-ico-{IPv4Network(interconnection_subnet).network_address}"
+                    prefix_description = (
+                        f"{location_shortname.lower()}-ico-{IPv4Network(interconnection_subnet).network_address}"
+                    )
                     data = {
                         "prefix": {"value": IPv4Network(interconnection_subnet)},
                         "description": {"value": prefix_description},
@@ -1246,19 +1152,13 @@ async def generate_topology(
                         spine_asn_obj = spine_obj.asn.peer
                         leaf_asn_obj = leaf_obj.asn.peer
                         leaf_pair = (leaf_idx + 1) // 2
-                        spine_bgp_group_name = (
-                            f"{topology_name}-underlay-spine-borderleaf-pair{leaf_pair}"
-                        )
-                        leaf_bgp_group_name = (
-                            f"{topology_name}-underlay-borderleaf-pair{leaf_pair}-spine"
-                        )
+                        spine_bgp_group_name = f"{topology_name}-underlay-spine-borderleaf-pair{leaf_pair}"
+                        leaf_bgp_group_name = f"{topology_name}-underlay-borderleaf-pair{leaf_pair}-spine"
                         data_spine_bgp_group = {
                             "name": {"value": spine_bgp_group_name},
                             "local_as": {"id": spine_asn_obj.id},
                             "remote_as": {"id": leaf_asn_obj.id},
-                            "description": {
-                                "value": f"BGP group for {topology_name} underlay"
-                            },
+                            "description": {"value": f"BGP group for {topology_name} underlay"},
                         }
                         spine_bgp_group_obj = await create_and_save(
                             client=client,
@@ -1272,9 +1172,7 @@ async def generate_topology(
                             "name": {"value": leaf_bgp_group_name},
                             "remote_as": {"id": spine_asn_obj.id},
                             "local_as": {"id": leaf_asn_obj.id},
-                            "description": {
-                                "value": f"BGP group for {topology_name} underlay"
-                            },
+                            "description": {"value": f"BGP group for {topology_name} underlay"},
                         }
                         leaf_bgp_group_obj = await create_and_save(
                             client=client,
@@ -1294,11 +1192,7 @@ async def generate_topology(
                             "role": {"value": "backbone"},
                             "device": {"id": spine_obj.id},
                             "peer_group": {"id": spine_bgp_group_obj.id},
-                            "description": {
-                                "value": remove_interface_prefixes(
-                                    new_spine_intf_description
-                                )
-                            },
+                            "description": {"value": remove_interface_prefixes(new_spine_intf_description)},
                         }
                         spine_session_obj = await create_and_save(
                             client=client,
@@ -1319,11 +1213,7 @@ async def generate_topology(
                             "device": {"id": leaf_obj.id},
                             "peer_session": {"id": spine_session_obj.id},
                             "peer_group": {"id": leaf_bgp_group_obj.id},
-                            "description": {
-                                "value": remove_interface_prefixes(
-                                    new_leaf_intf_description
-                                )
-                            },
+                            "description": {"value": remove_interface_prefixes(new_leaf_intf_description)},
                         }
                         leaf_session_obj = await create_and_save(
                             client=client,
@@ -1348,20 +1238,14 @@ async def generate_topology(
             leaf1_name = f"{topology_name}-leaf{leaf_idx}"
             leaf2_name = f"{topology_name}-leaf{leaf_idx + 1}"
             for leaf_peer_interface in leaf_peer_interfaces:
-                intf_leaf1_obj = client.store.get(
-                    kind="InfraInterfaceL2", key=f"{leaf1_name}-{leaf_peer_interface}"
-                )
-                intf_leaf2_obj = client.store.get(
-                    kind="InfraInterfaceL2", key=f"{leaf2_name}-{leaf_peer_interface}"
-                )
+                intf_leaf1_obj = client.store.get(kind="InfraInterfaceL2", key=f"{leaf1_name}-{leaf_peer_interface}")
+                intf_leaf2_obj = client.store.get(kind="InfraInterfaceL2", key=f"{leaf2_name}-{leaf_peer_interface}")
 
                 new_leaf1_intf_description = (
-                    intf_leaf1_obj.description.value
-                    + f" to {intf_leaf2_obj.description.value}"
+                    intf_leaf1_obj.description.value + f" to {intf_leaf2_obj.description.value}"
                 )
                 new_leaf2_intf_description = (
-                    intf_leaf2_obj.description.value
-                    + f" to {intf_leaf1_obj.description.value}"
+                    intf_leaf2_obj.description.value + f" to {intf_leaf1_obj.description.value}"
                 )
 
                 # Update Leaf1 interface (description, endpoints, status)
@@ -1378,9 +1262,7 @@ async def generate_topology(
         async for node, _ in batch.execute():
             if node._schema.default_filter:
                 accessor = f"{node._schema.default_filter.split('__')[0]}"
-                log.info(
-                    f"- Created {node._schema.kind} - {getattr(node, accessor).value}"
-                )
+                log.info(f"- Created {node._schema.kind} - {getattr(node, accessor).value}")
             else:
                 log.info(f"- Created {node}")
 
@@ -1406,9 +1288,7 @@ async def generate_topology(
 #   infrahubctl run models/infrastructure_edge.py
 #
 # ---------------------------------------------------------------
-async def run(
-    client: InfrahubClient, log: logging.Logger, branch: str, **kwargs
-) -> None:
+async def run(client: InfrahubClient, log: logging.Logger, branch: str, **kwargs) -> None:
     # ------------------------------------------
     # Retrieving objects from Infrahub
     # ------------------------------------------
@@ -1426,9 +1306,7 @@ async def run(
         populate_local_store(objects=manufacturers, key_type="name", store=client.store)
         # ASN
         autonomous_systems = await client.all("InfraAutonomousSystem")
-        populate_local_store(
-            objects=autonomous_systems, key_type="name", store=client.store
-        )
+        populate_local_store(objects=autonomous_systems, key_type="name", store=client.store)
         # Platforms + Device Types
         platforms = await client.all("InfraPlatform")
         populate_local_store(objects=platforms, key_type="name", store=client.store)
@@ -1438,9 +1316,7 @@ async def run(
         topologies = await client.all("TopologyTopology")
         populate_local_store(objects=topologies, key_type="name", store=client.store)
         evpn_strategies = await client.all("TopologyEVPNStrategy", populate_store=True)
-        populate_local_store(
-            objects=evpn_strategies, key_type="name", store=client.store
-        )
+        populate_local_store(objects=evpn_strategies, key_type="name", store=client.store)
         # Locations
         locations = await client.all("LocationGeneric", populate_store=True)
         populate_local_store(objects=locations, key_type="name", store=client.store)

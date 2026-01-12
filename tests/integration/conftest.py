@@ -1,13 +1,10 @@
 import os
 import subprocess
-
 from pathlib import Path
 
 import pytest
-
-from infrahub_sdk import InfrahubClient, InfrahubClientSync, Config
+from infrahub_sdk import Config, InfrahubClient, InfrahubClientSync
 from infrahub_testcontainers.helpers import TestInfrahubDocker
-
 
 TEST_DIRECTORY = Path(__file__).parent
 PROJECT_DIRECTORY = TEST_DIRECTORY.parent.parent

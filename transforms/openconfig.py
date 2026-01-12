@@ -16,13 +16,8 @@ class OCInterfaces(InfrahubTransform):
                 "config": {"enabled": intf["node"]["enabled"]["value"]},
             }
 
-            if (
-                intf["node"].get("description", None)
-                and intf["node"]["description"]["value"]
-            ):
-                intf_config["config"]["description"] = intf["node"]["description"][
-                    "value"
-                ]
+            if intf["node"].get("description", None) and intf["node"]["description"]["value"]:
+                intf_config["config"]["description"] = intf["node"]["description"]["value"]
 
             if intf["node"].get("ip_addresses", None):
                 intf_config["subinterfaces"] = {"subinterface": []}

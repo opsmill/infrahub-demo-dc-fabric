@@ -9,7 +9,7 @@ This guide walks you through installing and setting up the Infrahub DC fabric de
 By following this guide, you'll have a fully functional Infrahub instance with the demo DC fabric environment ready to use. This includes:
 
 - A running Infrahub instance with Docker Compose
-- Python dependencies installed via Poetry
+- Python dependencies installed via uv
 - Environment variables configured for the demo
 - Schema and initial data loaded into Infrahub
 
@@ -27,9 +27,10 @@ Before starting, ensure you have the following installed on your system:
   - Python 3.13+ is not currently supported
   - Verify with: `python --version` or `python3 --version`
 
-- **Poetry** - Python dependency management
-  - Install from [python-poetry.org/docs](https://python-poetry.org/docs)
-  - Verify with: `poetry --version`
+- **uv** - Python package and project manager
+  - Install from [docs.astral.sh/uv](https://docs.astral.sh/uv/getting-started/installation/)
+  - Or run: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+  - Verify with: `uv --version`
 
 - **Git** - For cloning the repository
   - Verify with: `git --version`
@@ -71,10 +72,10 @@ Add these exports to your shell profile (`.bashrc`, `.zshrc`, etc.) to persist t
 
 ## Step 3: Install Python dependencies
 
-Use Poetry to install the required Python packages:
+Use uv to install the required Python packages:
 
 ```bash
-poetry install
+uv sync
 ```
 
 This command:
@@ -84,7 +85,7 @@ This command:
 - Installs development tools (ruff, yamllint, mypy, pytest)
 
 :::info
-The `--no-root` flag is not needed as this project uses `package-mode = false` in `pyproject.toml`.
+uv automatically manages virtual environments and uses the `uv.lock` file to ensure reproducible builds.
 :::
 
 ## Step 4: start Infrahub
@@ -92,7 +93,7 @@ The `--no-root` flag is not needed as this project uses `package-mode = false` i
 Start the Infrahub services using Docker Compose:
 
 ```bash
-poetry run invoke start
+uv run invoke start
 ```
 
 This command:
@@ -118,7 +119,7 @@ The first time you run this command, it may take several minutes to download Doc
 Load the data model schema into Infrahub:
 
 ```bash
-poetry run invoke load-schema
+uv run invoke load-schema
 ```
 
 This command loads all schema files from the `schemas/` directory, defining:
@@ -136,7 +137,7 @@ The command waits up to 30 seconds for the schema to be fully processed.
 Populate Infrahub with the demo data:
 
 ```bash
-poetry run invoke load-data
+uv run invoke load-data
 ```
 
 This runs the bootstrap scripts in sequence:
@@ -164,11 +165,11 @@ Verify the installation was successful:
 - Check if ports 8000, 5432, or other required ports are already in use
 - Review Docker logs: `docker compose logs`
 
-### Poetry install fails
+### Dependency installation fails
 
 - Ensure you're using Python 3.10-3.12 (not 3.13+)
-- Try removing the poetry.lock file and running `poetry install` again
-- Check that Poetry is using the correct Python version: `poetry env info`
+- Try removing the `uv.lock` file and running `uv sync` again
+- Check which Python version uv is using: `uv python list`
 
 ### Permission denied errors with Containerlab
 
